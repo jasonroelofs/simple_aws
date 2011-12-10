@@ -4,7 +4,8 @@ module AWS
 
   class EC2 < API
     endpoint "ec2"
-    default_region "us-east-1"
+    use_https true
+    version "2011-11-01"
   end
 
 end
