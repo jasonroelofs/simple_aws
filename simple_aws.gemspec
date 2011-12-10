@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.summary     = "The simplest and easiest to use and maintain AWS communication library"
   s.description = "The simplest and easiest to use and maintain AWS communication library"
 
+  s.add_dependency "ox"
   s.add_dependency "httparty"
 
   s.files         = `git ls-files`.split "\n"
