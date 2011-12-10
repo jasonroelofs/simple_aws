@@ -1,4 +1,5 @@
 require 'aws/connection'
+require 'aws/request'
 
 module AWS
 
@@ -74,7 +75,16 @@ module AWS
     # actions and return the results
     ##
     def method_missing(name, *args)
-      
+      request = AWS::Request.new camelcase(name.to_s)
+
+      connection = AWS::Connection.new self.uri
+      connection.call request
+    end
+
+    protected
+
+    def camelcase(string)
+      string.split(/_/).map{ |word| word.capitalize }.join('')
     end
   end
 end

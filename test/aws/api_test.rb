@@ -97,7 +97,7 @@ describe AWS::API do
     it "attempts to call AWS on method calls it doesn't know of" do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.action.must_equal "DescribeInstances"
-        request.parameters.must_equal {}
+        request.params.must_equal Hash.new
       end.returns
 
       obj = TestAPI.new "key", "secret"
