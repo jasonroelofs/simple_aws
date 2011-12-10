@@ -12,13 +12,13 @@ module AWS
   ##
   class Connection
 
-    attr_reader :uri
+    attr_reader :api
 
     ##
-    # Build a new connection handler bound to the given URI
+    # Build a new connection handler to work with the given API
     ##
-    def initialize(uri)
-      @uri = uri
+    def initialize(api)
+      @api = api
     end
 
     ##
@@ -26,12 +26,24 @@ module AWS
     # Will raise if the request has an error
     ##
     def call(request)
+
       HTTP.get(
-        @uri,
-        :query => {
-          "Action" => request.action
-        }.merge(request.params)
+        @api.uri,
+        :query => process_request(request)
       )
+    end
+
+    protected
+
+    def process_request(request)
+      params = {
+        "Action" => request.action,
+        "AWSAccessKeyId" => @api.access_key,
+        "SignatureMethod" => "HmacSHA256",
+        "SignatureVersion" => "2",
+        "Timestamp" => Time.now.utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
+        "Version" => @api.version
+      }.merge request.params
     end
 
   end

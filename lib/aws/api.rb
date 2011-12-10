@@ -85,7 +85,7 @@ module AWS
     def method_missing(name, *args)
       request = AWS::Request.new camelcase(name.to_s)
 
-      connection = AWS::Connection.new self.uri
+      connection = AWS::Connection.new self
       connection.call request
     end
 
