@@ -24,6 +24,12 @@ describe AWS::API do
     end
   end
 
+  describe ".version" do
+    it "allows specifying version of the API" do
+      TestAPI.version "2011-01-04"
+    end
+  end
+
   describe "#initialize" do
     it "takes AWS key and secret on construction" do
       obj = TestAPI.new "access_key", "secret_key"
@@ -34,6 +40,12 @@ describe AWS::API do
     it "can also take a region" do
       obj = TestAPI.new "access_key", "secret_key", "region"
       obj.region.must_equal "region"
+    end
+
+    it "makes version available" do
+      TestAPI.version "2011-02-02"
+      obj = TestAPI.new "access_key", "secret_key"
+      obj.version.must_equal "2011-02-02"
     end
   end
 

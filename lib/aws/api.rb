@@ -39,9 +39,16 @@ module AWS
         @use_https = value
       end
 
+      ##
+      # Specify the AWS version of the API in question. This will be a date string.
+      ##
+      def version(version)
+        @version = version
+      end
+
     end
 
-    attr_reader :access_key, :secret_key, :region
+    attr_reader :access_key, :secret_key, :region, :version
 
     ##
     # Construct a new access object for the API in question.
@@ -55,6 +62,7 @@ module AWS
       @region = region || self.class.instance_variable_get("@default_region")
       @endpoint = self.class.instance_variable_get("@endpoint")
       @use_https = self.class.instance_variable_get("@use_https")
+      @version = self.class.instance_variable_get("@version")
     end
 
     ##
