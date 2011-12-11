@@ -71,8 +71,7 @@ module AWS
       host = @api.uri.gsub(/^http[s]:\/\//,'')
 
       to_sign = "POST\n#{host}\n/\n#{list.map {|p| p.join("=") }.join("&")}"
-      digest = OpenSSL::Digest::Digest.new("sha256")
-      OpenSSL::HMAC.digest(digest, @api.secret_key, to_sign)
+      OpenSSL::HMAC.digest("sha256", @api.secret_key, to_sign)
     end
 
     # AWS URI escaping, as implemented by Fog
