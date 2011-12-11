@@ -14,7 +14,7 @@ There's a simple, two part answer to this:
 
 ### Complexity
 
-It's in the name. *Simple*AWS. This library focuses on being the simplest possible way
+It's in the name. *Simple* AWS. This library focuses on being the simplest possible way
 to communicate with AWS. There's been a growing trend in the Ruby Library scene to abstract
 and wrap everything possible in ActiveRecord-like objects so the library user doesn't
 have to worry about the details of sending requests and parsing responses from AWS.
@@ -23,7 +23,7 @@ run into the other problem these libraries have.
 
 ### Forward Compatibility
 
-Yes, not Backward, *Forward* compatibility. SimpleAWS is complete forward compatible to
+Yes, not Backward, *Forward* compatibility. SimpleAWS is completely forward compatible to
 any changes AWS makes to it's various APIs. It's well known that Amazon's AWS
 is constantly changing, constantly being updated and added to. Unfortunately, there isn't
 a library out there that lives this truth. Either parameters are hard coded, or response
@@ -64,7 +64,9 @@ Project Info
 ------------
 
 Author: Jason Roelofs (https://github.com/jameskilton)
+
 Source: https://github.com/jameskilton/simple_aws
+
 Issues: https://github.com/jameskilton/simple_aws/issues
 
 [![Travis CI Build Status](https://secure.travis-ci.org/jameskilton/simple_aws.png)](http://travis-ci.org/jameskilton/simple_aws)
