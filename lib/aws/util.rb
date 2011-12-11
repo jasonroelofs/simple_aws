@@ -9,7 +9,7 @@ module AWS
     ##
     def self.camelcase(string, lower_first_char = false)
       if lower_first_char
-        string[0].downcase + camelcase(string)[1..-1]
+        string[0,1].downcase + camelcase(string)[1..-1]
       else
         string.split(/_/).map{ |word| word.capitalize }.join('')
       end
