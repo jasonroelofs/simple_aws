@@ -11,6 +11,13 @@ require 'aws/ec2'
 
 ec2 = AWS::EC2.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
-p ec2.describe_instances
-
-p ec2.describe_addresses
+ec2.describe_addresses.addresses_set.each do |address|
+  puts "IP: #{address.public_ip}"
+  puts "Instance ID: #{address.instance_id}"
+  puts "Domain: #{address.domain}"
+  if address.domain == "vpc"
+    puts "Allocation ID: #{address.allocation_id}"
+    puts "Association ID: #{address.association_id}"
+  end
+  puts ""
+end
