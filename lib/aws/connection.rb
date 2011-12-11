@@ -1,6 +1,8 @@
 require 'httparty'
 require 'openssl'
 
+require 'aws/response'
+
 module AWS
 
   class HTTP
@@ -27,9 +29,11 @@ module AWS
     # Will raise if the request has an error
     ##
     def call(request)
-      HTTP.post(
-        @api.uri,
-        :body => process_request(request)
+      AWS::Response.new(
+        HTTP.post(
+          @api.uri,
+          :body => process_request(request)
+        )
       )
     end
 

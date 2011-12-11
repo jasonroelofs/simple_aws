@@ -1,5 +1,6 @@
 require 'test_helper'
 require 'aws/request'
+require 'aws/response'
 require 'aws/connection'
 
 describe AWS::Connection do
@@ -18,6 +19,8 @@ describe AWS::Connection do
       api.stubs(:uri).returns("URL")
       api.stubs(:version).returns("2011-01-01")
 
+      response = stub_everything(:success? => true, :parsed_response => {"value" => {}})
+
       AWS::HTTP.expects(:post).with do |path, options|
         path.must_equal "URL"
 
@@ -31,12 +34,30 @@ describe AWS::Connection do
 
         Time.parse(options[:body]["Timestamp"]).wont_be_nil
         true
-      end
+      end.returns response
 
       request = AWS::Request.new "request_action"
 
       conn = AWS::Connection.new api
       conn.call request
+    end
+
+    it "returns a Response object" do
+      api = stub_everything
+      api.stubs(:access_key).returns("access key")
+      api.stubs(:secret_key).returns("secret key")
+      api.stubs(:uri).returns("URL")
+      api.stubs(:version).returns("2011-01-01")
+
+      response = stub_everything(:success? => true, :parsed_response => {"value" => {}})
+      AWS::HTTP.expects(:post).returns response
+
+      request = AWS::Request.new "request_action"
+
+      conn = AWS::Connection.new api
+      response = conn.call request
+
+      response.must_be_kind_of AWS::Response
     end
 
   end
