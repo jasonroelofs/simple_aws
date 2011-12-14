@@ -16,6 +16,10 @@ module AWS
       request = AWS::Request.new :post, self.uri, "/"
       request.params["Action"] = AWS::Util.camelcase(name.to_s)
 
+      if args.any?
+        request.params.merge!(args.first)
+      end
+
       connection = AWS::Connection.new
       connection.call finish_and_sign_request(request)
     end
