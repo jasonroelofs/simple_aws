@@ -25,4 +25,44 @@ describe AWS::Request do
 
     @request.params.must_equal "Param1" => "Value1", "Param2" => "Value2"
   end
+
+  describe "hashes" do
+    it "converts hash params to AWS param names" do
+      @request.params["Filter"] = {
+        "filter1" => "value1",
+        "filter2" => "value14"
+      }
+
+      @request.params.must_equal({
+        "Filter.1.Name" => "filter1",
+        "Filter.1.Value.1" => "value1",
+        "Filter.2.Name" => "filter2",
+        "Filter.2.Value.1" => "value14"
+      })
+    end
+
+    it "converst nested arrays inside of hashes appropriately" do
+      @request.params["Filter"] = {
+        "filter1" => ["value1", "value14"]
+      }
+
+      @request.params.must_equal({
+        "Filter.1.Name" => "filter1",
+        "Filter.1.Value.1" => "value1",
+        "Filter.1.Value.2" => "value14"
+      })
+    end
+  end
+
+  describe "arrays" do
+    it "converts array params to AWS param names" do
+      @request.params["Filter"] = ["value1", "value2", "value3"]
+
+      @request.params.must_equal({
+        "Filter.1" => "value1",
+        "Filter.2" => "value2",
+        "Filter.3" => "value3"
+      })
+    end
+  end
 end
