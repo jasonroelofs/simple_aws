@@ -46,7 +46,7 @@ describe AWS::EC2 do
 
         params = request.params
         params["ParamA"].must_equal "Kittens"
-        params["ParamB"].must_equal "Death%20to%20Smoochy"
+        params["ParamB"].must_equal "Death to Smoochy"
 
         true
       end.returns

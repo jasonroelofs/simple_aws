@@ -63,10 +63,6 @@ module AWS
     # http://docs.amazonwebservices.com/AWSEC2/latest/UserGuide/index.html?using-query-api.html
     ##
     def finish_and_sign_request(request)
-      request.params.each do |key, value|
-        request.params[key] = Util.uri_escape value
-      end
-
       request.params.merge!({
         "AWSAccessKeyId" => self.access_key,
         "SignatureMethod" => "HmacSHA256",
