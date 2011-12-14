@@ -78,6 +78,5 @@ module AWS
       @uri += ".amazonaws.com"
       @uri
     end
-
   end
 end

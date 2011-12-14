@@ -16,17 +16,33 @@ describe AWS::EC2 do
   end
 
   describe "API calls" do
-    it "attempts to call AWS on method calls it doesn't know of" do
+
+    it "builds and signs AWS requests on methods it doesn't know about" do
       AWS::Connection.any_instance.expects(:call).with do |request|
-        request.action.must_equal "DescribeInstances"
-        request.params.must_equal Hash.new
+        request.method.must_equal :post
+        request.uri.must_equal "https://ec2.amazonaws.com/"
+
+        params = request.params
+        params.wont_be_nil
+
+        params["Action"].must_equal "DescribeInstances"
+        params["Version"].must_equal "2011-11-01"
+        params["AWSAccessKeyId"].must_equal "key"
+        params["SignatureMethod"].must_equal "HmacSHA256"
+        params["SignatureVersion"].must_equal "2"
+
+        params["Signature"].wont_be_nil
+
+        Time.parse(params["Timestamp"]).wont_be_nil
+        true
       end.returns
 
       obj = AWS::EC2.new "key", "secret"
       obj.describe_instances
     end
 
-    it "takes a hash parameter and sends it to the request"
+    it "takes a hash parameter and gives it to the request"
+
   end
 
 end
