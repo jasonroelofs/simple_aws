@@ -79,15 +79,5 @@ module AWS
       @uri
     end
 
-    ##
-    # For any undefined methods, try to convert them into valid AWS
-    # actions and return the results
-    ##
-    def method_missing(name, *args)
-      request = AWS::Request.new AWS::Util.camelcase(name.to_s)
-
-      connection = AWS::Connection.new self
-      connection.call request
-    end
   end
 end

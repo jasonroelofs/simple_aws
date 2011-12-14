@@ -98,25 +98,4 @@ describe AWS::API do
       obj.uri.must_equal "https://testing-endpoint.amazonaws.com"
     end
   end
-
-  describe "API calls" do
-    before do
-      TestAPI.endpoint "testing-endpoint"
-      TestAPI.default_region nil
-      TestAPI.use_https false
-    end
-
-    it "attempts to call AWS on method calls it doesn't know of" do
-      AWS::Connection.any_instance.expects(:call).with do |request|
-        request.action.must_equal "DescribeInstances"
-        request.params.must_equal Hash.new
-      end.returns
-
-      obj = TestAPI.new "key", "secret"
-      obj.describe_instances
-    end
-
-    it "takes a hash parameter and sends it to the request"
-  end
-
 end

@@ -15,4 +15,18 @@ describe AWS::EC2 do
     @api.version.must_equal "2011-11-01"
   end
 
+  describe "API calls" do
+    it "attempts to call AWS on method calls it doesn't know of" do
+      AWS::Connection.any_instance.expects(:call).with do |request|
+        request.action.must_equal "DescribeInstances"
+        request.params.must_equal Hash.new
+      end.returns
+
+      obj = AWS::EC2.new "key", "secret"
+      obj.describe_instances
+    end
+
+    it "takes a hash parameter and sends it to the request"
+  end
+
 end
