@@ -11,13 +11,31 @@ require 'aws/ec2'
 
 ec2 = AWS::EC2.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
-ec2.describe_addresses.addresses_set.each do |address|
+puts "", "Standard Only Addresses", ""
+
+ec2.describe_addresses("Filter" => {"domain" => "standard"}).addresses_set.each do |address|
   puts "IP: #{address.public_ip}"
   puts "Instance ID: #{address.instance_id}"
   puts "Domain: #{address.domain}"
-  if address.domain == "vpc"
-    puts "Allocation ID: #{address.allocation_id}"
-    puts "Association ID: #{address.association_id}"
-  end
+  puts ""
+end
+
+puts "", "VPC Only addresses", ""
+
+ec2.describe_addresses("Filter" => {"domain" => "vpc"}).addresses_set.each do |address|
+  puts "IP: #{address.public_ip}"
+  puts "Instance ID: #{address.instance_id}"
+  puts "Domain: #{address.domain}"
+  puts "Allocation ID: #{address.allocation_id}"
+  puts "Association ID: #{address.association_id}"
+  puts ""
+end
+
+puts "", "Ask for both explicitly", ""
+
+ec2.describe_addresses("Filter" => {"domain" => ["standard", "vpc"]}).addresses_set.each do |address|
+  puts "IP: #{address.public_ip}"
+  puts "Instance ID: #{address.instance_id}"
+  puts "Domain: #{address.domain}"
   puts ""
 end
