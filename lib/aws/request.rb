@@ -2,19 +2,32 @@ module AWS
 
   ##
   # Defines all request information needed to run a request against an AWS API
+  #
+  # Requests need to know a number of attributes to work, including the host,
+  # path, the HTTP method, and any params or POST bodies. Most of this is
+  # straight forward through the constructor methods defined below. The one
+  # special thing this class does is make it easier to work with AWS's
+  # array and hash parameter syntax.
+  #
+  # Hashes, usually designated by +Attr.n.Name+ and +Attr.n.Value.m+ can
+  # be sent to a Request as a normal Ruby hash like so:
+  #
+  #   request.params["Attr"] = {"key" => "value", "puppy" => "dog"}
+  #
+  # This class will ensure the keys and values get properly mapped into
+  # the format AWS understands.
+  #
+  # Likewise with Arrays, which is the simpler +Attr.n+ designation, can
+  # be given as straight ruby Arrays:
+  #
+  #   request.params["Attr"] = ["cat", "dog"]
+  #
+  # Everything else is straight forward HTTP-related setters and getters
   ##
   class Request
 
-    ##
-    # Proxy class that handles converting params as needed (say for the
-    # Array (Attribute.1.member) or Hash syntax (Field.n.Value.m) so that
-    # the params can be given in native Array or Hash formats and still be
-    # properly sent to AWS
-    ##
     class Params < Hash
-      ##
-      # Hijack [] to check for specific values before saving the results
-      ##
+
       def []=(key, value)
         case value
         when Hash
@@ -44,7 +57,21 @@ module AWS
       end
     end
 
-    attr_reader :method, :host, :path, :params
+    ##
+    # HTTP method this Request will use (:get, :post, :put, :delete)
+    ##
+    attr_reader :method
+
+    ##
+    # Host and Path of the URI this Request will be using
+    ##
+    attr_reader :host, :path
+
+    ##
+    # Hash of parameters to pass in this Request. See top-level
+    # documentation for any special handling of types
+    ##
+    attr_reader :params
 
     ##
     # Set up a new Request for the given +host+ and +path+ using the given

@@ -16,7 +16,7 @@ module AWS
   class Connection
 
     ##
-    # Send a request to AWS proper, returning the response.
+    # Send an AWS::Request to AWS proper, returning an AWS::Response.
     # Will raise if the request has an error
     ##
     def call(request)
