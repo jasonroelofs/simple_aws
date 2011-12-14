@@ -7,8 +7,11 @@ require 'mocha_standalone'
 class MiniTest::Unit::TestCase
   include Mocha::API
 
+  def setup
+    mocha_teardown
+  end
+
   def teardown
     mocha_verify
-    mocha_teardown
   end
 end
