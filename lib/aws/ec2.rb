@@ -77,7 +77,7 @@ module AWS
     end
 
     def sign_request(params)
-      list = params.map {|k, v| [k, Util.uri_escape(v)] }
+      list = params.map {|k, v| [k, Util.uri_escape(v.to_s)] }
       list.sort! do |a, b|
         if a[0] == "AWSAccessKeyId"
           -1
