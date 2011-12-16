@@ -78,6 +78,7 @@ describe AWS::Response do
         "CommandResponse" => {
           "xmlns" => "some url",
           "requestId" => "1234-Request-Id",
+          "nothingSet" => nil,
           "simpleNestedObject" => {
             "name" => "Here's something deeper"
           },
@@ -115,6 +116,10 @@ describe AWS::Response do
 
     describe "method calls" do
 
+      it "finds keys who's values are nil" do
+        @response.nothing.must_be_nil
+      end
+
       it "allows querying multiple objects deep" do
         @response.simple_nested_object.name.must_equal "Here's something deeper"
       end
@@ -139,6 +144,11 @@ describe AWS::Response do
     end
 
     describe "hash keys" do
+
+      it "finds keys who's values are nil" do
+        @response["nothing"].must_be_nil
+      end
+
       it "allows querying multiple objects deep" do
         @response["simpleNestedObject"]["name"].must_equal "Here's something deeper"
       end

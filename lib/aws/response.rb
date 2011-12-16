@@ -76,8 +76,8 @@ module AWS
       end
 
       def method_missing(name, *args)
-        if value = value_for_key_matching(name)
-          value_or_proxy value
+        if key = key_matching(name)
+          value_or_proxy @local_root[key]
         else
           super
         end
@@ -85,10 +85,17 @@ module AWS
 
       protected
 
-      def value_for_key_matching(name)
+      def key_matching(name)
         base_aws_name = AWS::Util.camelcase name.to_s, :lower
-        @local_root[base_aws_name] ||
-          @local_root[base_aws_name + "Set"]
+        return nil if @local_root.is_a?(Array)
+
+        keys = @local_root.keys
+
+        if keys.include?(base_aws_name)
+          base_aws_name
+        elsif keys.include?(base_aws_name + "Set")
+          base_aws_name + "Set"
+        end
       end
 
       def value_or_proxy(value)
