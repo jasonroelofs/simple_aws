@@ -32,7 +32,7 @@ module AWS
   #
   #   request.params["Filter"] = [
   #     {"Name" => "domain", "Value" => "vpc"},
-  #     {"Name" => "ids", "Value" => ["i-1234", "i-8902"]
+  #     {"Name" => "ids", "Value" => ["i-1234", "i-8902"]}
   #   ]
   #
   # If you have just a single Filter, you don't need to wrap it in an array,
