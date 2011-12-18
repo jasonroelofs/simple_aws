@@ -30,14 +30,15 @@ describe AWS::Request do
     it "converts hash params to AWS param names" do
       @request.params["Filter"] = [
         {"Name" => "filter1", "Value" => "value1"},
-        {"Name" => "filter2", "Value" => "value14"}
+        {"Name" => "filter2", "Value" => ["value14", "another filter"]}
       ]
 
       @request.params.must_equal({
         "Filter.1.Name" => "filter1",
         "Filter.1.Value" => "value1",
         "Filter.2.Name" => "filter2",
-        "Filter.2.Value" => "value14"
+        "Filter.2.Value.1" => "value14",
+        "Filter.2.Value.2" => "another filter"
       })
     end
 
