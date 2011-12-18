@@ -28,28 +28,45 @@ describe AWS::Request do
 
   describe "hashes" do
     it "converts hash params to AWS param names" do
-      @request.params["Filter"] = {
-        "filter1" => "value1",
-        "filter2" => "value14"
-      }
+      @request.params["Filter"] = [
+        {"Name" => "filter1", "Value" => "value1"},
+        {"Name" => "filter2", "Value" => "value14"}
+      ]
 
       @request.params.must_equal({
         "Filter.1.Name" => "filter1",
-        "Filter.1.Value.1" => "value1",
+        "Filter.1.Value" => "value1",
         "Filter.2.Name" => "filter2",
-        "Filter.2.Value.1" => "value14"
+        "Filter.2.Value" => "value14"
       })
     end
 
-    it "converst nested arrays inside of hashes appropriately" do
-      @request.params["Filter"] = {
-        "filter1" => ["value1", "value14"]
-      }
+    it "handles any depth of nesting" do
+      # Example of using EC2 AuthorizeSecurityGroupEgress
+      @request.params["IpPermissions"] = [
+        {"IpProtocol" => "udp", "FromPort" => 211, "ToPort" => 142,
+          "Groups" => [{"GroupId" => 28}, {"GroupId" => 14}],
+          "IpRanges" => [{"CidrIp" => 998}, {"CidrIp" => 12}]
+        }
+      ]
+
+      @request.params.must_equal({
+        "IpPermissions.1.IpProtocol" => "udp",
+        "IpPermissions.1.FromPort" => 211,
+        "IpPermissions.1.ToPort" => 142,
+        "IpPermissions.1.Groups.1.GroupId" => 28,
+        "IpPermissions.1.Groups.2.GroupId" => 14,
+        "IpPermissions.1.IpRanges.1.CidrIp" => 998,
+        "IpPermissions.1.IpRanges.2.CidrIp" => 12
+      })
+    end
+
+    it "wraps a top-level hash into a single element array" do
+      @request.params["Filter"] = {"Name" => "filter1", "Value" => "value1"}
 
       @request.params.must_equal({
         "Filter.1.Name" => "filter1",
-        "Filter.1.Value.1" => "value1",
-        "Filter.1.Value.2" => "value14"
+        "Filter.1.Value" => "value1"
       })
     end
   end

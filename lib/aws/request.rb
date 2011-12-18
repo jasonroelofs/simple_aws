@@ -5,24 +5,52 @@ module AWS
   #
   # Requests need to know a number of attributes to work, including the host,
   # path, the HTTP method, and any params or POST bodies. Most of this is
-  # straight forward through the constructor methods defined below. The one
-  # special thing this class does is make it easier to work with AWS's
-  # array and hash parameter syntax.
+  # straight forward through the constructor and setter methods defined below.
   #
-  # Hashes, usually designated by +Attr.n.Name+ and +Attr.n.Value.m+ can
-  # be sent to a Request as a normal Ruby hash like so:
+  # One of the more interesting aspects of the AWS API are the indexed parameters.
+  # These are the parameters in the document defined as such:
   #
-  #   request.params["Attr"] = {"key" => "value", "puppy" => "dog"}
+  #   Filter.n.Name
+  #   Filter.n.Value.m
   #
-  # This class will ensure the keys and values get properly mapped into
-  # the format AWS understands.
+  # This class has special handling to facilitate building these parameters
+  # from regular Ruby Hashes and Arrays, but does not prevent you from specifying
+  # these parameters exactly as defined. For the example above, here are the two
+  # ways you can set these parameters:
   #
-  # Likewise with Arrays, which is the simpler +Attr.n+ designation, can
-  # be given as straight ruby Arrays:
+  # By yourself, filling in the +n+ and +m+ as you need:
   #
-  #   request.params["Attr"] = ["cat", "dog"]
+  #   request.params.merge({
+  #     "Filter.1.Name" => "domain",
+  #     "Filter.1.Value" => "vpc",
+  #     "Filter.2.Name" => "ids",
+  #     "Filter.2.Value.1" => "i-1234",
+  #     "Filter.2.Value.2" => "i-8902"
+  #   })
   #
-  # Everything else is straight forward HTTP-related setters and getters
+  # Or let Request handle the indexing and numbering for you:
+  #
+  #   request.params["Filter"] = [
+  #     {"Name" => "domain", "Value" => "vpc"},
+  #     {"Name" => "ids", "Value" => ["i-1234", "i-8902"]
+  #   ]
+  #
+  # If you have just a single Filter, you don't need to wrap it in an array,
+  # Request will do that for you:
+  #
+  #   request.params["Filter"] = {"Name" => "domain", "Value" => "vpc"}
+  #
+  # Straight arrays are handled as well:
+  #
+  #   request.params["InstanceId"] = ["i-1234", "i-8970"]
+  #
+  # In an effort to make this library as transparent as possible when working
+  # directly with the AWS API, the keys of the hashes must be the values
+  # specified in the API, and the values must be Hashes, Arrays, or serializable
+  # values like Fixnum, Boolean, or String.
+  #
+  # A more detailed example can be found in test/aws/request_test.rb where you'll
+  # see how to use many levels of nesting to build your AWS request.
   ##
   class Request
 
@@ -30,10 +58,10 @@ module AWS
 
       def []=(key, value)
         case value
-        when Hash
-          insert_hash key, value
         when Array
-          insert_array key, value
+          process_array key, value
+        when Hash
+          process_array key, [value]
         else
           super
         end
@@ -41,20 +69,30 @@ module AWS
 
       protected
 
-      def insert_hash(base_key, hash)
-        value_keys = hash.keys.sort
-
-        value_keys.each_with_index do |value_key, index|
-          self["#{base_key}.#{index + 1}.Name"] = value_key
-          self["#{base_key}.#{index + 1}.Value"] = [hash[value_key]].flatten
+      def process_array(base_key, array_in)
+        array_in.each_with_index do |entry, index|
+          entry_key = "#{base_key}.#{index + 1}"
+          case entry
+          when Hash
+            process_hash entry_key, entry
+          else
+            self[entry_key] = entry
+          end
         end
       end
 
-      def insert_array(base_key, array)
-        array.each_with_index do |entry, index|
-          self["#{base_key}.#{index + 1}"] = entry
+      def process_hash(base_key, entry)
+        entry.each do |inner_key, inner_value|
+          full_inner_key = "#{base_key}.#{inner_key}"
+          case inner_value
+          when Array
+            process_array full_inner_key, inner_value
+          else
+            self[full_inner_key] = inner_value
+          end
         end
       end
+
     end
 
     ##
