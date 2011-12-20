@@ -13,7 +13,7 @@ ec2 = AWS::EC2.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
 puts "", "Standard Only Addresses", ""
 
-ec2.describe_addresses("Filter" => {"domain" => "standard"}).addresses_set.each do |address|
+ec2.describe_addresses("Filter" => {"Name" => "domain", "Value" => "standard"}).addresses_set.each do |address|
   puts "IP: #{address.public_ip}"
   puts "Instance ID: #{address.instance_id}"
   puts "Domain: #{address.domain}"
@@ -22,7 +22,7 @@ end
 
 puts "", "VPC Only addresses", ""
 
-ec2.describe_addresses("Filter" => {"domain" => "vpc"}).addresses_set.each do |address|
+ec2.describe_addresses("Filter" => {"Name" => "domain", "Value" => "vpc"}).addresses_set.each do |address|
   puts "IP: #{address.public_ip}"
   puts "Instance ID: #{address.instance_id}"
   puts "Domain: #{address.domain}"
@@ -33,7 +33,7 @@ end
 
 puts "", "Ask for both explicitly", ""
 
-ec2.describe_addresses("Filter" => {"domain" => ["standard", "vpc"]}).addresses_set.each do |address|
+ec2.describe_addresses("Filter" => {"Name" => "domain", "Value" => ["standard", "vpc"]}).addresses_set.each do |address|
   puts "IP: #{address.public_ip}"
   puts "Instance ID: #{address.instance_id}"
   puts "Domain: #{address.domain}"
