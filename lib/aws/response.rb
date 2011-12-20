@@ -25,24 +25,18 @@ module AWS
   # in ruby_standard into appropriate keys (camelCase) and look for them
   # in the hash. This can be done at any depth.
   #
-  # One special case handled is the "Set" data types. If this class finds
-  # a nested object with the "item" key, it will take care of the mapping so
-  # that instead of writing
-  #
-  #   response.reservation_set.item.first.reservation_id (DescribeInstances)
-  #
-  # you'll be able to write the above like:
-  #
-  #   response.reservation.first.reservation_id
-  #
-  # Outside of this, this class tries not to be too magical to ensure that
+  # This class tries not to be too magical to ensure that
   # it never gets in the way. All nested objects are queryable like their
   # parents are, and all sets and arrays are found and accessible through
   # your typical Enumerable interface.
   #
-  # This class will also ensure that any Set is always an Array, given that
-  # when AWS returns a single item in a set, the xml -> hash parser gives a
-  # single hash back instead of an array.
+  # This class does ensure that any collection is always an Array, given that
+  # when AWS returns a single item in a collection, the xml -> hash parser gives a
+  # single hash back instead of an array. This class will also look for
+  # array indicators from AWS, like <item> or <member> and squash them.
+  #
+  # If AWS returns an error code, instead of getting a Response back the library
+  # will instead throw an UnsuccessfulResponse error with the pertinent information.
   ##
   class Response
 
@@ -50,6 +44,8 @@ module AWS
     # into keys found in the underlying Hash.
     class ResponseProxy
       include Enumerable
+
+      TO_SQUASH = %w(item member)
 
       def initialize(local_root)
         if local_root.keys == ["item"]
@@ -114,6 +110,7 @@ module AWS
 
     def initialize(http_response)
       if !http_response.success?
+#        p http_response.parsed_response
         error = http_response.parsed_response["Response"]["Errors"]["Error"]
         raise UnsuccessfulResponse.new(
           http_response.code,

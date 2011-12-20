@@ -125,21 +125,21 @@ describe AWS::Response do
       end
 
       it "allows querying of a result set with one item" do
-        @response.single_item_results.length.must_equal 1
-        @response.single_item_results.first.key_id.must_equal "1234"
-        @response.single_item_results.first.domain.must_equal "vpc"
+        @response.single_item_results_set.length.must_equal 1
+        @response.single_item_results_set.first.key_id.must_equal "1234"
+        @response.single_item_results_set.first.domain.must_equal "vpc"
       end
 
       it "allows enumerating through a result set with lots of items" do
-        @response.multiple_items.length.must_equal 3
-        @response.multiple_items[0].key_id.must_equal "1234"
-        @response.multiple_items[1].key_id.must_equal "5678"
-        @response.multiple_items[2].key_id.must_equal "9012"
+        @response.multiple_items_set.length.must_equal 3
+        @response.multiple_items_set[0].key_id.must_equal "1234"
+        @response.multiple_items_set[1].key_id.must_equal "5678"
+        @response.multiple_items_set[2].key_id.must_equal "9012"
       end
 
       it "allows diving into a nested result set" do
-        @response.multiple_depth.simple_inner_set.first.range.must_equal "14"
-        @response.multiple_depth.complex_inner_set[1].deeper[0].hidden_item.must_equal "42"
+        @response.multiple_depth_set.simple_inner_set.first.range.must_equal "14"
+        @response.multiple_depth_set.complex_inner_set[1].deeper[0].hidden_item.must_equal "42"
       end
     end
 
