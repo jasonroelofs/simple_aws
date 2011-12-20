@@ -106,7 +106,8 @@ describe AWS::Response do
           },
           "withMemberSet" => {
             "member" => {"keyId" => "4567"}
-          }
+          },
+          "UpperCamelKey" => "purple dog"
         }
       }
 
@@ -147,6 +148,10 @@ describe AWS::Response do
 
       it "also squashes the 'member' tag" do
         @response.with_member_set[0].key_id.must_equal "4567"
+      end
+
+      it "can work with lowerCamel and UpperCamel when doing method lookup" do
+        @response.upper_camel_key.must_equal "purple dog"
       end
     end
 

@@ -83,13 +83,17 @@ module AWS
       protected
 
       def key_matching(name)
-        base_aws_name = AWS::Util.camelcase name.to_s, :lower
+        lower_base_aws_name = AWS::Util.camelcase name.to_s, :lower
+        upper_base_aws_name = AWS::Util.camelcase name.to_s
+
         return nil if @local_root.is_a? Array
 
         keys = @local_root.keys
 
-        if keys.include? base_aws_name
-          base_aws_name
+        if keys.include? lower_base_aws_name
+          lower_base_aws_name
+        elsif keys.include? upper_base_aws_name
+          upper_base_aws_name
         end
       end
 
