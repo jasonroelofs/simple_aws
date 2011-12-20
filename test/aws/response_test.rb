@@ -118,6 +118,18 @@ describe AWS::Response do
       @response = AWS::Response.new @http_response
     end
 
+    describe "#keys" do
+      it "lets one introspect the current depth for keys" do
+        @response.simple_nested_object.keys.must_equal ["name"]
+      end
+
+      it "raises if current depth is an array" do
+        lambda {
+          @response.multiple_items_set.keys
+        }.must_raise NoMethodError
+      end
+    end
+
     describe "method calls" do
 
       it "finds keys who's values are nil" do
@@ -153,6 +165,7 @@ describe AWS::Response do
       it "can work with lowerCamel and UpperCamel when doing method lookup" do
         @response.upper_camel_key.must_equal "purple dog"
       end
+
     end
 
     describe "hash keys" do

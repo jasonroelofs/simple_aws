@@ -64,6 +64,15 @@ module AWS
         value_or_proxy @local_root[key_or_idx]
       end
 
+      ##
+      # Get all keys at the current depth of the Response object.
+      # This method will raise a NoMethodError if the current
+      # depth is an array.
+      ##
+      def keys
+        @local_root.keys
+      end
+
       def length
         @local_root.length
       end
