@@ -53,7 +53,7 @@ module AWS
           # Ensure squash key is ignored and it's children are always
           # turned into an array.
           @local_root = [local_root[first_key]].flatten.map do |entry|
-            ResponseProxy.new(entry)
+            ResponseProxy.new entry
           end
         else
           @local_root = local_root
@@ -61,7 +61,7 @@ module AWS
       end
 
       def [](key_or_idx)
-        value_or_proxy(@local_root[key_or_idx] || @local_root[key_or_idx + "Set"])
+        value_or_proxy @local_root[key_or_idx]
       end
 
       def length
@@ -84,14 +84,12 @@ module AWS
 
       def key_matching(name)
         base_aws_name = AWS::Util.camelcase name.to_s, :lower
-        return nil if @local_root.is_a?(Array)
+        return nil if @local_root.is_a? Array
 
         keys = @local_root.keys
 
-        if keys.include?(base_aws_name)
+        if keys.include? base_aws_name
           base_aws_name
-        elsif keys.include?(base_aws_name + "Set")
-          base_aws_name + "Set"
         end
       end
 

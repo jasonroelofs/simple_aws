@@ -78,7 +78,7 @@ describe AWS::Response do
         "CommandResponse" => {
           "xmlns" => "some url",
           "requestId" => "1234-Request-Id",
-          "nothingSet" => nil,
+          "nothing" => nil,
           "simpleNestedObject" => {
             "name" => "Here's something deeper"
           },
@@ -142,7 +142,7 @@ describe AWS::Response do
 
       it "allows diving into a nested result set" do
         @response.multiple_depth_set.simple_inner_set.first.range.must_equal "14"
-        @response.multiple_depth_set.complex_inner_set[1].deeper[0].hidden_item.must_equal "42"
+        @response.multiple_depth_set.complex_inner_set[1].deeper_set[0].hidden_item.must_equal "42"
       end
 
       it "also squashes the 'member' tag" do
@@ -161,21 +161,21 @@ describe AWS::Response do
       end
 
       it "allows querying of a result set with one item, squashing the 'item' tag" do
-        @response["singleItemResults"].length.must_equal 1
-        @response["singleItemResults"][0]["keyId"].must_equal "1234"
-        @response["singleItemResults"][0]["domain"].must_equal "vpc"
+        @response["singleItemResultsSet"].length.must_equal 1
+        @response["singleItemResultsSet"][0]["keyId"].must_equal "1234"
+        @response["singleItemResultsSet"][0]["domain"].must_equal "vpc"
       end
 
       it "allows enumerating through a result set with lots of items" do
-        @response["multipleItems"].length.must_equal 3
-        @response["multipleItems"][0]["keyId"].must_equal "1234"
-        @response["multipleItems"][1]["keyId"].must_equal "5678"
-        @response["multipleItems"][2]["keyId"].must_equal "9012"
+        @response["multipleItemsSet"].length.must_equal 3
+        @response["multipleItemsSet"][0]["keyId"].must_equal "1234"
+        @response["multipleItemsSet"][1]["keyId"].must_equal "5678"
+        @response["multipleItemsSet"][2]["keyId"].must_equal "9012"
       end
 
       it "allows diving into a nested result set" do
-        @response["multipleDepth"]["simpleInnerSet"][0]["range"].must_equal "14"
-        @response["multipleDepth"]["complexInnerSet"][1]["deeper"][0]["hiddenItem"].must_equal "42"
+        @response["multipleDepthSet"]["simpleInnerSet"][0]["range"].must_equal "14"
+        @response["multipleDepthSet"]["complexInnerSet"][1]["deeperSet"][0]["hiddenItem"].must_equal "42"
       end
 
       it "also squashes the 'member' tag" do
