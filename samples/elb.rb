@@ -13,4 +13,4 @@ $elb = AWS::ELB.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
 puts "", "Your Load Balancers", ""
 
-p $elb.describe_load_balancers
+p $elb.describe_load_balancesr

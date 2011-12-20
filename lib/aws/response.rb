@@ -48,10 +48,11 @@ module AWS
       TO_SQUASH = %w(item member)
 
       def initialize(local_root)
-        if local_root.keys == ["item"]
-          # Ensure "item" is ignored and it's children are always
+        first_key = local_root.keys.first
+        if local_root.keys.length == 1 && TO_SQUASH.include?(first_key)
+          # Ensure squash key is ignored and it's children are always
           # turned into an array.
-          @local_root = [local_root["item"]].flatten.map do |entry|
+          @local_root = [local_root[first_key]].flatten.map do |entry|
             ResponseProxy.new(entry)
           end
         else

@@ -103,6 +103,9 @@ describe AWS::Response do
                 {"range" => "274", "deeperSet" => { "item" => {"hiddenItem" => "42"}}}
               ]
             }
+          },
+          "withMemberSet" => {
+            "member" => {"keyId" => "4567"}
           }
         }
       }
@@ -124,7 +127,7 @@ describe AWS::Response do
         @response.simple_nested_object.name.must_equal "Here's something deeper"
       end
 
-      it "allows querying of a result set with one item" do
+      it "allows querying of a result set with one item, squashing 'item'" do
         @response.single_item_results_set.length.must_equal 1
         @response.single_item_results_set.first.key_id.must_equal "1234"
         @response.single_item_results_set.first.domain.must_equal "vpc"
@@ -141,6 +144,10 @@ describe AWS::Response do
         @response.multiple_depth_set.simple_inner_set.first.range.must_equal "14"
         @response.multiple_depth_set.complex_inner_set[1].deeper[0].hidden_item.must_equal "42"
       end
+
+      it "also squashes the 'member' tag" do
+        @response.with_member_set[0].key_id.must_equal "4567"
+      end
     end
 
     describe "hash keys" do
@@ -153,7 +160,7 @@ describe AWS::Response do
         @response["simpleNestedObject"]["name"].must_equal "Here's something deeper"
       end
 
-      it "allows querying of a result set with one item" do
+      it "allows querying of a result set with one item, squashing the 'item' tag" do
         @response["singleItemResults"].length.must_equal 1
         @response["singleItemResults"][0]["keyId"].must_equal "1234"
         @response["singleItemResults"][0]["domain"].must_equal "vpc"
@@ -169,6 +176,10 @@ describe AWS::Response do
       it "allows diving into a nested result set" do
         @response["multipleDepth"]["simpleInnerSet"][0]["range"].must_equal "14"
         @response["multipleDepth"]["complexInnerSet"][1]["deeper"][0]["hiddenItem"].must_equal "42"
+      end
+
+      it "also squashes the 'member' tag" do
+        @response["withMemberSet"][0]["keyId"].must_equal "4567"
       end
     end
 
