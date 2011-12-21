@@ -5,21 +5,26 @@ describe AWS::Response do
 
   describe "errors" do
 
+    before do
+      @error_response = {}
+      @http_response = stub
+      @http_response.stubs(:success?).returns(false)
+      @http_response.stubs(:code).returns(401)
+    end
+
     it "raises if the response is not a success" do
-      http_response = stub
-      http_response.stubs(:success?).returns(false)
-      http_response.stubs(:code).returns(401)
-      http_response.stubs(:parsed_response).returns({
+      @error_response = {
         "Response" => {
           "Errors" => {
             "Error" => {"Code" => "AuthFailure",
               "Message" => "Message about failing to authenticate"
         }}}
-      })
+      }
+      @http_response.stubs(:parsed_response).returns(@error_response)
 
       error =
         lambda {
-          AWS::Response.new http_response
+          AWS::Response.new @http_response
         }.must_raise AWS::UnsuccessfulResponse
 
       error.code.must_equal 401
@@ -29,6 +34,38 @@ describe AWS::Response do
       error.message.must_equal "AuthFailure (401): Message about failing to authenticate"
     end
 
+    it "handles ErrorResponse objects" do
+      @error_response = {
+        "ErrorResponse" => {
+          "Error" => {"Code" => "AuthFailure",
+            "Message" => "Message about failing to authenticate"
+        }}
+      }
+      @http_response.stubs(:parsed_response).returns(@error_response)
+
+      error =
+        lambda {
+          AWS::Response.new @http_response
+        }.must_raise AWS::UnsuccessfulResponse
+
+      error.code.must_equal 401
+      error.error_type.must_equal "AuthFailure"
+      error.error_message.must_equal "Message about failing to authenticate"
+
+      error.message.must_equal "AuthFailure (401): Message about failing to authenticate"
+    end
+
+    it "raises if it can't parse the error message" do
+      @error_response = { "Erroring" => "This is an error message" }
+      @http_response.stubs(:parsed_response).returns(@error_response)
+
+      error =
+        lambda {
+          AWS::Response.new @http_response
+        }.must_raise AWS::UnknownErrorResponse
+
+      error.message.must_match /Unable to parse error code from/
+    end
   end
 
   describe "successful response parsing and mapping" do

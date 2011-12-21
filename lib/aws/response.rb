@@ -8,10 +8,16 @@ module AWS
     attr_reader :error_message
 
     def initialize(code, error_type, error_message)
-      super("#{error_type} (#{code}): #{error_message}")
+      super "#{error_type} (#{code}): #{error_message}"
       @code = code
       @error_type = error_type
       @error_message = error_message
+    end
+  end
+
+  class UnknownErrorResponse < RuntimeError
+    def initialize(body)
+      super "Unable to parse error code from #{body.inspect}"
     end
   end
 
@@ -122,8 +128,7 @@ module AWS
 
     def initialize(http_response)
       if !http_response.success?
-#        p http_response.parsed_response
-        error = http_response.parsed_response["Response"]["Errors"]["Error"]
+        error = parse_error_from http_response.parsed_response
         raise UnsuccessfulResponse.new(
           http_response.code,
           error["Code"],
@@ -151,6 +156,18 @@ module AWS
     ##
     def method_missing(name, *args)
       @request_root.send(name, *args)
+    end
+
+    protected
+
+    def parse_error_from(body)
+      if body.has_key? "ErrorResponse"
+        body["ErrorResponse"]["Error"]
+      elsif body.has_key? "Response"
+        body["Response"]["Errors"]["Error"]
+      else
+        raise UnknownErrorResponse.new body
+      end
     end
 
   end
