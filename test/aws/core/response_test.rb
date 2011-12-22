@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'aws/response'
+require 'aws/core/response'
 
 describe AWS::Response do
 

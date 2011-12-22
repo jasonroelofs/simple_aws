@@ -1,7 +1,7 @@
 require 'test_helper'
-require 'aws/request'
-require 'aws/response'
-require 'aws/connection'
+require 'aws/core/request'
+require 'aws/core/response'
+require 'aws/core/connection'
 
 describe AWS::Connection do
 

@@ -1,6 +1,6 @@
-require 'aws/util'
-require 'aws/request'
-require 'aws/connection'
+require 'aws/core/util'
+require 'aws/core/request'
+require 'aws/core/connection'
 
 module AWS
   module CallTypes

@@ -1,4 +1,4 @@
-require 'aws/util'
+require 'aws/core/util'
 
 module AWS
 

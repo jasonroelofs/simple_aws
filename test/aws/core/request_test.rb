@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'aws/request'
+require 'aws/core/request'
 
 describe AWS::Request do
 

@@ -1,6 +1,6 @@
-require 'aws/util'
-require 'aws/connection'
-require 'aws/request'
+require 'aws/core/util'
+require 'aws/core/connection'
+require 'aws/core/request'
 
 module AWS
 

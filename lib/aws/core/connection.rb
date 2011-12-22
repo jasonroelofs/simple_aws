@@ -1,7 +1,7 @@
 require 'httparty'
 require 'openssl'
 
-require 'aws/response'
+require 'aws/core/response'
 
 module AWS
 
