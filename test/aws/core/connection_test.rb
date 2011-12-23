@@ -44,7 +44,5 @@ describe AWS::Connection do
       @connection.call request
     end
 
-    it "adds the POST body if one is requested"
-
   end
 end
