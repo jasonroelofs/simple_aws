@@ -13,9 +13,7 @@ $elb = AWS::ELB.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
 puts "", "Your Load Balancers", ""
 
-p $elb.describe_load_balancers
-
-$elb.describe_load_balancers.describe_load_balancers_result.load_balancer_descriptions.each do |elb|
+$elb.describe_load_balancers.load_balancer_descriptions.each do |elb|
   puts "Name: #{elb.load_balancer_name}"
   puts "HealthCheck: #{elb.health_check.inspect}"
 
