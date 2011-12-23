@@ -28,7 +28,7 @@ describe AWS::EC2 do
         true
       end
 
-      obj = AWS::ELB.new "key", "secret"
+      obj = AWS::EC2.new "key", "secret"
       obj.describe_instances
     end
 
