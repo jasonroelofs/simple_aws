@@ -160,6 +160,8 @@ module AWS
 
     ##
     # Get the request ID from this response. Works on all known AWS response formats.
+    # Some AWS APIs don't give a request id, such as CloudFront. For responses that
+    # do not have a request id, this method returns nil.
     ##
     def request_id
       if metadata = @request_root["ResponseMetadata"]
