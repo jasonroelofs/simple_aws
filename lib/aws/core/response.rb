@@ -164,9 +164,9 @@ module AWS
     # do not have a request id, this method returns nil.
     ##
     def request_id
-      if metadata = @request_root["ResponseMetadata"]
+      if metadata = @body[@body.keys.first]["ResponseMetadata"]
         metadata["RequestId"]
-      elsif id = @request_root["requestId"]
+      elsif id = @body[@body.keys.first]["requestId"]
         id
       else
         nil
