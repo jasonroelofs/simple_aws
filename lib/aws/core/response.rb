@@ -98,10 +98,10 @@ module AWS
       protected
 
       def key_matching(name)
+        return nil if @local_root.is_a? Array
+
         lower_base_aws_name = AWS::Util.camelcase name.to_s, :lower
         upper_base_aws_name = AWS::Util.camelcase name.to_s
-
-        return nil if @local_root.is_a? Array
 
         keys = @local_root.keys
 
@@ -156,6 +156,19 @@ module AWS
     ##
     def method_missing(name, *args)
       @request_root.send(name, *args)
+    end
+
+    ##
+    # Get the request ID from this response. Works on all known AWS response formats.
+    ##
+    def request_id
+      if metadata = @request_root["ResponseMetadata"]
+        metadata["RequestId"]
+      elsif id = @request_root["requestId"]
+        id
+      else
+        nil
+      end
     end
 
     protected

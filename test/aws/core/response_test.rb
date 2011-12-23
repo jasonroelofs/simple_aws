@@ -73,7 +73,6 @@ describe AWS::Response do
       @response_hash = {
         "CommandResponse" => {
           "xmlns" => "some url",
-          "requestId" => "1234-Request-Id",
           "volumeId" => "v-12345",
           "domain" => "vpc"
         }
@@ -91,7 +90,6 @@ describe AWS::Response do
     end
 
     it "allows querying response body with ruby methods" do
-      @response.request_id.must_equal "1234-Request-Id"
       @response.volume_id.must_equal "v-12345"
       @response.domain.must_equal "vpc"
 
@@ -101,7 +99,6 @@ describe AWS::Response do
     end
 
     it "allows accessing the request through Hash format" do
-      @response["requestId"].must_equal "1234-Request-Id"
       @response["volumeId"].must_equal "v-12345"
       @response["domain"].must_equal "vpc"
       @response["unknownKey"].must_be_nil
@@ -238,6 +235,58 @@ describe AWS::Response do
       end
     end
 
+  end
+
+  describe "#request_id" do
+    before do
+      @http_response = stub
+      @http_response.stubs(:success?).returns(true)
+    end
+
+    it "finds the top level response id" do
+      response_hash = {
+        "CommandResponse" => {
+          "xmlns" => "some url",
+          "requestId" => "1234-Request-Id"
+        }
+      }
+      @http_response.stubs(:parsed_response).returns(response_hash)
+
+      response = AWS::Response.new @http_response
+
+      response.request_id.must_equal "1234-Request-Id"
+    end
+
+    it "finds response id nested" do
+      response_hash = {
+        "CommandResponse" => {
+          "CommandResult" => {
+          },
+          "ResponseMetadata" => {
+            "RequestId" => "1234-Request-Id"
+          }
+        }
+      }
+      @http_response.stubs(:parsed_response).returns(response_hash)
+
+      response = AWS::Response.new @http_response
+
+      response.request_id.must_equal "1234-Request-Id"
+    end
+
+    it "returns nil if no request id found" do
+      response_hash = {
+        "CommandResponse" => {
+          "CommandResult" => {
+          }
+        }
+      }
+      @http_response.stubs(:parsed_response).returns(response_hash)
+
+      response = AWS::Response.new @http_response
+
+      response.request_id.must_be_nil
+    end
   end
 
 end
