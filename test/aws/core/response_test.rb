@@ -106,6 +106,32 @@ describe AWS::Response do
 
   end
 
+  describe "deeply nested response/results objects" do
+    before do
+      @response_hash = {
+        "CommandResponse" => {
+          "xmlns" => "some url",
+          "CommandResult" => {
+            "volumeId" => "v-12345",
+            "domain" => "vpc"
+          }
+        }
+      }
+
+      @http_response = stub
+      @http_response.stubs(:success?).returns(true)
+      @http_response.stubs(:parsed_response).returns(@response_hash)
+
+      @response = AWS::Response.new @http_response
+    end
+
+    it "starts inside the Result object level" do
+      @response.volume_id.must_equal "v-12345"
+      @response["volumeId"].must_equal "v-12345"
+    end
+
+  end
+
   describe "nested responses and arrays" do
     before do
       @response_hash = {

@@ -36,6 +36,39 @@ module AWS
   # parents are, and all sets and arrays are found and accessible through
   # your typical Enumerable interface.
   #
+  # The starting point of the Response querying will vary according to the structure
+  # returned by the AWS API in question. For some APIs, like EC2, the response is
+  # a relatively flat:
+  #
+  #  <DataRequestResponse>
+  #    <requestId>...</requestId>
+  #    <dataRequested>
+  #      ...
+  #    </dataRequested>
+  #  </DataRequestResponse>
+  #
+  # In this case, your querying will start inside of <DataRequestResponse>, ala the first
+  # method you'll probably call is +data_requested+. For other APIs, the response
+  # object is a little deeper and looks like this:
+  #
+  #  <DataRequestResponse>
+  #    <DataRequestedResult>
+  #       <DataRequested>
+  #          ...
+  #       </DataRequested>
+  #    </DataRequestedResult>
+  #    <ResponseMetadata>
+  #      <RequestId>...</RequestId>
+  #    </ResponseMetadata>
+  #  </DataRequestResponse>
+  #
+  # For these response structures, your query will start inside of <DataRequestedResult>,
+  # ala your first method call will be +data_requested+. To get access to the request id of
+  # both of these structures, simply use #request_id on the base response. You'll also
+  # notice the case differences of the XML tags, this class tries to ensure that case doesn't
+  # matter when you're querying with methods. If you're using raw hash access then yes the
+  # case of the keys in question need to match.
+  #
   # This class does ensure that any collection is always an Array, given that
   # when AWS returns a single item in a collection, the xml -> hash parser gives a
   # single hash back instead of an array. This class will also look for
@@ -138,7 +171,15 @@ module AWS
 
       @body = http_response.parsed_response
 
-      @request_root = ResponseProxy.new @body[@body.keys.first]
+      inner = @body[@body.keys.first]
+      response_root =
+        if result_key = inner.keys.find {|k| k =~ /Result$/}
+          inner[result_key]
+        else
+          inner
+        end
+
+      @request_root = ResponseProxy.new response_root
     end
 
     ##
