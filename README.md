@@ -70,6 +70,7 @@ These are the following Amazon APIs that SimpleAWS currently handles:
 * IAM
 * MapReduce
 * AutoScaling
+* RDS
 
 Project Info
 ------------
