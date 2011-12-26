@@ -75,6 +75,17 @@ These are the following Amazon APIs that SimpleAWS currently handles:
 * Elastic Beanstalk
 * CloudFormation
 
+Yet to be Implemented
+---------------------
+
+* S3
+* Route53
+* CloudFront
+* SQS (Simple Queue Service)
+* SES (Simple Email Service)
+* FWS (Fulfillment Web Service)
+* Mechanical Turk
+
 Project Info
 ------------
 
