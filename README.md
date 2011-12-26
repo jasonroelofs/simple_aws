@@ -76,6 +76,7 @@ These are the following Amazon APIs that SimpleAWS currently handles:
 * CloudFormation
 * SNS
 * CloudWatch
+* Import / Export
 
 Yet to be Implemented
 ---------------------
