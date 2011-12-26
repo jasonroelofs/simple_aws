@@ -75,6 +75,7 @@ These are the following Amazon APIs that SimpleAWS currently handles:
 * Elastic Beanstalk
 * CloudFormation
 * SNS
+* CloudWatch
 
 Yet to be Implemented
 ---------------------
