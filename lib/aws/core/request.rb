@@ -35,11 +35,6 @@ module AWS
   #     {"Name" => "ids", "Value" => ["i-1234", "i-8902"]}
   #   ]
   #
-  # If you have just a single Filter, you don't need to wrap it in an array,
-  # Request will do that for you:
-  #
-  #   request.params["Filter"] = {"Name" => "domain", "Value" => "vpc"}
-  #
   # Straight arrays are handled as well:
   #
   #   request.params["InstanceId"] = ["i-1234", "i-8970"]
@@ -61,7 +56,7 @@ module AWS
         when Array
           process_array key, value
         when Hash
-          process_array key, [value]
+          process_hash key, value
         else
           super
         end

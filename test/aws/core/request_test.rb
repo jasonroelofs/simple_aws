@@ -62,12 +62,12 @@ describe AWS::Request do
       })
     end
 
-    it "wraps a singular hash into a single element array" do
+    it "handles a singular hash properly" do
       @request.params["Filter"] = {"Name" => "filter1", "Value" => "value1"}
 
       @request.params.must_equal({
-        "Filter.1.Name" => "filter1",
-        "Filter.1.Value" => "value1"
+        "Filter.Name" => "filter1",
+        "Filter.Value" => "value1"
       })
     end
   end
