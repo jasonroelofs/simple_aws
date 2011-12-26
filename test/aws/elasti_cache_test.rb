@@ -7,7 +7,7 @@ describe AWS::ElastiCache do
     @api = AWS::ElastiCache.new "key", "secret"
   end
 
-  it "points to elasticache, default to us-east-1" do
+  it "points to the endpoint, default to us-east-1" do
     @api.uri.must_equal "https://elasticache.us-east-1.amazonaws.com"
   end
 

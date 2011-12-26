@@ -7,7 +7,7 @@ describe AWS::IAM do
     @api = AWS::IAM.new "key", "secret"
   end
 
-  it "points to iam" do
+  it "points to the endpoint" do
     @api.uri.must_equal "https://iam.amazonaws.com"
   end
 

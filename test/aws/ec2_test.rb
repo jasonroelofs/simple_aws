@@ -7,7 +7,7 @@ describe AWS::EC2 do
     @api = AWS::EC2.new "key", "secret"
   end
 
-  it "points to ec2" do
+  it "points to the endpoint" do
     @api.uri.must_equal "https://ec2.amazonaws.com"
   end
 

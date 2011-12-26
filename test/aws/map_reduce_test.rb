@@ -7,7 +7,7 @@ describe AWS::MapReduce do
     @api = AWS::MapReduce.new "key", "secret"
   end
 
-  it "points to map_reduce" do
+  it "points to the endpoint" do
     @api.uri.must_equal "https://elasticmapreduce.amazonaws.com"
   end
 

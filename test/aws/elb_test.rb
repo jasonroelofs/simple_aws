@@ -7,7 +7,7 @@ describe AWS::ELB do
     @api = AWS::ELB.new "key", "secret"
   end
 
-  it "points to elb" do
+  it "points to the endpoint" do
     @api.uri.must_equal "https://elasticloadbalancing.amazonaws.com"
   end
 

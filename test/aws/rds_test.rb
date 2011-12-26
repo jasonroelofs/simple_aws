@@ -7,7 +7,7 @@ describe AWS::RDS do
     @api = AWS::RDS.new "key", "secret"
   end
 
-  it "points to rds" do
+  it "points to the endpoint" do
     @api.uri.must_equal "https://rds.amazonaws.com"
   end
 

@@ -7,7 +7,7 @@ describe AWS::AutoScaling do
     @api = AWS::AutoScaling.new "key", "secret"
   end
 
-  it "points to auto_scaling" do
+  it "points to the endpoint" do
     @api.uri.must_equal "https://autoscaling.amazonaws.com"
   end
 
