@@ -85,8 +85,19 @@ Yet to be Implemented
 * CloudFront
 * SQS (Simple Queue Service)
 * SES (Simple Email Service)
-* FWS (Fulfillment Web Service)
 * Mechanical Turk
+
+Currently Out-Of-Scope
+----------------------
+
+The following API endpoints will not currently be handled in SimpleAWS. These libraries
+are much more complicated than just a query-and-response API and are related to systems
+that will most likely need a lot more work than SimpleAWS wants to give. That said if
+you need these APIs implemented in this library, open an Issue or a Pull Request and we'll
+work from there.
+
+* FWS (Fulfillment Web Service)
+* FPS & ASP (Flexible Payments Service)
 
 Project Info
 ------------
