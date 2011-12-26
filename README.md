@@ -73,6 +73,7 @@ These are the following Amazon APIs that SimpleAWS currently handles:
 * RDS
 * ElastiCache
 * Elastic Beanstalk
+* CloudFormation
 
 Project Info
 ------------
