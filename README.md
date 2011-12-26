@@ -69,9 +69,10 @@ These are the following Amazon APIs that SimpleAWS currently handles:
 * ELB
 * IAM
 * MapReduce
-* AutoScaling
+* Auto Scaling
 * RDS
 * ElastiCache
+* Elastic Beanstalk
 
 Project Info
 ------------
