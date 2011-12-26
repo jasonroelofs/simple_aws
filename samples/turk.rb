@@ -11,4 +11,4 @@ require 'aws/mechanical_turk'
 
 turk = AWS::MechanicalTurk.new ENV["AWS_KEY"], ENV["AWS_SECRET"], true
 
-p turk.search_h_i_ts
+p turk.SearchHITs

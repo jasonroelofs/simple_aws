@@ -27,7 +27,7 @@ describe AWS::MechanicalTurk do
         params = request.params
         params.wont_be_nil
 
-        params["Operation"].must_equal "NotifyWorkers"
+        params["Operation"].must_equal "SearchHITs"
         params["Service"].must_equal "AWSMechanicalTurkRequester"
         params["AWSAccessKeyId"].must_equal "key"
         params["Version"].must_equal "2011-10-01"
@@ -37,7 +37,7 @@ describe AWS::MechanicalTurk do
       end
 
       obj = AWS::MechanicalTurk.new "key", "secret"
-      obj.notify_workers
+      obj.SearchHITs
     end
 
   end

@@ -8,6 +8,8 @@ module AWS
     # Simpler version of ActiveSupport's camelize
     ##
     def self.camelcase(string, lower_first_char = false)
+      return string if string =~ /[A-Z]/
+
       if lower_first_char
         string[0,1].downcase + camelcase(string)[1..-1]
       else
