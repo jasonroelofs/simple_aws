@@ -74,6 +74,7 @@ These are the following Amazon APIs that SimpleAWS currently handles:
 * ElastiCache
 * Elastic Beanstalk
 * CloudFormation
+* SNS
 
 Yet to be Implemented
 ---------------------
