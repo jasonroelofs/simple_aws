@@ -60,6 +60,16 @@ parameter keys are converted to CamelCase strings as needed.
 
 You're trying to use Amazon AWS, don't let libraries get in your way.
 
+Implemented APIs
+----------------
+
+These are the following Amazon APIs that SimpleAWS currently handles:
+
+* EC2
+* ELB
+* IAM
+* MapReduce
+
 Project Info
 ------------
 
