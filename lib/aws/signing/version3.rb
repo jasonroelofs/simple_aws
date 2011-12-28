@@ -19,18 +19,18 @@ module AWS
           "Version" => self.version
         })
 
-        request.headers["Date"] = timestamp.to_s
+        request.headers["Date"] = timestamp.httpdate
 
         request.headers["X-Amzn-Authorization"] =
           "AWS3-HTTPS AWSAccessKeyId=#{self.access_key}, " +
           "Algorithm=HmacSHA256, " +
-          "Signature=#{build_signature_for(timestamp)}"
+          "Signature=#{Base64.encode64(build_signature_for(timestamp)).chomp}"
 
         request
       end
 
       def build_signature_for(timestamp)
-        OpenSSL::HMAC.digest("sha256", self.secret_key, timestamp.to_s)
+        OpenSSL::HMAC.digest("sha256", self.secret_key, timestamp.httpdate)
       end
 
     end
