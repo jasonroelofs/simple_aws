@@ -1,3 +1,6 @@
+require 'uri'
+require 'openssl'
+
 module AWS
   module Signing
     ##

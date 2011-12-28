@@ -1,7 +1,6 @@
 require 'aws/core/util'
 require 'aws/core/request'
 require 'aws/core/connection'
-require 'uri'
 
 module AWS
   module CallTypes
