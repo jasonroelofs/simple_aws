@@ -31,6 +31,13 @@ describe AWS::Request do
     @request.path.must_equal "/"
   end
 
+  describe "headers" do
+    it "allows setting raw request headers" do
+      @request.headers["Date"] = "This is a header"
+      @request.headers["Date"].must_equal "This is a header"
+    end
+  end
+
   describe "hashes" do
     it "converts hash params to AWS param names" do
       @request.params["Filter"] = [

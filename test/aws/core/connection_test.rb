@@ -44,5 +44,17 @@ describe AWS::Connection do
       @connection.call request
     end
 
+    it "adds any headers from the Request object" do
+      request = AWS::Request.new(:get, "host.com", "/")
+      request.headers["Header"] = "Awesome"
+
+      AWS::HTTP.expects(:get).with {|uri, options|
+        options[:query].wont_be_nil
+        options[:headers].must_equal "Header" => "Awesome"
+      }.returns(@http_response)
+
+      @connection.call request
+    end
+
   end
 end

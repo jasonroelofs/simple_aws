@@ -23,7 +23,8 @@ module AWS
       AWS::Response.new(
         HTTP.send(request.method,
           request.uri,
-          :query => request.params
+          :query => request.params,
+          :headers => request.headers
         )
       )
     end

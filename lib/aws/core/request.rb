@@ -107,6 +107,11 @@ module AWS
     attr_reader :params
 
     ##
+    # Hash of headers to send with the request
+    ##
+    attr_reader :headers
+
+    ##
     # Set up a new Request for the given +host+ and +path+ using the given
     # http +method+ (:get, :post, :put, :delete).
     ##
@@ -115,6 +120,7 @@ module AWS
       @host = host
       self.path = path
       @params = Params.new
+      @headers = {}
     end
 
     ##
