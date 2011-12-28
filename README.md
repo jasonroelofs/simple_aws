@@ -124,7 +124,6 @@ Yet to be Implemented
 ---------------------
 
 * S3
-* Route53
 * CloudFront
 * SQS (Simple Queue Service)
 * SES (Simple Email Service)
@@ -136,6 +135,7 @@ The following API endpoints will not currently be handled in SimpleAWS. These li
 
 * FWS (Fulfillment Web Service)
 * FPS & ASP (Flexible Payments Service)
+* Route53
 
 Project Info
 ------------
