@@ -1,5 +1,6 @@
 require 'aws/api'
 require 'aws/call_types/action_param'
+require 'aws/signing/version2'
 
 module AWS
 
@@ -18,6 +19,7 @@ module AWS
     default_region "us-east-1"
 
     include CallTypes::ActionParam
+    include Signing::Version2
   end
 
 end

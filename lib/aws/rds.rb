@@ -1,5 +1,6 @@
 require 'aws/api'
 require 'aws/call_types/action_param'
+require 'aws/signing/version2'
 
 module AWS
 
@@ -17,6 +18,7 @@ module AWS
     version "2011-04-01"
 
     include CallTypes::ActionParam
+    include Signing::Version2
   end
 
 end

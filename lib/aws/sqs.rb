@@ -1,5 +1,6 @@
 require 'aws/api'
 require 'aws/call_types/action_param'
+require 'aws/signing/version2'
 
 module AWS
 
@@ -26,6 +27,7 @@ module AWS
     default_region "us-east-1"
 
     include CallTypes::ActionParam
+    include Signing::Version2
 
     # Special handling here, we need to look for a QueueURL as the first
     # parameter and update the request URI accordingly

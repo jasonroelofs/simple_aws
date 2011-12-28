@@ -10,25 +10,18 @@ describe AWS::CallTypes::ActionParam do
     use_https true
 
     include AWS::CallTypes::ActionParam
+
+    #noop
+    def finish_and_sign_request(request)
+      request
+    end
   end
 
-  it "builds and signs AWS requests on methods it doesn't know about" do
+  it "takes an unknown method call and turns it into a request" do
     AWS::Connection.any_instance.expects(:call).with do |request|
-      request.method.must_equal :post
-      request.uri.must_equal "https://aptest.amazonaws.com/"
-
       params = request.params
-      params.wont_be_nil
-
       params["Action"].must_equal "DescribeInstances"
-      params["Version"].must_equal "2011-01-01"
-      params["AWSAccessKeyId"].must_equal "key"
-      params["SignatureMethod"].must_equal "HmacSHA256"
-      params["SignatureVersion"].must_equal "2"
 
-      params["Signature"].wont_be_nil
-
-      Time.parse(params["Timestamp"]).wont_be_nil
       true
     end.returns
 
