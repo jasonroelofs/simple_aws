@@ -119,13 +119,13 @@ These are the following Amazon APIs that SimpleAWS currently handles:
 * CloudWatch
 * Import / Export
 * Mechanical Turk
+* SQS (Simple Queue Service)
 
 Yet to be Implemented
 ---------------------
 
 * S3
 * CloudFront
-* SQS (Simple Queue Service)
 * SES (Simple Email Service)
 
 Currently Out-Of-Scope
