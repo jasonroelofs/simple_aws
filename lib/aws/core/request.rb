@@ -113,7 +113,7 @@ module AWS
     def initialize(method, host, path)
       @method = method
       @host = host
-      @path = path
+      self.path = path
       @params = Params.new
     end
 
@@ -122,6 +122,14 @@ module AWS
     ##
     def uri
       "#{host}#{path}"
+    end
+
+    ##
+    # Set path, makes sure that the path is never
+    # nil or an empty string
+    ##
+    def path=(value)
+      @path = (value.nil? || value == "") ? "/" : value
     end
 
   end

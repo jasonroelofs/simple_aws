@@ -26,6 +26,11 @@ describe AWS::Request do
     @request.params.must_equal "Param1" => "Value1", "Param2" => "Value2"
   end
 
+  it "ensures path is never an empty string" do
+    @request.path = ""
+    @request.path.must_equal "/"
+  end
+
   describe "hashes" do
     it "converts hash params to AWS param names" do
       @request.params["Filter"] = [
