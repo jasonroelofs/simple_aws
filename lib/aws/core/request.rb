@@ -112,6 +112,13 @@ module AWS
     attr_reader :headers
 
     ##
+    # Raw string data to be put in the body of the request.
+    # Body can also be an IO object (something that response to #read) and
+    # if so the request will stream the file to the server.
+    ##
+    attr_accessor :body
+
+    ##
     # Set up a new Request for the given +host+ and +path+ using the given
     # http +method+ (:get, :post, :put, :delete).
     ##

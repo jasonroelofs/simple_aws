@@ -19,13 +19,6 @@ describe AWS::Request do
     @request.method.must_equal :get
   end
 
-  it "can be given parameters to pass in" do
-    @request.params["Param1"] = "Value1"
-    @request.params["Param2"] = "Value2"
-
-    @request.params.must_equal "Param1" => "Value1", "Param2" => "Value2"
-  end
-
   it "ensures path is never an empty string" do
     @request.path = ""
     @request.path.must_equal "/"
@@ -35,6 +28,22 @@ describe AWS::Request do
     it "allows setting raw request headers" do
       @request.headers["Date"] = "This is a header"
       @request.headers["Date"].must_equal "This is a header"
+    end
+  end
+
+  describe "parameters" do
+    it "can be given parameters to pass in" do
+      @request.params["Param1"] = "Value1"
+      @request.params["Param2"] = "Value2"
+
+      @request.params.must_equal "Param1" => "Value1", "Param2" => "Value2"
+    end
+  end
+
+  describe "body" do
+    it "can be given raw body text" do
+      @request.body = "BODY!"
+      @request.body.must_equal "BODY!"
     end
   end
 
