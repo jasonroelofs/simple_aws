@@ -219,6 +219,9 @@ module AWS
     def parse_error_from(body)
       if body.has_key? "ErrorResponse"
         body["ErrorResponse"]["Error"]
+      elsif body.has_key? "Error"
+        body["Error"]["Message"] += " String to Sign: #{body["Error"]["StringToSign"].inspect}"
+        body["Error"]
       elsif body.has_key? "Response"
         body["Response"]["Errors"]["Error"]
       else

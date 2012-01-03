@@ -55,6 +55,25 @@ describe AWS::Response do
       error.message.must_equal "AuthFailure (401): Message about failing to authenticate"
     end
 
+    it "handles S3 errors" do
+      @error_response = { "Error" => {
+        "Code" => "AuthFailure", "Message" => "OH snap!",
+        "StringToSign" => "SOME STRING"
+      } }
+      @http_response.stubs(:parsed_response).returns(@error_response)
+
+      error =
+        lambda {
+          AWS::Response.new @http_response
+        }.must_raise AWS::UnsuccessfulResponse
+
+      error.code.must_equal 401
+      error.error_type.must_equal "AuthFailure"
+      error.error_message.must_equal "OH snap! String to Sign: \"SOME STRING\""
+
+      error.message.must_equal "AuthFailure (401): OH snap! String to Sign: \"SOME STRING\""
+    end
+
     it "raises if it can't parse the error message" do
       @error_response = { "Erroring" => "This is an error message" }
       @http_response.stubs(:parsed_response).returns(@error_response)
