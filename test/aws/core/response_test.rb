@@ -98,6 +98,7 @@ describe AWS::Response do
       }
 
       @http_response = stub
+      @http_response.stubs(:code).returns(200)
       @http_response.stubs(:success?).returns(true)
       @http_response.stubs(:parsed_response).returns(@response_hash)
 
@@ -129,6 +130,10 @@ describe AWS::Response do
       response.body.must_be_nil
     end
 
+    it "knows the status code of the response" do
+      @response.code.must_equal 200
+    end
+
   end
 
   describe "deeply nested response/results objects" do
@@ -144,6 +149,7 @@ describe AWS::Response do
       }
 
       @http_response = stub
+      @http_response.stubs(:code).returns(202)
       @http_response.stubs(:success?).returns(true)
       @http_response.stubs(:parsed_response).returns(@response_hash)
 
@@ -204,6 +210,7 @@ describe AWS::Response do
       }
 
       @http_response = stub
+      @http_response.stubs(:code).returns(202)
       @http_response.stubs(:success?).returns(true)
       @http_response.stubs(:parsed_response).returns(@response_hash)
 
@@ -310,6 +317,7 @@ describe AWS::Response do
   describe "#request_id" do
     before do
       @http_response = stub
+      @http_response.stubs(:code).returns(200)
       @http_response.stubs(:success?).returns(true)
     end
 

@@ -162,6 +162,11 @@ module AWS
     ##
     attr_reader :body
 
+    ##
+    # HTTP Status code of the response
+    ##
+    attr_reader :code
+
     def initialize(http_response)
       if !http_response.success?
         error = parse_error_from http_response.parsed_response
@@ -172,6 +177,7 @@ module AWS
         )
       end
 
+      @code = http_response.code
       @body = http_response.parsed_response
 
       if @body
