@@ -106,6 +106,7 @@ Implemented APIs
 
 These are the following Amazon APIs that SimpleAWS currently handles:
 
+* S3
 * EC2
 * ELB
 * IAM
@@ -125,7 +126,6 @@ These are the following Amazon APIs that SimpleAWS currently handles:
 Yet to be Implemented
 ---------------------
 
-* S3
 * CloudFront
 
 Currently Out-Of-Scope
