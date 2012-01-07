@@ -86,6 +86,19 @@ describe AWS::Response do
 
       error.message.must_match /Unable to parse error code from/
     end
+
+    it "handles errors that have no body to parse" do
+      @http_response.stubs(:code).returns(404)
+      @http_response.stubs(:parsed_response).returns(nil)
+      @http_response.stubs(:response).returns("This is a response ok?")
+
+      error = lambda {
+        response = AWS::Response.new @http_response
+      }.must_raise AWS::UnsuccessfulResponse
+
+      error.code.must_equal 404
+      error.message.must_equal " (404): This is a response ok?"
+    end
   end
 
   describe "successful response parsing and mapping" do

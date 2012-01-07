@@ -174,12 +174,7 @@ module AWS
 
     def initialize(http_response)
       if !http_response.success?
-        error = parse_error_from http_response.parsed_response
-        raise UnsuccessfulResponse.new(
-          http_response.code,
-          error["Code"],
-          error["Message"]
-        )
+        parse_and_throw_error_from http_response
       end
 
       @code = http_response.code
@@ -232,6 +227,20 @@ module AWS
     end
 
     protected
+
+    def parse_and_throw_error_from(http_response)
+      if http_response.parsed_response
+        error = parse_error_from http_response.parsed_response
+      else
+        error = { "Message" => http_response.response }
+      end
+
+      raise UnsuccessfulResponse.new(
+        http_response.code,
+        error["Code"],
+        error["Message"]
+      )
+    end
 
     def parse_error_from(body)
       if body.has_key? "ErrorResponse"
