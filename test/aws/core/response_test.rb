@@ -123,6 +123,12 @@ describe AWS::Response do
       @response["unknownKey"].must_be_nil
     end
 
+    it "handles responses with no body" do
+      @http_response.stubs(:parsed_response).returns(nil)
+      response = AWS::Response.new @http_response
+      response.body.must_be_nil
+    end
+
   end
 
   describe "deeply nested response/results objects" do

@@ -174,15 +174,17 @@ module AWS
 
       @body = http_response.parsed_response
 
-      inner = @body[@body.keys.first]
-      response_root =
-        if result_key = inner.keys.find {|k| k =~ /Result$/}
-          inner[result_key]
-        else
-          inner
-        end
+      if @body
+        inner = @body[@body.keys.first]
+        response_root =
+          if result_key = inner.keys.find {|k| k =~ /Result$/}
+            inner[result_key]
+          else
+            inner
+          end
 
-      @request_root = ResponseProxy.new response_root
+        @request_root = ResponseProxy.new response_root
+      end
     end
 
     ##
