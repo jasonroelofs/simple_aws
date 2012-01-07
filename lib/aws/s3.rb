@@ -47,8 +47,14 @@ module AWS
   #
   #   s3.put "/object/name.txt", :bucket => "bucket_name", :body => {:file => File.open()}
   #
+  # As this is a common use case, if you don't have any more parameters to send
+  # with the file being uploaded, just use :file.
+  #
+  #   s3.put "/object/name.txt", :bucket => "bucket_name", :file => File.open()
+  #
   # This API does ensure that file data is uploaded as efficiently as possible,
-  # streaming file data from disc to AWS without blowing up memory.
+  # streaming file data from disc to AWS without blowing up memory. All files are
+  # uploading using multipart/form-data.
   #
   # NOTE: Like the other parts of SimpleAWS, this API does NOT try to make the
   # AWS API better, but simply provides a cleaner, easy to use API for Ruby.
@@ -84,6 +90,10 @@ module AWS
 
       (options[:headers] || {}).each do |k, v|
         request.headers[k] = v
+      end
+
+      if options[:file]
+        options[:body] = {:file => options[:file]}
       end
 
       request.body = options[:body]

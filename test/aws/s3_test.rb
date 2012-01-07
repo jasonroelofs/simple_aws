@@ -84,6 +84,18 @@ describe AWS::S3 do
       @api.get "/", :body => {:file => "This is a body of text"}
     end
 
+    it "allows use of :file if :body only contains a file" do
+      AWS::Connection.any_instance.expects(:call).with do |request|
+        request.body.must_equal :file => "This is a body of text"
+        request.headers["Content-Type"].must_equal(
+          "multipart/form-data; boundary=-----------RubyMultipartPost"
+        )
+        true
+      end
+
+      @api.get "/", :file => "This is a body of text"
+    end
+
     it "signs the request using the Authorization header" do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.headers["Authorization"].wont_be_nil
