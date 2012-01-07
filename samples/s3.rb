@@ -45,7 +45,7 @@ puts "", "Uploading #{file_name} to #{bucket_name}:", ""
 bad_usage unless file_name
 uploaded_file_name = File.basename file_name
 
-p s3.put("/#{uploaded_file_name}", :bucket => bucket_name, :body => {:file => File.open(file_name)})
+p s3.put("/#{uploaded_file_name}", :bucket => bucket_name, :file => File.open(file_name))
 
 puts "", "Checking that the file now exists...", ""
 
