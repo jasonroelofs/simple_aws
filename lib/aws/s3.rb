@@ -65,10 +65,6 @@ module AWS
     use_https true
     version "2006-03-01"
 
-    def initialize(key, secret)
-      super(key, secret)
-    end
-
     [:get, :post, :put, :delete, :head].each do |method|
       define_method(method) do |*args|
         self.call method, *args
@@ -93,6 +89,19 @@ module AWS
     end
 
     include Signing::AuthorizationHeader
+
+    ##
+    # S3 handles region endpoints a little differently
+    ##
+    def uri
+      return @uri if @uri
+
+      @uri = @use_https ? "https" : "http"
+      @uri += "://#{@endpoint}"
+      @uri += "-#{@region}" if @region
+      @uri += ".amazonaws.com"
+      @uri
+    end
 
     protected
 

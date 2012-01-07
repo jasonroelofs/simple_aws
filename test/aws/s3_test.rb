@@ -11,14 +11,13 @@ describe AWS::S3 do
     @api.uri.must_equal "https://s3.amazonaws.com"
   end
 
-  it "works with the current version" do
-    @api.version.must_equal "2006-03-01"
+  it "properly builds region endpoints" do
+    api = AWS::S3.new "key", "secret", "us-west-1"
+    api.uri.must_equal "https://s3-us-west-1.amazonaws.com"
   end
 
-  it "does not support region selection" do
-    lambda {
-      AWS::S3.new "key", "secret", "us-east-1"
-    }.must_raise ArgumentError
+  it "works with the current version" do
+    @api.version.must_equal "2006-03-01"
   end
 
   describe "API calls" do
