@@ -186,7 +186,14 @@ describe AWS::Response do
           "withMemberSet" => {
             "member" => {"keyId" => "4567"}
           },
-          "UpperCamelKey" => "purple dog"
+          "UpperCamelKey" => "purple dog",
+          "Buckets" => {
+            "Bucket" => [
+              {"Name" => "bucket1"},
+              {"Name" => "bucket2"},
+              {"Name" => "bucket3"}
+            ]
+          }
         }
       }
 
@@ -245,6 +252,12 @@ describe AWS::Response do
         @response.upper_camel_key.must_equal "purple dog"
       end
 
+      it "works with straight array responses" do
+        @response.buckets.bucket[0].name.must_equal "bucket1"
+        @response.buckets.bucket[1].name.must_equal "bucket2"
+        @response.buckets.bucket[2].name.must_equal "bucket3"
+      end
+
     end
 
     describe "hash keys" do
@@ -277,6 +290,12 @@ describe AWS::Response do
 
       it "also squashes the 'member' tag" do
         @response["withMemberSet"][0]["keyId"].must_equal "4567"
+      end
+
+      it "works with straight array responses" do
+        @response["Buckets"]["Bucket"][0]["Name"].must_equal "bucket1"
+        @response["Buckets"]["Bucket"][1]["Name"].must_equal "bucket2"
+        @response["Buckets"]["Bucket"][2]["Name"].must_equal "bucket3"
       end
     end
 

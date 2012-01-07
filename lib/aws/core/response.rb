@@ -146,8 +146,11 @@ module AWS
       end
 
       def value_or_proxy(value)
-        if value.is_a?(Hash) || value.is_a?(Array)
+        case value
+        when Hash
           ResponseProxy.new value
+        when Array
+          value.map {|v| ResponseProxy.new v }
         else
           value
         end
