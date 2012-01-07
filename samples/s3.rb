@@ -43,5 +43,22 @@ end
 puts "", "Uploading #{file_name} to #{bucket_name}:", ""
 
 bad_usage unless file_name
+uploaded_file_name = File.basename file_name
 
-p s3.put("/#{File.basename file_name}", :bucket => bucket_name, :body => {:file => File.open(file_name)})
+p s3.put("/#{uploaded_file_name}", :bucket => bucket_name, :body => {:file => File.open(file_name)})
+
+puts "", "Checking that the file now exists...", ""
+
+p s3.head("/#{uploaded_file_name}", :bucket => bucket_name)
+
+puts "", "Deleting the file from S3", ""
+
+p s3.delete("/#{uploaded_file_name}", :bucket => bucket_name)
+
+puts "", "Checking that file is no longer in S3...", ""
+
+begin
+  p s3.head("/#{uploaded_file_name}", :bucket => bucket_name)
+rescue => ex
+  puts "Not found: #{ex.message}"
+end
