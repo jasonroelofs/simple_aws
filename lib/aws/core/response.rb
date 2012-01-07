@@ -167,6 +167,11 @@ module AWS
     ##
     attr_reader :code
 
+    ##
+    # Hash of headers found in the response
+    ##
+    attr_reader :headers
+
     def initialize(http_response)
       if !http_response.success?
         error = parse_error_from http_response.parsed_response
@@ -179,6 +184,7 @@ module AWS
 
       @code = http_response.code
       @body = http_response.parsed_response
+      @headers = http_response.headers
 
       if @body
         inner = @body[@body.keys.first]

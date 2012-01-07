@@ -8,6 +8,7 @@ describe AWS::Response do
     before do
       @error_response = {}
       @http_response = stub
+      @http_response.stubs(:headers).returns(nil)
       @http_response.stubs(:success?).returns(false)
       @http_response.stubs(:code).returns(401)
     end
@@ -98,6 +99,7 @@ describe AWS::Response do
       }
 
       @http_response = stub
+      @http_response.stubs(:headers).returns(nil)
       @http_response.stubs(:code).returns(200)
       @http_response.stubs(:success?).returns(true)
       @http_response.stubs(:parsed_response).returns(@response_hash)
@@ -134,6 +136,13 @@ describe AWS::Response do
       @response.code.must_equal 200
     end
 
+    it "pulls out any response headers" do
+      @http_response.stubs(:headers).returns({"Header1" => "Value2"})
+      response = AWS::Response.new @http_response
+
+      response.headers.must_equal "Header1" => "Value2"
+    end
+
   end
 
   describe "deeply nested response/results objects" do
@@ -149,6 +158,7 @@ describe AWS::Response do
       }
 
       @http_response = stub
+      @http_response.stubs(:headers).returns(nil)
       @http_response.stubs(:code).returns(202)
       @http_response.stubs(:success?).returns(true)
       @http_response.stubs(:parsed_response).returns(@response_hash)
@@ -211,6 +221,7 @@ describe AWS::Response do
 
       @http_response = stub
       @http_response.stubs(:code).returns(202)
+      @http_response.stubs(:headers).returns(nil)
       @http_response.stubs(:success?).returns(true)
       @http_response.stubs(:parsed_response).returns(@response_hash)
 
@@ -317,6 +328,7 @@ describe AWS::Response do
   describe "#request_id" do
     before do
       @http_response = stub
+      @http_response.stubs(:headers).returns(nil)
       @http_response.stubs(:code).returns(200)
       @http_response.stubs(:success?).returns(true)
     end
