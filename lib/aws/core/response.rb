@@ -223,7 +223,10 @@ module AWS
       if body.has_key? "ErrorResponse"
         body["ErrorResponse"]["Error"]
       elsif body.has_key? "Error"
-        body["Error"]["Message"] += " String to Sign: #{body["Error"]["StringToSign"].inspect}"
+        if body["Error"]["StringToSign"]
+          body["Error"]["Message"] += " String to Sign: #{body["Error"]["StringToSign"].inspect}"
+        end
+
         body["Error"]
       elsif body.has_key? "Response"
         body["Response"]["Errors"]["Error"]
