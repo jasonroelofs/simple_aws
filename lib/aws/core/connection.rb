@@ -1,4 +1,5 @@
 require 'httparty'
+require 'httmultiparty'
 require 'openssl'
 
 require 'aws/core/response'
@@ -6,7 +7,7 @@ require 'aws/core/response'
 module AWS
 
   class HTTP
-    include HTTParty
+    include HTTMultiParty
     format :xml
   end
 
@@ -24,7 +25,8 @@ module AWS
         HTTP.send(request.method,
           request.uri,
           :query => request.params,
-          :headers => request.headers
+          :headers => request.headers,
+          :body => request.body
         )
       )
     end

@@ -56,5 +56,17 @@ describe AWS::Connection do
       @connection.call request
     end
 
+    it "passes through any body on the Request" do
+      request = AWS::Request.new(:get, "host.com", "/")
+      request.body = "This is some body text"
+
+      AWS::HTTP.expects(:get).with {|uri, options|
+        options[:query].wont_be_nil
+        options[:body].must_equal "This is some body text"
+      }.returns(@http_response)
+
+      @connection.call request
+    end
+
   end
 end
