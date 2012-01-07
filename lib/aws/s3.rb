@@ -45,7 +45,7 @@ module AWS
   # JSON information, or an object that otherwise response to #read for file
   # uploads. This API does not build XML or JSON for you right now.
   #
-  #   s3.put "/object/name.txt", :bucket => "bucket_name", :body => File.open()
+  #   s3.put "/object/name.txt", :bucket => "bucket_name", :body => {:file => File.open()}
   #
   # This API does ensure that file data is uploaded as efficiently as possible,
   # streaming file data from disc to AWS without blowing up memory.
@@ -87,6 +87,11 @@ module AWS
       end
 
       request.body = options[:body]
+
+      if request.body.is_a?(Hash) && request.body[:file]
+        request.headers["Content-Type"] =
+          "multipart/form-data; boundary=-----------RubyMultipartPost"
+      end
 
       connection = AWS::Connection.new
       connection.call finish_and_sign_request(request)
