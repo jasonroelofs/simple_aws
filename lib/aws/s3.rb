@@ -72,7 +72,11 @@ module AWS
     end
 
     def call(method, path, options = {})
-      request = AWS::Request.new method, self.uri_with_bucket(options[:bucket]), path
+      if options[:bucket]
+        path = path.gsub(/^\//, "/#{options[:bucket]}/")
+      end
+
+      request = AWS::Request.new method, self.uri, path
 
       (options[:params] || {}).each do |k, v|
         request.params[k] = v
@@ -103,14 +107,6 @@ module AWS
       @uri
     end
 
-    protected
-
-    def uri_with_bucket(bucket_name = nil)
-      uri = @use_https ? "https://" : "http://"
-      uri += "#{bucket_name}." if bucket_name
-      uri += "#{@endpoint}.amazonaws.com"
-      uri
-    end
   end
 
 end

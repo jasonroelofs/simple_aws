@@ -37,7 +37,8 @@ describe AWS::S3 do
 
     it "rebuilds the host if :bucket given" do
       AWS::Connection.any_instance.expects(:call).with do |request|
-        request.host.must_equal "https://bucket-name.s3.amazonaws.com"
+        request.path.must_equal "/bucket-name/"
+        request.host.must_equal "https://s3.amazonaws.com"
         true
       end
 
