@@ -26,6 +26,14 @@ module AWS
     def call(method, path, options = {})
       request = AWS::Request.new method, self.uri, "/#{self.version}#{path}"
 
+      (options[:params] || {}).each do |k, v|
+        request.params[k] = v
+      end
+
+      (options[:headers] || {}).each do |k, v|
+        request.headers[k] = v
+      end
+
       connection = AWS::Connection.new
       connection.call finish_and_sign_request(request)
     end

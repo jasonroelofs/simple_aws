@@ -43,6 +43,24 @@ describe AWS::CloudFront do
       @api.get "/"
     end
 
+    it "takes parameters" do
+      AWS::Connection.any_instance.expects(:call).with do |request|
+        request.params["Parameter1"].must_equal "Value2"
+        true
+      end
+
+      @api.get "/", :params => { "Parameter1" => "Value2" }
+    end
+
+    it "takes extra headers" do
+      AWS::Connection.any_instance.expects(:call).with do |request|
+        request.headers["Header14"].must_equal "Out to Lunch"
+        true
+      end
+
+      @api.get "/", :headers => { "Header14" => "Out to Lunch" }
+    end
+
     it "signs the given request according to Version 3 rules" do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.headers["Authorization"].wont_be_nil
