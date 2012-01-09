@@ -61,6 +61,25 @@ describe AWS::CloudFront do
       @api.get "/", :body => "This is a body of text"
     end
 
+    it "uses :xml to take a hash and build XML from it" do
+      AWS::Connection.any_instance.expects(:call).with do |request|
+        request.headers["Content-Type"].must_equal "text/xml"
+        request.body.must_match(/amazonaws\.com\/doc\//)
+        request.body.must_match(/<InnerNode>/)
+        true
+      end
+
+      @api.get "/", :xml => {:RootNode => { :InnerNode => "Value" } }
+    end
+
+    it "complains if :xml doesn't contain a Hash" do
+      error = lambda {
+        @api.get "/", :xml => "not a hash"
+      }.must_raise RuntimeError
+
+      error.message.must_match /must be a Hash/
+    end
+
     it "takes extra headers" do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.headers["Header14"].must_equal "Out to Lunch"

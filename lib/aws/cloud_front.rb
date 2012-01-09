@@ -1,4 +1,5 @@
 require 'aws/api'
+require 'aws/core/util'
 
 module AWS
 
@@ -34,7 +35,15 @@ module AWS
         request.headers[k] = v
       end
 
-      request.body = options[:body]
+      if xml = options[:xml]
+        raise ":xml must be a Hash" unless xml.is_a?(Hash)
+
+        namespace = "http://cloudfront.amazonaws.com/doc/#{self.version}"
+        request.body = AWS::Util.build_xml_from xml, namespace
+        request.headers["Content-Type"] = "text/xml"
+      else
+        request.body = options[:body]
+      end
 
       connection = AWS::Connection.new
       connection.call finish_and_sign_request(request)
