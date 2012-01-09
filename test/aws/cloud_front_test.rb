@@ -52,6 +52,15 @@ describe AWS::CloudFront do
       @api.get "/", :params => { "Parameter1" => "Value2" }
     end
 
+    it "takes a raw body" do
+      AWS::Connection.any_instance.expects(:call).with do |request|
+        request.body.must_equal "This is a body of text"
+        true
+      end
+
+      @api.get "/", :body => "This is a body of text"
+    end
+
     it "takes extra headers" do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.headers["Header14"].must_equal "Out to Lunch"

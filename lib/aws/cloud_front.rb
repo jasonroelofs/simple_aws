@@ -34,6 +34,8 @@ module AWS
         request.headers[k] = v
       end
 
+      request.body = options[:body]
+
       connection = AWS::Connection.new
       connection.call finish_and_sign_request(request)
     end
