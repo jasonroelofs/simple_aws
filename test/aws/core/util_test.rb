@@ -72,14 +72,9 @@ END
         :RootNode => { :BoolVal => true, :Number => 12, :BadBool => false }
       )
 
-      response.must_equal <<END
-<?xml version="1.0" encoding="UTF-8"?>
-<RootNode>
-  <BoolVal>true</BoolVal>
-  <Number>12</Number>
-  <BadBool>false</BadBool>
-</RootNode>
-END
+      response.must_match(%r{<BoolVal>true</BoolVal>})
+      response.must_match(%r{<Number>12</Number>})
+      response.must_match(%r{<BadBool>false</BadBool>})
     end
   end
 
