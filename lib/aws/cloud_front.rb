@@ -1,5 +1,4 @@
 require 'aws/api'
-require 'aws/signing/authorization_header'
 
 module AWS
 
@@ -25,12 +24,30 @@ module AWS
     end
 
     def call(method, path, options = {})
-      request = AWS::Request.new method, self.uri, path
+      request = AWS::Request.new method, self.uri, "/#{self.version}#{path}"
 
       connection = AWS::Connection.new
       connection.call finish_and_sign_request(request)
     end
 
-    include Signing::AuthorizationHeader
+    protected
+
+    ##
+    # Build and sign the final request, as per the rules here:
+    # http://docs.amazonwebservices.com/AmazonCloudFront/latest/DeveloperGuide/RESTAuthentication.html
+    ##
+    def finish_and_sign_request(request)
+      request.headers["Date"] = Time.now.utc.httpdate
+      request.headers["Authorization"] =
+        "AWS #{self.access_key}:#{Base64.encode64(build_signature_for(request)).chomp}"
+
+      request
+    end
+
+    def build_signature_for(request)
+      date = request.headers["x-amz-date"] || request.headers["Date"]
+
+      OpenSSL::HMAC.digest("sha1", self.secret_key, date)
+    end
   end
 end
