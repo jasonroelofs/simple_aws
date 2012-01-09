@@ -8,7 +8,7 @@ module AWS
   # http://docs.amazonwebservices.com/AmazonS3/latest/API/Welcome.html
   #
   # As S3 is much closer to a RESTful service than the other AWS APIs, all
-  # calls through this API are done through the four handled HTTP METHODS:
+  # calls through this API are done through these five handled HTTP METHODS:
   # GET, PUT, DELETE, POST and HEAD. When sending a request, follow exactly what
   # is described in the AWS API docs in the link above.
   #
