@@ -122,10 +122,6 @@ These are the following Amazon APIs that SimpleAWS currently handles:
 * Mechanical Turk
 * SQS (Simple Queue Service)
 * SES (Simple Email Service)
-
-Yet to be Implemented
----------------------
-
 * CloudFront
 
 Currently Out-Of-Scope
