@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "simple_aws"
-  s.version  = "0.0.1c"
+  s.version  = "0.0.1d"
   s.platform = Gem::Platform::RUBY
   s.authors  = ["Jason Roelofs"]
   s.email    = ["jameskilton@gmail.com"]
