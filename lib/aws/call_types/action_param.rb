@@ -7,7 +7,14 @@ module AWS
 
     ##
     # Implement call handling to work with the ?Action param, signing the message
-    # according to whatever Signing module is included along side this module
+    # according to whatever Signing module is included along side this module.
+    #
+    # This module hooks up the `method_missing` functionality as described in the
+    # {README}. To call methods on APIs including this module, simply call a method
+    # with either the Ruby-fied name, or the full CamelCase name, and pass in
+    # options required as the parameters.
+    #
+    # All responses will be wrapped up in an {AWS::Response AWS::Response} object.
     ##
     module ActionParam
       ##
