@@ -66,6 +66,21 @@ END
 </RootNode>
 END
     end
+
+    it "auto-strings all leaf nodes" do
+      response = AWS::Util.build_xml_from(
+        :RootNode => { :BoolVal => true, :Number => 12, :BadBool => false }
+      )
+
+      response.must_equal <<END
+<?xml version="1.0" encoding="UTF-8"?>
+<RootNode>
+  <BoolVal>true</BoolVal>
+  <Number>12</Number>
+  <BadBool>false</BadBool>
+</RootNode>
+END
+    end
   end
 
 end

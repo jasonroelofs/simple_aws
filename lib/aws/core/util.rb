@@ -76,7 +76,7 @@ module AWS
 
     def build_node(key, value = nil)
       child = Ox::Element.new key
-      child << value if value
+      child << value.to_s unless value.nil?
       child
     end
   end
