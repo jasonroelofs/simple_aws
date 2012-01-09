@@ -13,5 +13,5 @@ cloud_front = AWS::CloudFront.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
 puts "First ten distribution items:"
 
-p cloud_front.get("/distribution", "MaxItems" => 10)
+p cloud_front.get("/distribution", :params => {"MaxItems" => 10})
 
