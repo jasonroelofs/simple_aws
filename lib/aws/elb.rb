@@ -11,6 +11,9 @@ module AWS
   #
   # All requests are POST and always through HTTPS. Use the third parameter to
   # #initialize if you need to talk to a region other than us-east-1.
+  #
+  # @see AWS::CallTypes::ActionParam Calling rules
+  # @see AWS::Response Response handling
   ##
   class ELB < API
     endpoint "elasticloadbalancing"

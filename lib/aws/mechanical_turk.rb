@@ -14,6 +14,9 @@ module AWS
   #
   # For a more fleshed out object API for interacting with MechanicalTurk, you should
   # give rturk a try here: https://github.com/mdp/rturk
+  #
+  # @see AWS::CallTypes::ActionParam Calling rules
+  # @see AWS::Response Response handling
   ##
   class MechanicalTurk < API
     endpoint "mechanicalturk"

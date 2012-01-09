@@ -19,6 +19,9 @@ module AWS
   #
   # In accordance with the AWS documentation, SimpleAWS does not try to reconstruct
   # queue urls, use ListQueues or GetQueueUrl to get the correct queue url when needed.
+  #
+  # @see AWS::CallTypes::ActionParam Calling rules
+  # @see AWS::Response Response handling
   ##
   class SQS < API
     endpoint "sqs"

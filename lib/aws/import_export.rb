@@ -11,6 +11,9 @@ module AWS
   #
   # All requests are POST and always through HTTPS.
   # This API does not support region specifiers
+  #
+  # @see AWS::CallTypes::ActionParam Calling rules
+  # @see AWS::Response Response handling
   ##
   class ImportExport < API
     endpoint "importexport"

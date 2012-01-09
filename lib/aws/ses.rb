@@ -10,6 +10,9 @@ module AWS
   # http://docs.amazonwebservices.com/ses/latest/APIReference/
   #
   # All requests are POST and always through HTTPS.
+  #
+  # @see AWS::CallTypes::ActionParam Calling rules
+  # @see AWS::Response Response handling
   ##
   class SES < API
     endpoint "email"
