@@ -123,7 +123,7 @@ module AWS
 
     ##
     # Build and sign the final request, as per the rules here:
-    # http://s3.amazonaws.com/doc/s3-developer-guide/RESTAuthentication.html
+    # http://docs.amazonwebservices.com/AmazonS3/latest/dev/RESTAuthentication.html
     ##
     def finish_and_sign_request(request)
       request.headers["Date"] = Time.now.utc.httpdate
