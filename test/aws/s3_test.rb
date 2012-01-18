@@ -76,7 +76,7 @@ describe AWS::S3 do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.body.must_equal :file => "This is a body of text"
         request.headers["Content-Type"].must_equal(
-          "multipart/form-data; boundary=-----------RubyMultipartPost"
+          "application/octet-stream"
         )
         true
       end
@@ -84,11 +84,24 @@ describe AWS::S3 do
       @api.get "/", :body => {:file => "This is a body of text"}
     end
 
+    it "uses previously set content type if given" do
+      AWS::Connection.any_instance.expects(:call).with do |request|
+        request.body.must_equal :file => "This is a body of text"
+        request.headers["Content-Type"].must_equal(
+          "application/pdf"
+        )
+        true
+      end
+
+      @api.get "/", :body => {:file => "This is a body of text"},
+        :headers => {"Content-Type" => "application/pdf"}
+    end
+
     it "allows use of :file if :body only contains a file" do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.body.must_equal :file => "This is a body of text"
         request.headers["Content-Type"].must_equal(
-          "multipart/form-data; boundary=-----------RubyMultipartPost"
+          "application/octet-stream"
         )
         true
       end

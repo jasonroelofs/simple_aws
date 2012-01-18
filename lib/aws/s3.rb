@@ -98,8 +98,7 @@ module AWS
       request.body = options[:body]
 
       if request.body.is_a?(Hash) && request.body[:file]
-        request.headers["Content-Type"] =
-          "multipart/form-data; boundary=-----------RubyMultipartPost"
+        request.headers["Content-Type"] ||= "application/octet-stream"
       end
 
       connection = AWS::Connection.new
