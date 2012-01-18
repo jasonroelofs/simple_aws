@@ -338,6 +338,25 @@ describe AWS::Response do
 
   end
 
+  describe "raw body data" do
+
+    before do
+      @error_response = {}
+      @http_response = stub
+      @http_response.stubs(:headers).returns(nil)
+      @http_response.stubs(:success?).returns(true)
+      @http_response.stubs(:code).returns(400)
+      @http_response.stubs(:parsed_response).returns("raw string body")
+
+      @response = AWS::Response.new @http_response
+    end
+
+    it "doesn't try to parse raw body data" do
+      @response.body.must_equal "raw string body"
+    end
+
+  end
+
   describe "#request_id" do
     before do
       @http_response = stub

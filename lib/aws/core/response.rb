@@ -181,7 +181,7 @@ module AWS
       @body = http_response.parsed_response
       @headers = http_response.headers
 
-      if @body
+      if @body.is_a?(Hash)
         inner = @body[@body.keys.first]
         response_root =
           if result_key = inner.keys.find {|k| k =~ /Result$/}
