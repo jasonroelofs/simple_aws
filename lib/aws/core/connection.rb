@@ -1,5 +1,4 @@
 require 'httparty'
-require 'httmultiparty'
 require 'openssl'
 
 require 'aws/core/response'
@@ -7,7 +6,7 @@ require 'aws/core/response'
 module AWS
 
   class HTTP
-    include HTTMultiParty
+    include HTTParty
   end
 
   ##

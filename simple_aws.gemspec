@@ -12,7 +12,6 @@ Gem::Specification.new do |s|
 
   s.add_dependency "ox"
   s.add_dependency "httparty"
-  s.add_dependency "httmultiparty"
 
   s.add_dependency "jruby-openssl" if RUBY_PLATFORM == 'java'
 
