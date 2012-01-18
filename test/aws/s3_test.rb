@@ -72,41 +72,31 @@ describe AWS::S3 do
       @api.get "/", :body => "This is a body of text"
     end
 
-    it "adds the form-data header if the body has a file in it" do
+    it "adds appropriate headers if the body has a file in it" do
+      file = File.new("Gemfile")
+
       AWS::Connection.any_instance.expects(:call).with do |request|
-        request.body.must_equal :file => "This is a body of text"
-        request.headers["Content-Type"].must_equal(
-          "application/octet-stream"
-        )
+        request.body.must_equal file
+
+        request.headers["Content-Length"].must_equal file.size.to_s
+        request.headers["Content-Type"].must_equal "application/octet-stream"
+        request.headers["Expect"].must_equal "100-continue"
         true
       end
 
-      @api.get "/", :body => {:file => "This is a body of text"}
+      @api.get "/", :body => file
     end
 
     it "uses previously set content type if given" do
       AWS::Connection.any_instance.expects(:call).with do |request|
-        request.body.must_equal :file => "This is a body of text"
         request.headers["Content-Type"].must_equal(
           "application/pdf"
         )
         true
       end
 
-      @api.get "/", :body => {:file => "This is a body of text"},
+      @api.get "/", :body => File.new("Gemfile"),
         :headers => {"Content-Type" => "application/pdf"}
-    end
-
-    it "allows use of :file if :body only contains a file" do
-      AWS::Connection.any_instance.expects(:call).with do |request|
-        request.body.must_equal :file => "This is a body of text"
-        request.headers["Content-Type"].must_equal(
-          "application/octet-stream"
-        )
-        true
-      end
-
-      @api.get "/", :file => "This is a body of text"
     end
 
     it "signs the given request according to Version 3 rules" do

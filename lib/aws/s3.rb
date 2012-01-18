@@ -44,16 +44,11 @@ module AWS
   # JSON information, or an object that otherwise response to #read for file
   # uploads. This API does not build XML or JSON for you right now.
   #
-  #   s3.put "/object/name.txt", :bucket => "bucket_name", :body => {:file => File.open()}
-  #
-  # As this is a common use case, if you don't have any more parameters to send
-  # with the file being uploaded, just use :file.
-  #
-  #   s3.put "/object/name.txt", :bucket => "bucket_name", :file => File.open()
+  #   s3.put "/object/name.txt", :bucket => "bucket_name", :body => File.open()
   #
   # This API does ensure that file data is uploaded as efficiently as possible,
-  # streaming file data from disc to AWS without blowing up memory. All files are
-  # uploading using multipart/form-data.
+  # streaming file data from disc to AWS without blowing up memory. If the
+  # Content-Type header is not specified, it will be defaulted to application/octet-stream
   #
   # NOTE: Like the other parts of SimpleAWS, this API does NOT try to make the
   # AWS API better, but simply provides a cleaner, easy to use API for Ruby.
@@ -92,13 +87,15 @@ module AWS
       end
 
       if options[:file]
-        options[:body] = {:file => options.delete(:file)}
+        options[:body] = options.delete(:file)
       end
 
       request.body = options[:body]
 
-      if request.body.is_a?(Hash) && request.body[:file]
+      if request.body.respond_to?(:read)
         request.headers["Content-Type"] ||= "application/octet-stream"
+        request.headers["Content-Length"] = request.body.size.to_s
+        request.headers["Expect"] = "100-continue"
       end
 
       connection = AWS::Connection.new
