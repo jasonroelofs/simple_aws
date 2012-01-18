@@ -8,7 +8,6 @@ module AWS
 
   class HTTP
     include HTTMultiParty
-    format :xml
   end
 
   ##
