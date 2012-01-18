@@ -51,6 +51,10 @@ puts "", "Checking that the file now exists...", ""
 
 p s3.head("/#{uploaded_file_name}", :bucket => bucket_name)
 
+puts "", "Getting file again", ""
+
+p s3.get("/#{uploaded_file_name}", :bucket => bucket_name) #, :params => {"response-content-disposition" => "attachment"})
+
 puts "", "Deleting the file from S3", ""
 
 p s3.delete("/#{uploaded_file_name}", :bucket => bucket_name)
