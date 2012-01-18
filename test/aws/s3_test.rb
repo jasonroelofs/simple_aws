@@ -22,7 +22,7 @@ describe AWS::S3 do
 
   describe "API calls" do
 
-    [:get, :post, :put, :delete, :head].each do |method|
+    [:get, :put, :delete, :head].each do |method|
       it "supports the #{method} HTTP method" do
         AWS::Connection.any_instance.expects(:call).with do |request|
           request.method.must_equal method

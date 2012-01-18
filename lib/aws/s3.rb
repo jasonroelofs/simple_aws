@@ -70,7 +70,7 @@ module AWS
     use_https true
     version "2006-03-01"
 
-    [:get, :post, :put, :delete, :head].each do |method|
+    [:get, :put, :delete, :head].each do |method|
       define_method(method) do |*args|
         self.call method, *args
       end
@@ -92,7 +92,7 @@ module AWS
       end
 
       if options[:file]
-        options[:body] = {:file => options[:file]}
+        options[:body] = {:file => options.delete(:file)}
       end
 
       request.body = options[:body]
