@@ -3,6 +3,30 @@ require 'openssl'
 
 require 'aws/core/response'
 
+##
+# Monkey-patch body_stream usage into HTTParty
+##
+module HTTParty
+  class Request
+    private
+
+    def setup_raw_request
+      @raw_request = http_method.new(uri.request_uri)
+      if body
+        if body.respond_to?(:read)
+          @raw_request.body_stream = body
+        else
+          @raw_request.body = body
+        end
+      end
+      @raw_request.initialize_http_header(options[:headers])
+      @raw_request.basic_auth(username, password) if options[:basic_auth]
+      setup_digest_auth if options[:digest_auth]
+    end
+
+  end
+end
+
 module AWS
 
   class HTTP
