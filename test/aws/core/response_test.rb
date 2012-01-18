@@ -3,14 +3,19 @@ require 'aws/core/response'
 
 describe AWS::Response do
 
+  def response_stub(success = true, code = 200)
+    http_response = stub
+    http_response.stubs(:headers).returns(nil)
+    http_response.stubs(:success?).returns(success)
+    http_response.stubs(:code).returns(code)
+    http_response
+  end
+
   describe "errors" do
 
     before do
       @error_response = {}
-      @http_response = stub
-      @http_response.stubs(:headers).returns(nil)
-      @http_response.stubs(:success?).returns(false)
-      @http_response.stubs(:code).returns(401)
+      @http_response = response_stub false, 401
     end
 
     it "raises if the response is not a success" do
@@ -111,10 +116,7 @@ describe AWS::Response do
         }
       }
 
-      @http_response = stub
-      @http_response.stubs(:headers).returns(nil)
-      @http_response.stubs(:code).returns(200)
-      @http_response.stubs(:success?).returns(true)
+      @http_response = response_stub
       @http_response.stubs(:parsed_response).returns(@response_hash)
 
       @response = AWS::Response.new @http_response
@@ -170,10 +172,7 @@ describe AWS::Response do
         }
       }
 
-      @http_response = stub
-      @http_response.stubs(:headers).returns(nil)
-      @http_response.stubs(:code).returns(202)
-      @http_response.stubs(:success?).returns(true)
+      @http_response = response_stub true, 202
       @http_response.stubs(:parsed_response).returns(@response_hash)
 
       @response = AWS::Response.new @http_response
@@ -232,10 +231,7 @@ describe AWS::Response do
         }
       }
 
-      @http_response = stub
-      @http_response.stubs(:code).returns(202)
-      @http_response.stubs(:headers).returns(nil)
-      @http_response.stubs(:success?).returns(true)
+      @http_response = response_stub true, 202
       @http_response.stubs(:parsed_response).returns(@response_hash)
 
       @response = AWS::Response.new @http_response
@@ -341,11 +337,7 @@ describe AWS::Response do
   describe "raw body data" do
 
     before do
-      @error_response = {}
-      @http_response = stub
-      @http_response.stubs(:headers).returns(nil)
-      @http_response.stubs(:success?).returns(true)
-      @http_response.stubs(:code).returns(400)
+      @http_response = response_stub true, 200
       @http_response.stubs(:parsed_response).returns("raw string body")
 
       @response = AWS::Response.new @http_response
@@ -359,10 +351,7 @@ describe AWS::Response do
 
   describe "#request_id" do
     before do
-      @http_response = stub
-      @http_response.stubs(:headers).returns(nil)
-      @http_response.stubs(:code).returns(200)
-      @http_response.stubs(:success?).returns(true)
+      @http_response = response_stub true, 200
     end
 
     it "finds the top level response id" do
