@@ -90,6 +90,18 @@ module AWS
         options[:body] = options.delete(:file)
       end
 
+      signing_params = request.params.select {|k, v|
+        k =~ /response-/
+      }
+
+      if signing_params.length > 0
+        to_add = signing_params.map {|k, v|
+          "#{k}=#{v}"
+        }.join("&")
+
+        request.path = request.path + "?#{to_add}"
+      end
+
       request.body = options[:body]
 
       if request.body.respond_to?(:read)
@@ -128,6 +140,7 @@ module AWS
 
       request
     end
+
 
     def build_signature_for(request)
       amazon_headers = request.headers.select {|k, v|

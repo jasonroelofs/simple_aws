@@ -54,6 +54,16 @@ describe AWS::S3 do
       @api.get "/", :params => { "Parameter1" => "Value2" }
     end
 
+    it "handles the special response- parameters" do
+      AWS::Connection.any_instance.expects(:call).with do |request|
+        request.path.must_equal "/?response-content-type=application/xml"
+        request.params["response-content-type"].must_equal "application/xml"
+        true
+      end
+
+      @api.get "/", :params => { "response-content-type" => "application/xml" }
+    end
+
     it "takes extra headers" do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.headers["Header14"].must_equal "Out to Lunch"
