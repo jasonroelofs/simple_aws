@@ -53,7 +53,12 @@ p s3.head("/#{uploaded_file_name}", :bucket => bucket_name)
 
 puts "", "Getting file again", ""
 
-p s3.get("/#{uploaded_file_name}", :bucket => bucket_name) #, :params => {"response-content-disposition" => "attachment"})
+p s3.get("/#{uploaded_file_name}", :bucket => bucket_name,
+         :params => {
+           "response-content-disposition" => "attachment",
+           "response-content-type" => "text/ruby",
+           "response-expires" => "never"
+         })
 
 puts "", "Deleting the file from S3", ""
 
