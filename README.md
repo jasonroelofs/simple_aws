@@ -142,6 +142,8 @@ SimpleAWS is built to work under all major Ruby versions:
 * 1.8.7
 * 1.9.2
 * 1.9.3
+* ree
+* HEAD
 
 The following are waiting on a release of Nokogiri to fix some issues:
 
