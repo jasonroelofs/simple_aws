@@ -347,6 +347,14 @@ describe AWS::Response do
       @response.body.must_equal "raw string body"
     end
 
+    it "gives a clear error message on unknown method calls" do
+      error = lambda {
+        @response.some_value
+      }.must_raise NoMethodError
+
+      error.message.must_match /AWS::Response/
+    end
+
   end
 
   describe "#request_id" do

@@ -208,7 +208,11 @@ module AWS
     # Delegate first-level method calls to the root Proxy object
     ##
     def method_missing(name, *args)
-      @request_root.send(name, *args)
+      if @request_root
+        @request_root.send(name, *args)
+      else
+        super
+      end
     end
 
     ##
