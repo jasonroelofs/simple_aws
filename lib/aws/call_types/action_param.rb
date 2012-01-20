@@ -10,7 +10,7 @@ module AWS
     # according to whatever Signing module is included along side this module.
     #
     # This module hooks up the `method_missing` functionality as described in the
-    # {README}. To call methods on APIs including this module, simply call a method
+    # README. To call methods on APIs including this module, simply call a method
     # with either the Ruby-fied name, or the full CamelCase name, and pass in
     # options required as the parameters.
     #
