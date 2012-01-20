@@ -10,8 +10,8 @@ Gem::Specification.new do |s|
   s.summary     = "The simplest and easiest to use and maintain AWS communication library"
   s.description = "The simplest and easiest to use and maintain AWS communication library"
 
-  s.add_dependency "ox"
-  s.add_dependency "httparty"
+  s.add_dependency "nokogiri", "~> 1.5.0"
+  s.add_dependency "httparty", "~> 0.8.0"
 
   s.add_dependency "jruby-openssl" if RUBY_PLATFORM == 'java'
 
