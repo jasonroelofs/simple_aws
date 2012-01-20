@@ -1,4 +1,4 @@
-require 'ox'
+require 'nokogiri'
 
 module AWS
   ##
@@ -40,17 +40,18 @@ module AWS
     # The hash body can contain symbols, strings, arrays and hashes
     ##
     def build_xml_from(hash, namespace = nil)
-      doc = Ox::Document.new(:version => 1.0, :standalone => true)
+      doc = Nokogiri::XML::Document.new
+      doc.encoding = "UTF-8"
 
       root_key = hash.keys.first
-      root = Ox::Element.new root_key
-      root[:xmlns] = namespace if namespace
+      root = Nokogiri::XML::Element.new root_key.to_s, doc
+      root["xmlns"] = namespace if namespace
 
       doc << root
 
       build_body root, hash[root_key]
 
-      %|<?xml version="1.0" encoding="UTF-8"?>#{Ox.dump doc}|
+      doc.to_s
     end
 
     extend self
@@ -61,7 +62,7 @@ module AWS
       hash.each do |key, value|
         case value
         when Hash
-          node = build_node(key)
+          node = build_node(parent, key)
           build_body node, value
           parent << node
         when Array
@@ -69,13 +70,13 @@ module AWS
             build_body parent, {key => entry}
           end
         else
-          parent << build_node(key, value)
+          parent << build_node(parent, key, value)
         end
       end
     end
 
-    def build_node(key, value = nil)
-      child = Ox::Element.new key
+    def build_node(parent, key, value = nil)
+      child = Nokogiri::XML::Element.new key.to_s, parent
       child << value.to_s unless value.nil?
       child
     end
