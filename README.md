@@ -135,8 +135,24 @@ The following API endpoints will not currently be handled in SimpleAWS. These li
 Project Info
 ------------
 
+### Rubies
+
+SimpleAWS is built to work under all major Ruby versions:
+
+* 1.8.7
+* 1.9.2
+* 1.9.3
+
+The following are waiting on a release of Nokogiri to fix some issues:
+
+* jruby
+* rubinius
+
+### Misc Info
+
 Author: Jason Roelofs (https://github.com/jameskilton)
 
 Source: https://github.com/jameskilton/simple_aws
 
 Issues: https://github.com/jameskilton/simple_aws/issues
+
