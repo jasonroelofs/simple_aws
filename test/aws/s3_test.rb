@@ -124,7 +124,7 @@ describe AWS::S3 do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.body.must_equal file
 
-        request.headers["Content-Length"].must_equal file.size.to_s
+        request.headers["Content-Length"].must_equal File.size(file).to_s
         request.headers["Content-Type"].must_equal "application/octet-stream"
         request.headers["Expect"].must_equal "100-continue"
         true

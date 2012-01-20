@@ -149,7 +149,7 @@ module AWS
 
       if request.body.respond_to?(:read)
         request.headers["Content-Type"] ||= "application/octet-stream"
-        request.headers["Content-Length"] = request.body.size.to_s
+        request.headers["Content-Length"] = File.size(request.body).to_s
         request.headers["Expect"] = "100-continue"
       end
 
