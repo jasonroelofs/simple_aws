@@ -20,6 +20,42 @@ describe AWS::S3 do
     @api.version.must_equal "2006-03-01"
   end
 
+  describe "url_for" do
+
+    it "can build an unsigned, regular URL for the requested path" do
+      url = @api.url_for("/object", :bucket => "johnson")
+      url.must_equal "https://s3.amazonaws.com/johnson/object"
+    end
+
+    it "can build a signed, expiring URL" do
+      url = @api.url_for("/object", :bucket => "johnson", :expires => Time.now.to_i + 60)
+      url.must_match %r[https://s3.amazonaws.com/johnson/object\?]
+      url.must_match %r[Expires=#{Time.now.to_i + 60}]
+      url.must_match %r[AWSAccessKeyId=key]
+      url.must_match %r[Signature=]
+    end
+
+    it "adds parameters to the path" do
+      url = @api.url_for("/object", :bucket => "johnson", :params => {"param1" => "14"})
+      url.must_equal "https://s3.amazonaws.com/johnson/object?param1=14"
+    end
+
+    it "properly handles response- parameters" do
+      url = @api.url_for("/object", :bucket => "johnson",
+                         :params => {"response-content-type" => "text/xml"})
+      url.must_equal "https://s3.amazonaws.com/johnson/object?response-content-type=text/xml"
+    end
+
+    it "combines parameters and signing params properly" do
+      url = @api.url_for("/object", :bucket => "johnson",
+                         :params => {"response-content-type" => "text/xml"},
+                         :expires => Time.now.to_i
+                        )
+      url.must_match %r{/johnson/object\?response-content-type=text/xml&Signature=}
+    end
+
+  end
+
   describe "API calls" do
 
     [:get, :put, :delete, :head].each do |method|
@@ -57,7 +93,7 @@ describe AWS::S3 do
     it "handles the special response- parameters" do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.path.must_equal "/?response-content-type=application/xml"
-        request.params["response-content-type"].must_equal "application/xml"
+        request.params["response-content-type"].must_be_nil
         true
       end
 

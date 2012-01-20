@@ -65,13 +65,52 @@ module AWS
     use_https true
     version "2006-03-01"
 
+    ##
+    # Build a full URL for the resource at +path+.
+    # If options includes :expires, this url will be a signed url. :expires
+    # needs to be the raw Unix timestamp at which this URL will expire, as
+    # defined in the S3 documentation.
+    #
+    # Otherwise, +options+ can take anything as described above, but it
+    # will not use :headers or anything related to :body.
+    ##
+    def url_for(path, options = {})
+      request = build_request(:get, path, options)
+
+      url = "#{self.uri}#{request.path}"
+      sep = url =~ /\?/ ? "&" : "?"
+
+      if request.params.any?
+        params = request.params.map {|k, v| "#{k}=#{v}"}.join("&")
+        url += "#{sep}#{params}"
+        sep = "&"
+      end
+
+      if expires_at = options[:expires]
+        # Small hack, expires is in the Date section of the
+        # signing string, so we just do that here
+        request.headers["Date"] = expires_at.to_i
+
+        signature = "Signature=#{build_signature_for(request)}"
+        key = "AWSAccessKeyId=#{self.access_key}"
+        expires = "Expires=#{expires_at.to_i}"
+
+        url += "#{sep}#{signature}&#{key}&#{expires}"
+      end
+
+      url
+    end
+
     [:get, :put, :delete, :head].each do |method|
       define_method(method) do |*args|
-        self.call method, *args
+        request = self.build_request method, *args
+
+        connection = AWS::Connection.new
+        connection.call finish_and_sign_request(request)
       end
     end
 
-    def call(method, path, options = {})
+    def build_request(method, path, options = {})
       if options[:bucket]
         path = path.gsub(/^\//, "/#{options[:bucket]}/")
       end
@@ -90,8 +129,12 @@ module AWS
         options[:body] = options.delete(:file)
       end
 
-      signing_params = request.params.select {|k, v|
-        k =~ /response-/
+      signing_params = {}
+      request.params.delete_if {|k, v|
+        if k =~ /^response-/i
+          signing_params[k] = v
+          true
+        end
       }
 
       if signing_params.length > 0
@@ -110,8 +153,7 @@ module AWS
         request.headers["Expect"] = "100-continue"
       end
 
-      connection = AWS::Connection.new
-      connection.call finish_and_sign_request(request)
+      request
     end
 
     ##
@@ -136,7 +178,7 @@ module AWS
     def finish_and_sign_request(request)
       request.headers["Date"] = Time.now.utc.httpdate
       request.headers["Authorization"] =
-        "AWS #{self.access_key}:#{Base64.encode64(build_signature_for(request)).chomp}"
+        "AWS #{self.access_key}:#{build_signature_for(request)}"
 
       request
     end
@@ -158,7 +200,9 @@ module AWS
         request.path
       ].flatten.join("\n")
 
-      OpenSSL::HMAC.digest("sha1", self.secret_key, to_sign)
+      Base64.encode64(
+        OpenSSL::HMAC.digest("sha1", self.secret_key, to_sign)
+      ).chomp
     end
 
   end

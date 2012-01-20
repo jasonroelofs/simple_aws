@@ -57,8 +57,13 @@ p s3.get("/#{uploaded_file_name}", :bucket => bucket_name,
          :params => {
            "response-content-disposition" => "attachment",
            "response-content-type" => "text/ruby",
-           "response-expires" => "never"
-         })
+           "response-expires" => "never" })
+
+puts "", "Signed, expiring URL for this resource: ", ""
+
+puts s3.url_for("/#{uploaded_file_name}", :bucket => bucket_name,
+             :expires => Time.now.to_i + 120,
+             :params => { "response-content-disposition" => "attachment" })
 
 puts "", "Deleting the file from S3", ""
 
@@ -71,3 +76,5 @@ begin
 rescue => ex
   puts "Not found: #{ex.message}"
 end
+
+
