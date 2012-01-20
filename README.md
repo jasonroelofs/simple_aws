@@ -152,7 +152,7 @@ The following are waiting on a release of Nokogiri to fix some issues:
 
 ### Misc Info
 
-Author: Jason Roelofs (https://github.com/jameskilton)
+Author: Jason Roelofs - [Github](https://github.com/jameskilton) [@jameskilton](http://twitter.com/jameskilton)
 
 Source: https://github.com/jameskilton/simple_aws
 
