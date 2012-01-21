@@ -10,7 +10,7 @@ module AWS
   # http://docs.amazonwebservices.com/AWSImportExport/latest/API/Welcome.html
   #
   # All requests are POST and always through HTTPS.
-  # This API does not support region specifiers
+  # This API does not support region specifiers.
   #
   # @see AWS::CallTypes::ActionParam Calling rules
   # @see AWS::Response Response handling

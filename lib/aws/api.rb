@@ -11,12 +11,15 @@ module AWS
   # implementing various APIs:
   #
   #   http://docs.amazonwebservices.com/general/latest/gr/index.html?rande.html
+  #
   ##
   class API
     class << self
 
       ##
       # Define the AWS endpoint for the API being wrapped.
+      #
+      # @param endpoint [String] Subdomain endpoint for this API. E.g. "s3" for Amazon's S3
       ##
       def endpoint(endpoint)
         @endpoint = endpoint
@@ -24,8 +27,8 @@ module AWS
 
       ##
       # Specify a default region for all requests for this API.
-      # This region will be used if no region is given to the
-      # constructor
+      #
+      # @param region [String] Specify the region this API defaults to
       ##
       def default_region(region)
         @default_region = region
@@ -35,13 +38,17 @@ module AWS
       # Specify whether this API uses HTTPS for requests. If not set,
       # the system will use HTTP. Some API endpoints are not available under
       # HTTP and some are only HTTP.
+      #
+      # @param value [Boolean] Set whether this API uses HTTPS by default or not
       ##
       def use_https(value)
         @use_https = value
       end
 
       ##
-      # Specify the AWS version of the API in question. This will be a date string.
+      # Specify the AWS version of the API in question.
+      #
+      # @param version [String] The version this API currently uses.
       ##
       def version(version)
         @version = version
@@ -53,8 +60,10 @@ module AWS
 
     ##
     # Construct a new access object for the API in question.
-    # +access_key+ and +secret_key+ are as defined in AWS security standards.
-    # Use +region+ if you need to explicitly talk to a certain AWS region
+    #
+    # @param access_key [String] Amazon access key
+    # @param secret_key [String] Amazon secret key
+    # @param region [String] Give a specific region to talk to
     ##
     def initialize(access_key, secret_key, region = nil)
       @access_key = access_key
@@ -68,6 +77,8 @@ module AWS
 
     ##
     # Get the full host name for the current API
+    #
+    # @return [String] Full URI for this API
     ##
     def uri
       return @uri if @uri

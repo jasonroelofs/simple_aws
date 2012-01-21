@@ -57,6 +57,12 @@ module AWS
   # Content-Length then repeated GETs using the "Range:bytes" header to specify
   # which parts to download next.
   #
+  # Quality of Life note: if you forget the leading / (forward slash) in the path
+  # of a resource when# working with a bucket, this library will recognize this and
+  # fix the path for you. Thus, the following is also a valid call:
+  #
+  #   s3.put "object/name.txt", :bucket => "bucket_name", :body => File.open()
+  #
   # Raw file data in a response will be available in the #body method on the Response
   # returned by the method call.
   ##
@@ -67,12 +73,18 @@ module AWS
 
     ##
     # Build a full URL for the resource at +path+.
-    # If options includes :expires, this url will be a signed url. :expires
-    # needs to be the raw Unix timestamp at which this URL will expire, as
-    # defined in the S3 documentation.
     #
-    # Otherwise, +options+ can take anything as described above, but it
-    # will not use :headers or anything related to :body.
+    # @param path [String] The path of the resource that needs a URL
+    # @param options [Hash] Options on how this URL will be generated.
+    #
+    #   If options includes +:expires+, this url will be a signed url. +:expires+
+    #   needs to be the raw Unix timestamp at which this URL will expire, as
+    #   defined in the S3 documentation.
+    #
+    #   Otherwise, +options+ can take anything as described above, but it
+    #   will not use +:headers+ or anything related to +:body+.
+    #
+    # @return [String] The URL to the requested resource
     ##
     def url_for(path, options = {})
       request = build_request(:get, path, options)
@@ -88,7 +100,8 @@ module AWS
 
       if expires_at = options[:expires]
         # Small hack, expires is in the Date section of the
-        # signing string, so we just do that here
+        # signing string, so we just do that here so that we don't
+        # muddy up build_signature_for
         request.headers["Date"] = expires_at.to_i
 
         signature = "Signature=#{build_signature_for(request)}"
@@ -101,15 +114,89 @@ module AWS
       url
     end
 
-    [:get, :put, :delete, :head].each do |method|
-      define_method(method) do |*args|
-        request = self.build_request method, *args
-
-        connection = AWS::Connection.new
-        connection.call finish_and_sign_request(request)
-      end
+    ##
+    # Send a request using HTTP GET
+    #
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Response] The results of the request
+    #
+    # @raise [AWS::UnsuccessfulResponse, AWS::UnknownErrorResponse] on response errors
+    ##
+    def get(path, options = {})
+      call :get, path, options
     end
 
+    ##
+    # Send a request using HTTP PUT
+    #
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Response] The results of the request
+    #
+    # @raise [AWS::UnsuccessfulResponse, AWS::UnknownErrorResponse] on response errors
+    ##
+    def put(path, options = {})
+      call :put, path, options
+    end
+
+    ##
+    # Send a request using HTTP DELETE
+    #
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Response] The results of the request
+    #
+    # @raise [AWS::UnsuccessfulResponse, AWS::UnknownErrorResponse] on response errors
+    ##
+    def delete(path, options = {})
+      call :delete, path, options
+    end
+
+    ##
+    # Send a request using HTTP HEAD
+    #
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Response] The results of the request
+    #
+    # @raise [AWS::UnsuccessfulResponse, AWS::UnknownErrorResponse] on response errors
+    ##
+    def head(path, options = {})
+      call :head, path, options
+    end
+
+    ##
+    # Execute an HTTP request against S3.
+    #
+    # @param method [Symbol, String] The HTTP method to use
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Response] The results of the request
+    #
+    # @raise [AWS::UnsuccessfulResponse, AWS::UnknownErrorResponse] on response errors
+    ##
+    def call(method, path, options = {})
+      request = self.build_request method, path, options
+
+      connection = AWS::Connection.new
+      connection.call finish_and_sign_request(request)
+    end
+
+    ##
+    # Build a request but do not send it. Helpful for debugging.
+    #
+    # @param method [Symbol, String] The HTTP method to use
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Request] Completed but not yet signed request object
+    ##
     def build_request(method, path, options = {})
       if options[:bucket]
         path = "/#{options[:bucket]}/#{path}".gsub("//", "/")
@@ -156,9 +243,6 @@ module AWS
       request
     end
 
-    ##
-    # S3 handles region endpoints a little differently
-    ##
     def uri
       return @uri if @uri
 

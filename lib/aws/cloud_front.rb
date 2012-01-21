@@ -63,12 +63,73 @@ module AWS
       super(key, secret)
     end
 
-    [:get, :post, :put, :delete].each do |method|
-      define_method(method) do |*args|
-        self.call method, *args
-      end
+    ##
+    # Send a request using HTTP GET
+    #
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Response] The results of the request
+    #
+    # @raise [AWS::UnsuccessfulResponse, AWS::UnknownErrorResponse] on response errors
+    ##
+    def get(path, options = {})
+      call :get, path, options
     end
 
+    ##
+    # Send a request using HTTP POST
+    #
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Response] The results of the request
+    #
+    # @raise [AWS::UnsuccessfulResponse, AWS::UnknownErrorResponse] on response errors
+    ##
+    def post(path, options = {})
+      call :post, path, options
+    end
+
+    ##
+    # Send a request using HTTP PUT
+    #
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Response] The results of the request
+    #
+    # @raise [AWS::UnsuccessfulResponse, AWS::UnknownErrorResponse] on response errors
+    ##
+    def put(path, options = {})
+      call :put, path, options
+    end
+
+    ##
+    # Send a request using HTTP DELETE
+    #
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Response] The results of the request
+    #
+    # @raise [AWS::UnsuccessfulResponse, AWS::UnknownErrorResponse] on response errors
+    ##
+    def delete(path, options = {})
+      call :delete, path, options
+    end
+
+    ##
+    # Execute an HTTP request against CloudFront.
+    #
+    # @param method [Symbol, String] The HTTP method to use
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [AWS::Response] The results of the request
+    #
+    # @raise [AWS::UnsuccessfulResponse, AWS::UnknownErrorResponse] on response errors
+    ##
     def call(method, path, options = {})
       request = AWS::Request.new method, self.uri, "/#{self.version}#{path}"
 
