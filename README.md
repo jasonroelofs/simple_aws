@@ -32,14 +32,14 @@ It's well know that AWS has its share of warts and wtfs. SimpleAWS doesn't try t
 
 First of all, calling actions are implemented as ruby methods, handled through mainly through `method_missing` (S3 and CloudFront are the two current exceptions). You can call the AWS actions by AWSName or by ruby_name, they both work:
 
-```ruby
+``` ruby
 ec2 = AWS::EC2.new key, secret
 ec2.describe_instances
 ```
 
 or
 
-```ruby
+``` ruby
 ec2 = AWS::EC2.new key, secret
 ec2.DescribeInstances
 ```
@@ -52,7 +52,7 @@ Adding parameters to your method calls follows similar rules, with some Quality 
 
 You can't get simpler than just using the names of the parameters as defined in the AWS docs:
 
-```ruby
+``` ruby
 ec2 = AWS::EC2.new key, secret
 ec2.describe_instances({
   "Filter.1.Name" => "instance-state-name",
@@ -65,7 +65,7 @@ ec2.describe_instances({
 
 Ruby Arrays will automatically be built into the "Key.n" format you see in the AWS docs:
 
-```ruby
+``` ruby
 ec2 = AWS::EC2.new key, secret
 ec2.describe_instances({
   "Filter.1.Name" => "instance-state-name",
@@ -77,7 +77,7 @@ ec2.describe_instances({
 
 You can take this the next step and use a Ruby Hash to make this even cleaner:
 
-```ruby
+``` ruby
 ec2 = AWS::EC2.new key, secret
 ec2.describe_instances({
   "Filter" => [
