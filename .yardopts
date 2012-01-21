@@ -1,0 +1,6 @@
+--markup markdown
+--markup-provider redcarpet
+lib/**/*.rb
+-
+README.md
+MIT_LICENCE
