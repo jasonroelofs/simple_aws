@@ -1,40 +1,36 @@
 SimpleAWS [![Travis CI Build Status](https://secure.travis-ci.org/jameskilton/simple_aws.png)](http://travis-ci.org/jameskilton/simple_aws)
 =========
 
-A thin, simple, forward compatible Ruby wrapper around the various Amazon AWS APIs. Unless otherwise mentioned below, this library will wrap every API available service listed on this page: http://aws.amazon.com/documentation/
+A thin, simple, forward compatible Ruby wrapper around the various Amazon Web Service APIs.
 
 What?! Why?
 -----------
 
 Do we really need another Ruby library to talk to Amazon Web Services? Aren't there enough libraries out there that could just use some more help to make them better? What about [fog](http://fog.io), or [aws-sdk](http://rubygems.org/gems/aws-sdk), or [aws](http://rubygems.org/gems/aws), or [right_aws](http://rubygems.org/gems/right_aws)?
 
-While there are a number of well used libraries, I feel they have all fallen prey to the same two problems: complexity and forward incompatibility.
+While there are a number of well used libraries, I feel they have all fallen prey to the same two problems: they are far too complex for what they are and they all lack forward compatibility.
 
 ### Complexity
 
-Every Ruby AWS library in use today is simply too complex. Every library I've tried to use has ended up hurting my productivity as I often have to dive into the code to find out what the parameter list is, what object I need to work with, or what hash keys map to the actual AWS API parameters. Every library that tries to build an Object Abstraction wrapper on top of AWS's APIs suffers from leaky abstractions, which results in yet more time lost trying to figure out what needs to be called, with what, and what gets returned. Software is supposed to be simple, it's supposed to make your life easier. I've yet to find an AWS library that does this.
+Every Ruby AWS library in use today is simply too complex. Each one I've tried to use has ended up hurting my productivity as I often found myself diving into the library's code to figure out how to call the API method in question. Instead of just working with Amazon's API, I end up fighting the library, constantly having to re-learn whatever abstraction said library is trying to provide. Every library mentioned either hard-codes parameter lists, has it's own mapping from hash keys to AWS parameters, or wraps up an Object API around everything, leading to confusion and more lost productivity when that abstraction leaks. Software is supposed to be simple to use; it's supposed to make your life easier. I've yet to find an AWS library that does this.
 
 ### Forward Compatibility
 
-Ignoring the complexity argument above, what finally drove me to create this library is the complete lack of forward compatibility in all existing Ruby AWS libraries. Any time I wanted to use a new parameter, new action, or new API, I would need to jump into the library itself and implement the missing pieces. In the usual OSS circles this doesn't sound that bad, and is in fact praised, but when you're dealing with an API library, this requirement quickly becomes a frustration.
+Outside of the pervasive complexity of these libraries, what finally drove me to create this library is the complete lack of forward compatibility in all of them. Any time I wanted to use a new parameter, new action, or new API, I would need to jump into the library itself to implement the missing pieces. In normal OSS fashion, this is of course to be lauded, contributing back to libraries is what makes software better. However, in the case of API wrappers, this very quickly becomes a frustration.
 
-Amazon constantly updates AWS APIs, adding parameters and actions, and at times entire new APIs. An AWS library should work *with* the API in question, not fight against it. The only thing a hard-coded parameter list does is add confusion as you have to keep two things in your mind: what you want to call, and how the library lets you call it. SimpleAWS simply says no, it won't force anything on the user. Use the names of the API methods and parameters and them alone. If a new parameter is added to the API you're using, just use it; SimpleAWS doesn't care, it will just work.
+Amazon constantly updates AWS APIs, adding parameters and actions, and at times entire new APIs. An AWS library should work *with* the API in question, not fight against it. The only thing a hard-coded parameter list does is add confusion. When you have to figure out how AWS parameters map to library parameters, or hash keys, your productivity drops. When you have to figure out how an object is calling an AWS library, and how you're supposed to use that object, your productivity drops. Likewise when you finally realize that the library does not currently support the action, parameter, or API you're trying to use at the time, your productivity is now at a complete stop.
 
-The name SimpleAWS isn't a wish or hope, it's the core philosophy. This library focuses on being a very thin communication layer between your Ruby code and Amazon's AWS APIs. Let SimpleAWS handle the messy communication details so your code can do what it needs to do letting you be more productive.
-
-In short, it's the Unix philosophy, SimpleAWS does one thing and does it well and nothing else.
+SimpleAWS simply says no, no more leaky abstractions and confusing APIs. Just use the names of the API methods and parameters as defined in Amazon's documentation! If a new parameter is added to the API you're using, just use it. The name SimpleAWS isn't a wish or hope, it's the core philosophy. This library focuses on being a very thin communication layer between your Ruby code and Amazon's AWS APIs. Let SimpleAWS handle the messy communication details so your code can do what it needs to do letting you be more productive.
 
 
 Surely SimpleAWS isn't just `curl`?
 -----------------------------------
 
-It's well know that AWS has its share of warts and wtfs. SimpleAWS doesn't try to fix these, as that's the path towards being yet another over-complicated and rigid library that SimpleAWS is trying to solve.
-
-What SimpleAWS does do is add some logic to ensure it follows the Principle of Least Surprise.
+It's well know that AWS has its share of warts and wtfs. SimpleAWS doesn't try to fix these. What SimpleAWS does do is add as little logic as possible to make you productive and to ensure it follows the Principle of Least Surprise.
 
 ### Calling
 
-First of all, calling actions are implemented as ruby methods, handled through mainly through `method_missing` (S3 and CloudFront are the two exceptions). You can call the AWS actions by AWSName or by ruby_name, they both work:
+First of all, calling actions are implemented as ruby methods, handled through mainly through `method_missing` (S3 and CloudFront are the two current exceptions). You can call the AWS actions by AWSName or by ruby_name, they both work:
 
 ```ruby
 ec2 = AWS::EC2.new key, secret
@@ -50,7 +46,7 @@ ec2.DescribeInstances
 
 ### Parameters
 
-With that in mind, here's what SimpleAWS allows. The following three are equivalent:
+Adding parameters to your method calls follows similar rules, with some Quality of Life improvements. The following three are equivalent:
 
 #### Just Call It
 
@@ -92,9 +88,9 @@ ec2.describe_instances({
 
 ### Response Parsing
 
-All requests return an AWS::Response which does a few cleanup tasks on the resulting XML to make it easier to query and to hide some of the worst warts an XML body tends to have.
+All requests return an AWS::Response object which does a few cleanup tasks on the resulting XML to make it easier to query and to hide some of the worst warts an XML body tends to have.
 
-First of all, wherever AWS returns a list of items, they almost always get wrapped up in an `<item>` or `<member>` wrapper tag. AWS::Response gets rid of those tags and gives you a flat array to work with.
+First of all, wherever AWS returns a list of items, they often get wrapped up in an `<item>` or `<member>` wrapper tag. AWS::Response gets rid of those tags and gives you a flat array to work with.
 
 Second, the resulting XML can have one or two wrapper objects that do nothing but encapsulate the information you're interested in. AWS::Response also jumps past these wrapper objects so you have direct access to the data in the response.
 
@@ -122,6 +118,11 @@ These are the Amazon APIs that SimpleAWS currently handles:
 * {AWS::SQS SQS}
 * {AWS::SES SES}
 * {AWS::CloudFront CloudFront}
+
+Not Currently Implemented
+-------------------------
+
+* DynamoDB (API docs aren't up yet, and the samples are hard to follow)
 
 Currently Out-Of-Scope
 ----------------------
