@@ -71,14 +71,22 @@ describe AWS::S3 do
       end
     end
 
-    it "rebuilds the host if :bucket given" do
+    it "rebuilds the path if :bucket given" do
       AWS::Connection.any_instance.expects(:call).with do |request|
         request.path.must_equal "/bucket-name/"
-        request.host.must_equal "https://s3.amazonaws.com"
         true
       end
 
       @api.get "/", :bucket => "bucket-name"
+    end
+
+    it "auto-fixes path names if not preceeded by a /" do
+      AWS::Connection.any_instance.expects(:call).with do |request|
+        request.path.must_equal "/bucket-name/object_name/that_thing.jpg"
+        true
+      end
+
+      @api.get "object_name/that_thing.jpg", :bucket => "bucket-name"
     end
 
     it "takes parameters" do

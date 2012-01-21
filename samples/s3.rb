@@ -45,15 +45,15 @@ puts "", "Uploading #{file_name} to #{bucket_name}:", ""
 bad_usage unless file_name
 uploaded_file_name = File.basename file_name
 
-p s3.put("/#{uploaded_file_name}", :bucket => bucket_name, :file => File.open(file_name))
+p s3.put(uploaded_file_name, :bucket => bucket_name, :file => File.open(file_name))
 
 puts "", "Checking that the file now exists...", ""
 
-p s3.head("/#{uploaded_file_name}", :bucket => bucket_name)
+p s3.head(uploaded_file_name, :bucket => bucket_name)
 
 puts "", "Getting file again", ""
 
-p s3.get("/#{uploaded_file_name}", :bucket => bucket_name,
+p s3.get(uploaded_file_name, :bucket => bucket_name,
          :params => {
            "response-content-disposition" => "attachment",
            "response-content-type" => "text/ruby",
@@ -61,18 +61,18 @@ p s3.get("/#{uploaded_file_name}", :bucket => bucket_name,
 
 puts "", "Signed, expiring URL for this resource: ", ""
 
-puts s3.url_for("/#{uploaded_file_name}", :bucket => bucket_name,
+puts s3.url_for(uploaded_file_name, :bucket => bucket_name,
              :expires => Time.now.to_i + 120,
              :params => { "response-content-disposition" => "attachment" })
 
 puts "", "Deleting the file from S3", ""
 
-p s3.delete("/#{uploaded_file_name}", :bucket => bucket_name)
+p s3.delete(uploaded_file_name, :bucket => bucket_name)
 
 puts "", "Checking that file is no longer in S3...", ""
 
 begin
-  p s3.head("/#{uploaded_file_name}", :bucket => bucket_name)
+  p s3.head(uploaded_file_name, :bucket => bucket_name)
 rescue => ex
   puts "Not found: #{ex.message}"
 end

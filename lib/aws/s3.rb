@@ -112,7 +112,7 @@ module AWS
 
     def build_request(method, path, options = {})
       if options[:bucket]
-        path = path.gsub(/^\//, "/#{options[:bucket]}/")
+        path = "/#{options[:bucket]}/#{path}".gsub("//", "/")
       end
 
       request = AWS::Request.new method, self.uri, path
