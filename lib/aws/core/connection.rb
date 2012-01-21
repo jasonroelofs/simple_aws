@@ -29,8 +29,24 @@ end
 
 module AWS
 
+  ##
+  # Custom response parser to handle the various craziness of the AWS API
+  ##
+  class SimpleAWSParser < HTTParty::Parser
+    def parse
+      if supports_format?
+        super
+      elsif body =~ %r{<\?xml}
+        xml
+      else
+        body
+      end
+    end
+  end
+
   class HTTP
     include HTTParty
+    parser SimpleAWSParser
   end
 
   ##
