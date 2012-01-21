@@ -55,7 +55,7 @@ module AWS
   # As such, this API does not offer streaming downloads of file data from S3.
   # That is up to you to implement at this time, by running a HEAD to get
   # Content-Length then repeated GETs using the "Range:bytes" header to specify
-  # which parts to download next.
+  # which parts to download next. You can see an example of this in samples/s3_batch_download.rb.
   #
   # Quality of Life note: if you forget the leading / (forward slash) in the path
   # of a resource when# working with a bucket, this library will recognize this and
