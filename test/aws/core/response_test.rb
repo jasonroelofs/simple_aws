@@ -161,8 +161,8 @@ describe AWS::Response do
   end
 
   describe "deeply nested response/results objects" do
-    before do
-      @response_hash = {
+    it "starts inside the Result object level" do
+      response_hash = {
         "CommandResponse" => {
           "xmlns" => "some url",
           "CommandResult" => {
@@ -172,15 +172,25 @@ describe AWS::Response do
         }
       }
 
-      @http_response = response_stub true, 202
-      @http_response.stubs(:parsed_response).returns(@response_hash)
+      http_response = response_stub true, 202
+      http_response.stubs(:parsed_response).returns(response_hash)
 
-      @response = AWS::Response.new @http_response
+      response = AWS::Response.new http_response
+
+      response.volume_id.must_equal "v-12345"
+      response["volumeId"].must_equal "v-12345"
     end
 
-    it "starts inside the Result object level" do
-      @response.volume_id.must_equal "v-12345"
-      @response["volumeId"].must_equal "v-12345"
+    it "properly handles nil bodies" do
+      response_hash = {
+        "CommandResponse" => { "CommandResult" => nil }
+      }
+
+      http_response = response_stub true, 202
+      http_response.stubs(:parsed_response).returns(response_hash)
+
+      response = AWS::Response.new http_response
+      response.wont_be_nil
     end
 
   end

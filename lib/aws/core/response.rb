@@ -190,7 +190,9 @@ module AWS
             inner
           end
 
-        @request_root = ResponseProxy.new response_root
+        if response_root
+          @request_root = ResponseProxy.new response_root
+        end
       end
     end
 
