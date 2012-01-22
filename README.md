@@ -122,7 +122,7 @@ These are the Amazon APIs that SimpleAWS currently handles:
 Not Currently Implemented
 -------------------------
 
-* DynamoDB (API docs aren't up yet, and the samples are hard to follow)
+* DynamoDB
 
 Currently Out-Of-Scope
 ----------------------
