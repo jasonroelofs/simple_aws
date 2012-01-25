@@ -33,14 +33,14 @@ It's well know that AWS has its share of warts and wtfs. SimpleAWS doesn't try t
 First of all, calling actions are implemented as ruby methods, handled through mainly through `method_missing` (S3 and CloudFront are the two current exceptions). You can call the AWS actions by AWSName or by ruby_name, they both work:
 
 ``` ruby
-ec2 = AWS::EC2.new key, secret
+ec2 = SimpleAWS::EC2.new key, secret
 ec2.describe_instances
 ```
 
 or
 
 ``` ruby
-ec2 = AWS::EC2.new key, secret
+ec2 = SimpleAWS::EC2.new key, secret
 ec2.DescribeInstances
 ```
 
@@ -53,7 +53,7 @@ Adding parameters to your method calls follows similar rules, with some Quality 
 You can't get simpler than just using the names of the parameters as defined in the AWS docs:
 
 ``` ruby
-ec2 = AWS::EC2.new key, secret
+ec2 = SimpleAWS::EC2.new key, secret
 ec2.describe_instances({
   "Filter.1.Name" => "instance-state-name",
   "Filter.1.Value.1" => "running"
@@ -66,7 +66,7 @@ ec2.describe_instances({
 Ruby Arrays will automatically be built into the "Key.n" format you see in the AWS docs:
 
 ``` ruby
-ec2 = AWS::EC2.new key, secret
+ec2 = SimpleAWS::EC2.new key, secret
 ec2.describe_instances({
   "Filter.1.Name" => "instance-state-name",
   "Filter.1.Value" => ["running", "pending"]
@@ -78,7 +78,7 @@ ec2.describe_instances({
 You can take this the next step and use a Ruby Hash to make this even cleaner:
 
 ``` ruby
-ec2 = AWS::EC2.new key, secret
+ec2 = SimpleAWS::EC2.new key, secret
 ec2.describe_instances({
   "Filter" => [
     {"Name" => "instance-state-name", "Value" => ["running", "pending"]}
@@ -88,36 +88,36 @@ ec2.describe_instances({
 
 ### Response Parsing
 
-All requests return an AWS::Response object which does a few cleanup tasks on the resulting XML to make it easier to query and to hide some of the worst warts an XML body tends to have.
+All requests return an SimpleAWS::Response object which does a few cleanup tasks on the resulting XML to make it easier to query and to hide some of the worst warts an XML body tends to have.
 
-First of all, wherever AWS returns a list of items, they often get wrapped up in an `<item>` or `<member>` wrapper tag. AWS::Response gets rid of those tags and gives you a flat array to work with.
+First of all, wherever AWS returns a list of items, they often get wrapped up in an `<item>` or `<member>` wrapper tag. SimpleAWS::Response gets rid of those tags and gives you a flat array to work with.
 
-Second, the resulting XML can have one or two wrapper objects that do nothing but encapsulate the information you're interested in. AWS::Response also jumps past these wrapper objects so you have direct access to the data in the response.
+Second, the resulting XML can have one or two wrapper objects that do nothing but encapsulate the information you're interested in. SimpleAWS::Response also jumps past these wrapper objects so you have direct access to the data in the response.
 
-All response objects are infinitely deep queryable via methods or Hash access. See the samples, tests, and AWS::Response for more details and examples of usage. At all times you can easily inspect the current Response object for the entire response body, or just the rest of the body at the current depth level.
+All response objects are infinitely deep queryable via methods or Hash access. See the samples, tests, and SimpleAWS::Response for more details and examples of usage. At all times you can easily inspect the current Response object for the entire response body, or just the rest of the body at the current depth level.
 
 Implemented APIs
 ----------------
 
 These are the Amazon APIs that SimpleAWS currently handles:
 
-* {AWS::S3 S3}
-* {AWS::EC2 EC2}
-* {AWS::ELB ELB}
-* {AWS::IAM IAM}
-* {AWS::MapReduce MapReduce}
-* {AWS::AutoScaling Auto Scaling}
-* {AWS::RDS RDS}
-* {AWS::ElastiCache ElastiCache}
-* {AWS::ElasticBeanstalk Elastic Beanstalk}
-* {AWS::CloudFormation CloudFormation}
-* {AWS::SNS SNS}
-* {AWS::CloudWatch CloudWatch}
-* {AWS::ImportExport ImportExport}
-* {AWS::MechanicalTurk MechanicalTurk}
-* {AWS::SQS SQS}
-* {AWS::SES SES}
-* {AWS::CloudFront CloudFront}
+* {SimpleAWS::S3 S3}
+* {SimpleAWS::EC2 EC2}
+* {SimpleAWS::ELB ELB}
+* {SimpleAWS::IAM IAM}
+* {SimpleAWS::MapReduce MapReduce}
+* {SimpleAWS::AutoScaling Auto Scaling}
+* {SimpleAWS::RDS RDS}
+* {SimpleAWS::ElastiCache ElastiCache}
+* {SimpleAWS::ElasticBeanstalk Elastic Beanstalk}
+* {SimpleAWS::CloudFormation CloudFormation}
+* {SimpleAWS::SNS SNS}
+* {SimpleAWS::CloudWatch CloudWatch}
+* {SimpleAWS::ImportExport ImportExport}
+* {SimpleAWS::MechanicalTurk MechanicalTurk}
+* {SimpleAWS::SQS SQS}
+* {SimpleAWS::SES SES}
+* {SimpleAWS::CloudFront CloudFront}
 
 Not Currently Implemented
 -------------------------
