@@ -1,6 +1,6 @@
 $: << File.expand_path("../../lib", __FILE__)
 
-require 'aws/sqs'
+require 'simple_aws/sqs'
 
 ##
 # Expects your Amazon keys to be in the environment, something like
@@ -9,7 +9,7 @@ require 'aws/sqs'
 # export AWS_SECRET="SECRET"
 ##
 
-sqs = AWS::SQS.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
+sqs = SimpleAWS::SQS.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
 queue_name = "SimpleAWSTest"
 

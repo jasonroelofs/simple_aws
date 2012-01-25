@@ -1,6 +1,6 @@
 $: << File.expand_path("../../lib", __FILE__)
 
-require 'aws/s3'
+require 'simple_aws/s3'
 
 ##
 # Expects your Amazon keys to be in the environment, something like
@@ -22,7 +22,7 @@ def bad_usage
   exit 1
 end
 
-s3 = AWS::S3.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
+s3 = SimpleAWS::S3.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
 s3_resource = ARGV[0]
 save_to = ARGV[1]

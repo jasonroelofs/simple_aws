@@ -1,6 +1,6 @@
 $: << File.expand_path("../../lib", __FILE__)
 
-require 'aws/iam'
+require 'simple_aws/iam'
 
 ##
 # Expects your Amazon keys to be in the environment, something like
@@ -9,7 +9,7 @@ require 'aws/iam'
 # export AWS_SECRET="SECRET"
 ##
 
-$iam = AWS::IAM.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
+$iam = SimpleAWS::IAM.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
 puts "", "You are", ""
 

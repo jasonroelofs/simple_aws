@@ -1,6 +1,6 @@
 $: << File.expand_path("../../lib", __FILE__)
 
-require 'aws/ec2'
+require 'simple_aws/ec2'
 
 ##
 # Expects your Amazon keys to be in the environment, something like
@@ -9,7 +9,7 @@ require 'aws/ec2'
 # export AWS_SECRET="SECRET"
 ##
 
-ec2 = AWS::EC2.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
+ec2 = SimpleAWS::EC2.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
 puts "", "Standard Only Addresses", ""
 
