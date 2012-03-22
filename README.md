@@ -118,11 +118,8 @@ These are the Amazon APIs that SimpleAWS currently handles:
 * {SimpleAWS::SQS SQS}
 * {SimpleAWS::SES SES}
 * {SimpleAWS::CloudFront CloudFront}
-
-Not Currently Implemented
--------------------------
-
-* DynamoDB
+* {SimpleAWS::DynamoDB DynamoDB}
+* {SimpleAWS::STS Security Token Service}
 
 Currently Out-Of-Scope
 ----------------------
