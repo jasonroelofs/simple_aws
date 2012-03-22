@@ -20,11 +20,6 @@ module SimpleAWS
     version "2010-12-01"
     default_region "us-east-1"
 
-    # SES only has one HTTP endpoint
-    def initialize(key, secret)
-      super(key, secret)
-    end
-
     include CallTypes::ActionParam
     include Signing::Version3
   end

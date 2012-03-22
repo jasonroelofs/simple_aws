@@ -7,12 +7,6 @@ describe SimpleAWS::SES do
     @api = SimpleAWS::SES.new "key", "secret"
   end
 
-  it "only works on one endpoint" do
-    lambda {
-      SimpleAWS::SES.new "key", "secret", "us-west-1"
-    }.must_raise ArgumentError
-  end
-
   it "points to the endpoint" do
     @api.uri.must_equal "https://email.us-east-1.amazonaws.com"
   end
