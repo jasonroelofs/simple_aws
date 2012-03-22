@@ -33,6 +33,10 @@ module SimpleAWS
   # Custom response parser to handle the various craziness of the AWS API
   ##
   class SimpleAWSParser < HTTParty::Parser
+    SupportedFormats.merge!(
+      {"application/x-amz-json-1.0" => :json}
+    )
+
     def parse
       if supports_format?
         super

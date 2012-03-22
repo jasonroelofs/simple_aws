@@ -80,6 +80,25 @@ describe SimpleAWS::Response do
       error.message.must_equal "AuthFailure (401): OH snap! String to Sign: \"SOME STRING\""
     end
 
+    it "handles JSON errors (e.g. DynamoDB)" do
+      @error_response = { "__type" => "com.amazon.something.broke#OhNoesError",
+        "Message" => "This is a failure message!"
+      }
+      @http_response.stubs(:parsed_response).returns(@error_response)
+
+      error =
+        lambda {
+          SimpleAWS::Response.new @http_response
+        }.must_raise SimpleAWS::UnsuccessfulResponse
+
+      error.code.must_equal 401
+      error.error_type.must_equal "com.amazon.something.broke#OhNoesError"
+      error.error_message.must_equal "This is a failure message!"
+
+      error.message.must_equal "com.amazon.something.broke#OhNoesError (401): " +
+        "This is a failure message!"
+    end
+
     it "raises if it can't parse the error message" do
       @error_response = { "Erroring" => "This is an error message" }
       @http_response.stubs(:parsed_response).returns(@error_response)

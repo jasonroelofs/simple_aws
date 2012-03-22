@@ -259,6 +259,8 @@ module SimpleAWS
         body["Error"]
       elsif body.has_key? "Response"
         body["Response"]["Errors"]["Error"]
+      elsif body.has_key?("__type")
+        body.merge "Code" => body["__type"]
       else
         raise UnknownErrorResponse.new body
       end
