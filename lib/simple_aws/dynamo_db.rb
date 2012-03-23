@@ -1,5 +1,6 @@
 require 'simple_aws/api'
 require 'simple_aws/signing/version3'
+require 'simple_aws/sts'
 require 'multi_json'
 
 module SimpleAWS
@@ -17,12 +18,20 @@ module SimpleAWS
   # with either the Ruby-fied name, or the full CamelCase name, and pass in
   # options required as the parameters.
   #
-  # All API calls to DynamoDB require two parameters: security_token and request_body.
-  # The security_token can be retrieved from SimpleAWS::STS#get_session_token, and
-  # the request_body must be a hash with serializable data, or a raw String that will
-  # be sent directly to Amazon.
+  # All API calls to DynamoDB require a session token header garnered through STS.
+  # Because this is required, you don't have to worry about it. This API will take
+  # care of the STS hop and ensure the proper credentials are passed into DynamoDB
+  # as needed.
   #
-  # See samples/dynamo_db.rb for how to use STS and DynamoDB together.
+  # With that, the only parameter you need to pass into your API call directly is the
+  # body of the request, which can be a Hash containing keys and values serializable
+  # to JSON or a raw JSON string that will get sent directly to Amazon.
+  #
+  # Note: It is possible right now that if you have a single instance of this API
+  # for a long period that the session_token will eventually expire. If this becomes
+  # and issue please open an Issue on Github and I'll look at making this handling
+  # more robust. You can always recreate a new instance to get new STS credentials
+  # as needed.
   #
   # @see SimpleAWS::Response Response handling
   ##
@@ -32,21 +41,33 @@ module SimpleAWS
     use_https true
     version "2011-12-05"
 
+    attr_reader :sts, :session_token
+
+    ##
+    # Initialize a new instance of this API, swapping out +access_key+ and
+    # +secret_key+ with values from the Security Token Service (STS).
+    # This also will grab and store the session_token value for use in
+    # DynamoDB API calls.
+    ##
+    def initialize(access_key, secret_key, region = nil)
+      @sts = SimpleAWS::STS.new access_key, secret_key
+
+      sts_response = @sts.get_session_token.credentials
+      @session_token = sts_response.session_token
+
+      super(sts_response.access_key_id, sts_response.secret_access_key, region)
+    end
+
     def method_missing(name, *args)
-      if args.length != 2
-        raise ArgumentError.new "Required arguments: (security_token, request_body) got #{args.inspect}"
-      end
-
-      token, body = *args
-
       request = SimpleAWS::Request.new :post, self.uri, "/"
       target = "DynamoDB_#{self.version.gsub("-","")}"
       request.headers["Content-Type"] = "application/x-amz-json-1.0"
 
       request.headers["x-amz-target"] = "#{target}.#{SimpleAWS::Util.camelcase(name.to_s)}"
       request.headers["x-amz-date"] = Time.now.rfc822
-      request.headers["x-amz-security-token"] = token
+      request.headers["x-amz-security-token"] = @session_token
 
+      body = args.first || {}
       request.body = body.is_a?(String) ? body : MultiJson.encode(body)
 
       request.headers["x-amzn-authorization"] =

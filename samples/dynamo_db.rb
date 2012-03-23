@@ -1,6 +1,5 @@
 $: << File.expand_path("../../lib", __FILE__)
 
-require 'simple_aws/sts'
 require 'simple_aws/dynamo_db'
 
 ##
@@ -10,25 +9,15 @@ require 'simple_aws/dynamo_db'
 # export AWS_SECRET="SECRET"
 ##
 
-sts = SimpleAWS::STS.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
+dynamo_db = SimpleAWS::DynamoDB.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
 
-creds = sts.get_session_token.credentials
-session_token = creds.session_token
-new_aws_key = creds.access_key_id
-new_aws_secret = creds.secret_access_key
-
-puts "Got session token #{session_token.inspect}"
-puts "New Access Key #{new_aws_key}"
-puts "New Access Secret #{new_aws_secret}"
-
-dynamo_db = SimpleAWS::DynamoDB.new new_aws_key, new_aws_secret
-
-table_name = "SimpleAWSTestTable"
-
-p dynamo_db.create_table(session_token, {
-  "TableName" => table_name,
+##
+# This call will fail with a LimitExceededException on ReadCapacityUnits
+# If you get any other error then there's something wrong either with your credentials
+# or with the library
+##
+p dynamo_db.create_table "TableName" => "SimpleAWSTestTable",
   "KeySchema" => {
     "HashKeyElement" => {"AttributeName" => "index","AttributeType" => "S"},
   },
   "ProvisionedThroughput" => {"ReadCapacityUnits" => 1, "WriteCapacityUnits" => 1}
-})

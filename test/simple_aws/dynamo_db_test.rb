@@ -4,7 +4,21 @@ require 'simple_aws/dynamo_db'
 describe SimpleAWS::DynamoDB do
 
   before do
+    creds = stub :session_token => "session_token",
+      :access_key_id => "access_key_id",
+      :secret_access_key => "secret_access_key"
+    response = stub :credentials => creds
+
+    SimpleAWS::STS.any_instance.stubs(:get_session_token).returns response
+
     @api = SimpleAWS::DynamoDB.new "key", "secret"
+  end
+
+  it "forwards keys to STS, saves session token and new AWS keys for use" do
+    @api.sts.wont_be_nil
+    @api.access_key.must_equal "access_key_id"
+    @api.secret_key.must_equal "secret_access_key"
+    @api.session_token.must_equal "session_token"
   end
 
   it "points to the endpoint" do
@@ -24,21 +38,11 @@ describe SimpleAWS::DynamoDB do
 
     it "requires a security token as the first parameter and add it as a header" do
       SimpleAWS::Connection.any_instance.expects(:call).with do |request|
-        header = request.headers["x-amz-security-token"]
-        header.must_equal "securitytoken"
         true
       end
 
       obj = SimpleAWS::DynamoDB.new "key", "secret"
-      obj.create_table "securitytoken", {}
-    end
-
-    it "errors out if not given the right arguments" do
-      obj = SimpleAWS::DynamoDB.new "key", "secret"
-
-      lambda {
-        obj.create_table
-      }.must_raise ArgumentError
+      obj.create_table
     end
 
     it "adds the requested action as x-amz-target header" do
@@ -49,7 +53,7 @@ describe SimpleAWS::DynamoDB do
       end
 
       obj = SimpleAWS::DynamoDB.new "key", "secret"
-      obj.create_table "securitytoken", {}
+      obj.create_table
     end
 
     it "adds the json content type header" do
@@ -60,7 +64,7 @@ describe SimpleAWS::DynamoDB do
       end
 
       obj = SimpleAWS::DynamoDB.new "key", "secret"
-      obj.create_table "securitytoken", {}
+      obj.create_table
     end
 
     it "takes any body and serializes into JSON" do
@@ -77,32 +81,34 @@ describe SimpleAWS::DynamoDB do
       end
 
       obj = SimpleAWS::DynamoDB.new "key", "secret"
-      obj.create_table "security_token", table_schema
+      obj.create_table table_schema
     end
 
     it "takes a string body and forwards it off raw" do
       SimpleAWS::Connection.any_instance.expects(:call).with do |request|
-        request.body.wont_be_nil
         request.body.must_equal %|{"string":"body"}|
         true
       end
 
       obj = SimpleAWS::DynamoDB.new "key", "secret"
-      obj.create_table "security_token", %|{"string":"body"}|
+      obj.create_table %|{"string":"body"}|
     end
 
-    it "builds and signs the request" do
+    it "builds and signs the request and adds the session token" do
       SimpleAWS::Connection.any_instance.expects(:call).with do |request|
         header = request.headers["x-amzn-authorization"]
         header.must_match(/^AWS3 /)
-        header.must_match(/AWSAccessKeyId=key/)
+        header.must_match(/AWSAccessKeyId=access_key_id/)
+
+        header = request.headers["x-amz-security-token"]
+        header.must_equal "session_token"
 
         Time.parse(request.headers["x-amz-date"]).wont_be_nil
         true
       end
 
       obj = SimpleAWS::DynamoDB.new "key", "secret"
-      obj.create_table "security_token", {}
+      obj.create_table
     end
 
   end
