@@ -6,29 +6,28 @@ require 'multi_json'
 module SimpleAWS
 
   ##
-  # Amazon's DynamoDB NoSQL store
+  # Amazon's DynamoDB NoSQL Store
   #
   # http://docs.amazonwebservices.com/amazondynamodb/latest/developerguide/Introduction.html
   #
   # All requests are POST and always through HTTPS. Use the third parameter to
-  # #initialize if you need to talk to a region other than us-east-1.
+  # `initialize` if you need to talk to a region other than us-east-1.
   #
   # This module hooks up the `method_missing` functionality as described in the
   # README. To call methods on APIs including this module, simply call a method
   # with either the Ruby-fied name, or the full CamelCase name, and pass in
   # options required as the parameters.
   #
-  # All API calls to DynamoDB require a session token header garnered through STS.
-  # Because this is required, you don't have to worry about it. This API will take
-  # care of the STS hop and ensure the proper credentials are passed into DynamoDB
-  # as needed.
+  # As all API calls to DynamoDB require a session token header garnered through STS,
+  # you don't have to worry about it. This API will take care of the STS hop and ensure
+  # the proper credentials are passed into DynamoDB as needed.
   #
   # With that, the only parameter you need to pass into your API call directly is the
   # body of the request, which can be a Hash containing keys and values serializable
-  # to JSON or a raw JSON string that will get sent directly to Amazon.
+  # to JSON or a raw JSON string that will be sent directly to Amazon.
   #
   # Note: It is possible right now that if you have a single instance of this API
-  # for a long period that the session_token will eventually expire. If this becomes
+  # for a long period that the `session_token` will eventually expire. If this becomes
   # and issue please open an Issue on Github and I'll look at making this handling
   # more robust. You can always recreate a new instance to get new STS credentials
   # as needed.
