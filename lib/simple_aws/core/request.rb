@@ -1,50 +1,50 @@
 module SimpleAWS
 
   ##
-  # Defines all request information needed to run a request against an AWS API
+  # Defines a request to an Amazon API.
   #
   # Requests need to know a number of attributes to work, including the host,
   # path, the HTTP method, and any params or POST bodies. Most of this is
   # straight forward through the constructor and setter methods defined below.
   #
   # One of the more interesting aspects of the AWS API are the indexed parameters.
-  # These are the parameters in the document defined as such:
+  # These are the parameters in the document defined thusly:
   #
-  #   Filter.n.Name
-  #   Filter.n.Value.m
+  #     Filter.n.Name
+  #     Filter.n.Value.m
   #
   # This class has special handling to facilitate building these parameters
   # from regular Ruby Hashes and Arrays, but does not prevent you from specifying
-  # these parameters exactly as defined. For the example above, here are the two
+  # these parameters exactly as defined. For the example above, here are the
   # ways you can set these parameters:
   #
-  # By yourself, filling in the +n+ and +m+ as you need:
+  # By yourself, filling in the `n` and `m` as you need:
   #
-  #   request.params.merge({
-  #     "Filter.1.Name" => "domain",
-  #     "Filter.1.Value" => "vpc",
-  #     "Filter.2.Name" => "ids",
-  #     "Filter.2.Value.1" => "i-1234",
-  #     "Filter.2.Value.2" => "i-8902"
-  #   })
+  #     request.params.merge({
+  #       "Filter.1.Name" => "domain",
+  #       "Filter.1.Value" => "vpc",
+  #       "Filter.2.Name" => "ids",
+  #       "Filter.2.Value.1" => "i-1234",
+  #       "Filter.2.Value.2" => "i-8902"
+  #     })
   #
   # Or let Request handle the indexing and numbering for you:
   #
-  #   request.params["Filter"] = [
-  #     {"Name" => "domain", "Value" => "vpc"},
-  #     {"Name" => "ids", "Value" => ["i-1234", "i-8902"]}
-  #   ]
+  #     request.params["Filter"] = [
+  #       {"Name" => "domain", "Value" => "vpc"},
+  #       {"Name" => "ids", "Value" => ["i-1234", "i-8902"]}
+  #     ]
   #
   # Straight arrays are handled as well:
   #
-  #   request.params["InstanceId"] = ["i-1234", "i-8970"]
+  #     request.params["InstanceId"] = ["i-1234", "i-8970"]
   #
   # In an effort to make this library as transparent as possible when working
   # directly with the AWS API, the keys of the hashes must be the values
-  # specified in the API, and the values must be Hashes, Arrays, or serializable
-  # values like Fixnum, Boolean, or String.
+  # specified in the API, and the values must be Hashes and/or Arrays who contain
+  # easily String-serializable keys and values.
   #
-  # A more detailed example can be found in test/simple_aws/request_test.rb where you'll
+  # A more detailed example can be found in `test/simple_aws/request_test.rb` where you can
   # see how to use many levels of nesting to build your AWS request.
   ##
   class Request

@@ -14,19 +14,19 @@ module SimpleAWS
   #
   # So "GET Service" is
   #
-  #   s3.get "/"
+  #     s3.get "/"
   #
   # When working with a specific bucket, pass in :bucket after the path:
   #
-  #   s3.get "/", :bucket => "bucket_name"
+  #     s3.get "/", :bucket => "bucket_name"
   #
-  #   s3.get "/?policy", :bucket => "bucket_name"
+  #     s3.get "/?policy", :bucket => "bucket_name"
   #
   # For requests that need extra parameters, use the :params option:
   #
-  #   s3.get "/object/name", :bucket => "bucket_name", :params => {
-  #     "response-content-disposition" => "attachment"
-  #   }
+  #     s3.get "/object/name", :bucket => "bucket_name", :params => {
+  #       "response-content-disposition" => "attachment"
+  #     }
   #
   # Also use params in the cases that AWS asks for form fields, such as
   # "POST Object".
@@ -34,9 +34,9 @@ module SimpleAWS
   # A lot of S3 communication happens through request and response headers.
   # To specify a certian set of headers on the request, use :headers:
   #
-  #   s3.get "/", :bucket => "bucket_name", :headers => {
-  #     "x-amz-security-token" => "security string"
-  #   }
+  #     s3.get "/", :bucket => "bucket_name", :headers => {
+  #       "x-amz-security-token" => "security string"
+  #     }
   #
   # Many of the PUT requests require a body of some sort, sometimes XML,
   # sometimes JSON, and other times the raw file data. Use :body for this
@@ -44,7 +44,7 @@ module SimpleAWS
   # JSON information, or an object that otherwise response to #read for file
   # uploads. This API does not build XML or JSON for you right now.
   #
-  #   s3.put "/object/name.txt", :bucket => "bucket_name", :body => File.open()
+  #     s3.put "/object/name.txt", :bucket => "bucket_name", :body => File.open()
   #
   # This API does ensure that file data is uploaded as efficiently as possible,
   # streaming file data from disc to AWS without blowing up memory. If the
@@ -58,10 +58,10 @@ module SimpleAWS
   # which parts to download next. You can see an example of this in samples/s3_batch_download.rb.
   #
   # Quality of Life note: if you forget the leading / (forward slash) in the path
-  # of a resource when# working with a bucket, this library will recognize this and
+  # of a resource when# working with a bucket, this library will catch the omission and
   # fix the path for you. Thus, the following is also a valid call:
   #
-  #   s3.put "object/name.txt", :bucket => "bucket_name", :body => File.open()
+  #     s3.put "object/name.txt", :bucket => "bucket_name", :body => File.open()
   #
   # Raw file data in a response will be available in the #body method on the Response
   # returned by the method call.

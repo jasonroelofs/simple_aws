@@ -14,6 +14,13 @@ module SimpleAWS
     # with either the Ruby-fied name, or the full CamelCase name, and pass in
     # options required as the parameters.
     #
+    # @example
+    #   ec2 = SimpleAWS::EC2.new access_key, secret_key
+    #
+    #   # These two are equivalent
+    #   ec2.list_instances
+    #   ec2.ListInstances
+    #
     # All responses will be wrapped up in an {SimpleAWS::Response SimpleAWS::Response} object.
     ##
     module ActionParam

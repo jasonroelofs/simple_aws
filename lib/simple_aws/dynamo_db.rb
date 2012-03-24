@@ -24,13 +24,17 @@ module SimpleAWS
   #
   # With that, the only parameter you need to pass into your API call directly is the
   # body of the request, which can be a Hash containing keys and values serializable
-  # to JSON or a raw JSON string that will be sent directly to Amazon.
+  # to JSON or a raw JSON string that will be sent directly to Amazon:
+  #
+  #     dynamo_db.delete_table "TableName" => "Table1"
+  #
+  #     dynamo_db.delete_table "{'TableName': 'Table1'}"
   #
   # Note: It is possible right now that if you have a single instance of this API
   # for a long period that the `session_token` will eventually expire. If this becomes
   # and issue please open an Issue on Github and I'll look at making this handling
-  # more robust. You can always recreate a new instance to get new STS credentials
-  # as needed.
+  # more robust. You can always recreate a new instance of SimpleAWS::DynamoDB
+  # to get new STS credentials as needed.
   #
   # @see SimpleAWS::Response Response handling
   ##
@@ -43,10 +47,12 @@ module SimpleAWS
     attr_reader :sts, :session_token
 
     ##
-    # Initialize a new instance of this API, swapping out +access_key+ and
-    # +secret_key+ with values from the Security Token Service (STS).
+    # Initialize a new instance of this API, swapping out `access_key` and
+    # `secret_key` with values from the Security Token Service (STS).
     # This also will grab and store the session_token value for use in
     # DynamoDB API calls.
+    #
+    # @see SimpleAWS::API#initialize
     ##
     def initialize(access_key, secret_key, region = nil)
       @sts = SimpleAWS::STS.new access_key, secret_key

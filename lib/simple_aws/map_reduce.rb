@@ -10,7 +10,7 @@ module SimpleAWS
   # http://docs.amazonwebservices.com/ElasticMapReduce/latest/API/
   #
   # All requests are POST and always through HTTPS. Use the third parameter to
-  # #initialize if you need to talk to a region other than us-east-1.
+  # `initialize` if you need to talk to a region other than us-east-1.
   #
   # @see SimpleAWS::CallTypes::ActionParam Calling rules
   # @see SimpleAWS::Response Response handling

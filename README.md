@@ -3,7 +3,7 @@ SimpleAWS [![Travis CI Build Status](https://secure.travis-ci.org/jameskilton/si
 
 A thin, simple, forward compatible Ruby wrapper around the various Amazon Web Service APIs.
 
-What?! Why?
+What? Why?!
 -----------
 
 Do we really need another Ruby library to talk to Amazon Web Services? Aren't there enough libraries out there that could just use some more help to make them better? What about [fog](http://fog.io), or [aws-sdk](http://rubygems.org/gems/aws-sdk), or [aws](http://rubygems.org/gems/aws), or [right_aws](http://rubygems.org/gems/right_aws)?
@@ -20,13 +20,13 @@ Outside of the pervasive complexity of these libraries, what finally drove me to
 
 Amazon constantly updates AWS APIs, adding parameters and actions, and at times entire new APIs. An AWS library should work *with* the API in question, not fight against it. The only thing a hard-coded parameter list does is add confusion. When you have to figure out how AWS parameters map to library parameters, or hash keys, your productivity drops. When you have to figure out how an object is calling an AWS library, and how you're supposed to use that object, your productivity drops. Likewise when you finally realize that the library does not currently support the action, parameter, or API you're trying to use at the time, your productivity is now at a complete stop.
 
-SimpleAWS simply says no, no more leaky abstractions and confusing APIs. Just use the names of the API methods and parameters as defined in Amazon's documentation! If a new parameter is added to the API you're using, just use it. The name SimpleAWS isn't a wish or hope, it's the core philosophy. This library focuses on being a very thin communication layer between your Ruby code and Amazon's AWS APIs. Let SimpleAWS handle the messy communication details so your code can do what it needs to do letting you be more productive.
+SimpleAWS simply says no, no more leaky abstractions and confusing APIs. Just use the names of the API methods and parameters as defined in Amazon's documentation! If a new parameter is added to the API you're using, just use it. The name SimpleAWS isn't a wish or hope, it is the core philosophy. This library focuses on being a very thin communication layer between your Ruby code and Amazon's AWS APIs. Let SimpleAWS handle the messy communication details so your code can do what it needs to do letting you be more productive.
 
 
 Surely SimpleAWS isn't just `curl`?
 -----------------------------------
 
-It's well know that AWS has its share of warts and wtfs. SimpleAWS doesn't try to fix these. What SimpleAWS does do is add as little logic as possible to make you productive and to ensure it follows the Principle of Least Surprise.
+It is well know that AWS has its share of warts and wtfs. SimpleAWS doesn't try to fix these. What SimpleAWS does do is add as little logic as possible to make you productive and to ensure it follows the Principle of Least Surprise.
 
 ### Calling
 

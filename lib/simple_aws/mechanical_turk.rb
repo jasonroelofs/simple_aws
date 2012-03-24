@@ -10,7 +10,7 @@ module SimpleAWS
   #
   # All requests are POST and always through HTTPS.
   # Instead of regions, this API supports normal and sandbox mode. Use the third
-  # parameter of #initialize to specify sandbox mode.
+  # parameter of `initialize` to specify sandbox mode.
   #
   # For a more fleshed out object API for interacting with MechanicalTurk, you should
   # give rturk a try here: https://github.com/mdp/rturk

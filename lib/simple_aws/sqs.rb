@@ -10,12 +10,12 @@ module SimpleAWS
   # http://docs.amazonwebservices.com/AWSSimpleQueueService/latest/APIReference/Welcome.html
   #
   # All requests are POST and always through HTTPS. Use the third parameter to
-  # #initialize if you need to talk to a region other than us-east-1.
+  # `initialize` if you need to talk to a region other than us-east-1.
   #
   # For the requests that act on a queue directly, like SendMessage, pass in the QueueURL
   # as the first parameter to the call:
   #
-  #   sqs.send_message queue_url, params
+  #     sqs.send_message queue_url, params
   #
   # In accordance with the AWS documentation, SimpleAWS does not try to reconstruct
   # queue urls, use ListQueues or GetQueueUrl to get the correct queue url when needed.

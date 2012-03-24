@@ -40,39 +40,43 @@ module SimpleAWS
   # returned by the AWS API in question. For some APIs, like EC2, the response is
   # a relatively flat:
   #
-  #  <DataRequestResponse>
-  #    <requestId>...</requestId>
-  #    <dataRequested>
-  #      ...
-  #    </dataRequested>
-  #  </DataRequestResponse>
+  #    <pre>
+  #    <DataRequestResponse>
+  #      <requestId>...</requestId>
+  #      <dataRequested>
+  #        ...
+  #      </dataRequested>
+  #    </DataRequestResponse>
+  #    </pre>
   #
-  # In this case, your querying will start inside of <DataRequestResponse>, ala the first
-  # method you'll probably call is +data_requested+. For other APIs, the response
+  # In this case, your querying will start inside of `<DataRequestResponse>`, ala the first
+  # method you'll probably call is `data_requested`. For other APIs, the response
   # object is a little deeper and looks like this:
   #
-  #  <DataRequestResponse>
-  #    <DataRequestedResult>
-  #       <DataRequested>
-  #          ...
-  #       </DataRequested>
-  #    </DataRequestedResult>
-  #    <ResponseMetadata>
-  #      <RequestId>...</RequestId>
-  #    </ResponseMetadata>
-  #  </DataRequestResponse>
+  #    <pre>
+  #    <DataRequestResponse>
+  #      <DataRequestedResult>
+  #         <DataRequested>
+  #            ...
+  #         </DataRequested>
+  #      </DataRequestedResult>
+  #      <ResponseMetadata>
+  #        <RequestId>...</RequestId>
+  #      </ResponseMetadata>
+  #    </DataRequestResponse>
+  #    </pre>
   #
-  # For these response structures, your query will start inside of <DataRequestedResult>,
-  # ala your first method call will be +data_requested+. To get access to the request id of
-  # both of these structures, simply use #request_id on the base response. You'll also
+  # For these response structures, your query will start inside of `<DataRequestedResult>`,
+  # ala your first method call will be `data_requested`. To get access to the request id of
+  # both of these structures, simply use `request_id` on the base response. You'll also
   # notice the case differences of the XML tags, this class tries to ensure that case doesn't
   # matter when you're querying with methods. If you're using raw hash access then yes the
   # case of the keys in question need to match.
   #
   # This class does ensure that any collection is always an Array, given that
-  # when AWS returns a single item in a collection, the xml -> hash parser gives a
+  # when AWS returns a single item in a collection, the xml-to-hash parser gives a
   # single hash back instead of an array. This class will also look for
-  # array indicators from AWS, like <item> or <member> and squash them.
+  # array indicators from AWS, like `<item>` or `<member>` and squash them.
   #
   # If AWS returns an error code, instead of getting a Response back the library
   # will instead throw an UnsuccessfulResponse error with the pertinent information.

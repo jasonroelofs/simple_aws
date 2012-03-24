@@ -5,7 +5,7 @@ require 'simple_aws/core/request'
 module SimpleAWS
 
   ##
-  # Base class for all endpoint handler classes.
+  # Base class for all AWS API wrappers.
   #
   # See the list of AWS Endpoints for the values to use when
   # implementing various APIs:
