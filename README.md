@@ -122,6 +122,12 @@ These are the Amazon APIs that SimpleAWS currently handles:
 * {SimpleAWS::S3 Simple Storage Service (S3)}
 * {SimpleAWS::STS Security Token Service (STS)}
 
+Not currently implemented
+-------------------------
+
+* Simple Workflow Service
+
+
 Currently Out-Of-Scope
 ----------------------
 
