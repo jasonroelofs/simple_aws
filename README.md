@@ -115,16 +115,12 @@ These are the Amazon APIs that SimpleAWS currently handles:
 * {SimpleAWS::ImportExport Import/Export}
 * {SimpleAWS::MechanicalTurk Mechanical Turk}
 * {SimpleAWS::RDS Relational Database Service (RDS)}
+* {SimpleAWS::SimpleDB SimpleDB}
 * {SimpleAWS::SES Simple Email Service (SES)}
 * {SimpleAWS::SNS Simple Notification Service (SNS)}
 * {SimpleAWS::SQS Simple Queue Service (SQS)}
 * {SimpleAWS::S3 Simple Storage Service (S3)}
 * {SimpleAWS::STS Security Token Service (STS)}
-
-Not Currently Implemented
--------------------------
-
-* SimpleDB
 
 Currently Out-Of-Scope
 ----------------------
