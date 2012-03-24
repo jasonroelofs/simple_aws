@@ -101,25 +101,30 @@ Implemented APIs
 
 These are the Amazon APIs that SimpleAWS currently handles:
 
-* {SimpleAWS::S3 S3}
-* {SimpleAWS::EC2 EC2}
-* {SimpleAWS::ELB ELB}
-* {SimpleAWS::IAM IAM}
-* {SimpleAWS::MapReduce MapReduce}
 * {SimpleAWS::AutoScaling Auto Scaling}
-* {SimpleAWS::RDS RDS}
-* {SimpleAWS::ElastiCache ElastiCache}
-* {SimpleAWS::ElasticBeanstalk Elastic Beanstalk}
 * {SimpleAWS::CloudFormation CloudFormation}
-* {SimpleAWS::SNS SNS}
-* {SimpleAWS::CloudWatch CloudWatch}
-* {SimpleAWS::ImportExport ImportExport}
-* {SimpleAWS::MechanicalTurk MechanicalTurk}
-* {SimpleAWS::SQS SQS}
-* {SimpleAWS::SES SES}
 * {SimpleAWS::CloudFront CloudFront}
+* {SimpleAWS::CloudWatch CloudWatch}
 * {SimpleAWS::DynamoDB DynamoDB}
-* {SimpleAWS::STS Security Token Service}
+* {SimpleAWS::ElasticBeanstalk Elastic Beanstalk}
+* {SimpleAWS::ELB Elastic Load Balancing (ELB)}
+* {SimpleAWS::MapReduce Elastic MapReduce}
+* {SimpleAWS::ElastiCache ElastiCache}
+* {SimpleAWS::EC2 Elastic Compute Cloud (EC2)}
+* {SimpleAWS::IAM Identity and Access Management (IAM)}
+* {SimpleAWS::ImportExport Import/Export}
+* {SimpleAWS::MechanicalTurk Mechanical Turk}
+* {SimpleAWS::RDS Relational Database Service (RDS)}
+* {SimpleAWS::SES Simple Email Service (SES)}
+* {SimpleAWS::SNS Simple Notification Service (SNS)}
+* {SimpleAWS::SQS Simple Queue Service (SQS)}
+* {SimpleAWS::S3 Simple Storage Service (S3)}
+* {SimpleAWS::STS Security Token Service (STS)}
+
+Not Currently Implemented
+-------------------------
+
+* SimpleDB
 
 Currently Out-Of-Scope
 ----------------------
