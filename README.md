@@ -1,4 +1,4 @@
-SimpleAWS [![Travis CI Build Status](https://secure.travis-ci.org/jameskilton/simple_aws.png)](http://travis-ci.org/jameskilton/simple_aws)
+SimpleAWS [![Travis CI Build Status](https://secure.travis-ci.org/jasonroelofs/simple_aws.png)](http://travis-ci.org/jasonroelofs/simple_aws)
 =========
 
 A thin, simple, forward compatible Ruby wrapper around the various Amazon Web Service APIs.
@@ -152,9 +152,9 @@ SimpleAWS is built to work under all major Ruby versions:
 
 ### Misc Info
 
-Author: Jason Roelofs - [Github](https://github.com/jameskilton) [@jameskilton](http://twitter.com/jameskilton)
+Author: Jason Roelofs - [Github](https://github.com/jasonroelofs) [@jasonroelofs](http://twitter.com/jasonroelofs)
 
-Source: https://github.com/jameskilton/simple_aws
+Source: https://github.com/jasonroelofs/simple_aws
 
-Issues: https://github.com/jameskilton/simple_aws/issues
+Issues: https://github.com/jasonroelofs/simple_aws/issues
 
