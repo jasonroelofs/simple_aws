@@ -1,4 +1,5 @@
 require 'test_helper'
+require 'simple_aws/api'
 require 'simple_aws/core/request'
 require 'simple_aws/core/response'
 require 'simple_aws/core/connection'
@@ -8,7 +9,8 @@ describe SimpleAWS::Connection do
   describe "#call" do
 
     before do
-      @connection = SimpleAWS::Connection.new
+      @api = SimpleAWS::API.new "access", "secret"
+      @connection = SimpleAWS::Connection.new @api
       @http_response = stub_everything(:success? => true, :parsed_response => {"value" => {}})
     end
 
@@ -68,5 +70,17 @@ describe SimpleAWS::Connection do
       @connection.call request
     end
 
+    it "forwards debugging settings from the API to the backend" do
+      @api.debug!
+
+      request = SimpleAWS::Request.new(:get, "host.com", "/")
+
+      SimpleAWS::HTTP.expects(:get).with {|uri, options|
+        options[:debug_output].must_equal $stdout
+      }.returns(@http_response)
+
+      @connection.call request
+    end
   end
+
 end

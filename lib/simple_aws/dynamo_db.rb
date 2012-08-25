@@ -80,7 +80,7 @@ module SimpleAWS
         "Algorithm=HmacSHA256," +
         "Signature=#{build_signature_for(request)}"
 
-      connection = SimpleAWS::Connection.new
+      connection = SimpleAWS::Connection.new self
       connection.call request
     end
 

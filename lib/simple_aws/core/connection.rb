@@ -58,6 +58,10 @@ module SimpleAWS
   ##
   class Connection
 
+    def initialize(api)
+      @api = api
+    end
+
     ##
     # Send an SimpleAWS::Request to AWS proper, returning an SimpleAWS::Response.
     # Will raise if the request has an error
@@ -68,7 +72,8 @@ module SimpleAWS
           request.uri,
           :query => request.params,
           :headers => request.headers,
-          :body => request.body
+          :body => request.body,
+          :debug_output => @api.debug_to
         )
       )
     end

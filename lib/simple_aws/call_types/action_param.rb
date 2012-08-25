@@ -42,7 +42,7 @@ module SimpleAWS
       protected
 
       def send_request(request)
-        connection = SimpleAWS::Connection.new
+        connection = SimpleAWS::Connection.new self
         connection.call finish_and_sign_request(request)
       end
 

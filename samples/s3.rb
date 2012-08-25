@@ -22,6 +22,7 @@ def bad_usage
 end
 
 s3 = SimpleAWS::S3.new ENV["AWS_KEY"], ENV["AWS_SECRET"]
+s3.debug!
 
 bucket_name = ARGV[0]
 file_name = ARGV[1]

@@ -49,6 +49,20 @@ describe SimpleAWS::API do
     end
   end
 
+  describe "#debug" do
+    it "allows turning on debugging for the api instance" do
+      obj = TestAPI.new "access_key", "secret_key"
+      obj.debug!
+      obj.debug_to.must_equal $stdout
+    end
+
+    it "allows changing the output location of the debugging output" do
+      obj = TestAPI.new "access_key", "secret_key"
+      obj.debug! $stderr
+      obj.debug_to.must_equal $stderr
+    end
+  end
+
   describe "#region" do
     it "uses default region if none given on constructor" do
       TestAPI.default_region "us-west-1"

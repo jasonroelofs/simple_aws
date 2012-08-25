@@ -184,7 +184,7 @@ module SimpleAWS
     def call(method, path, options = {})
       request = self.build_request method, path, options
 
-      connection = SimpleAWS::Connection.new
+      connection = SimpleAWS::Connection.new self
       connection.call finish_and_sign_request(request)
     end
 

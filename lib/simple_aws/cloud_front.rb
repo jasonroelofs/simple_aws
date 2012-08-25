@@ -151,7 +151,7 @@ module SimpleAWS
         request.body = options[:body]
       end
 
-      connection = SimpleAWS::Connection.new
+      connection = SimpleAWS::Connection.new self
       connection.call finish_and_sign_request(request)
     end
 

@@ -56,7 +56,7 @@ module SimpleAWS
 
     end
 
-    attr_reader :access_key, :secret_key, :region, :version
+    attr_reader :access_key, :secret_key, :region, :version, :debug_to
 
     ##
     # Construct a new access object for the API in question.
@@ -73,6 +73,14 @@ module SimpleAWS
       @endpoint = self.class.instance_variable_get("@endpoint")
       @use_https = self.class.instance_variable_get("@use_https")
       @version = self.class.instance_variable_get("@version")
+    end
+
+    ##
+    # Flag this API to render debugging information to an IO location.
+    # Default is $stdout
+    ##
+    def debug!(location = $stdout)
+      @debug_to = location
     end
 
     ##
