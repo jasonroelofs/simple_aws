@@ -239,7 +239,7 @@ module SimpleAWS
     protected
 
     def parse_and_throw_error_from(http_response)
-      if http_response.parsed_response
+      if has_parsed_response? http_response
         error = parse_error_from http_response.parsed_response
       else
         error = { "Message" => http_response.response }
@@ -250,6 +250,11 @@ module SimpleAWS
         error["Code"],
         error["Message"]
       )
+    end
+
+    def has_parsed_response?(response)
+      !response.parsed_response.nil? &&
+        response.parsed_response != ""
     end
 
     def parse_error_from(body)

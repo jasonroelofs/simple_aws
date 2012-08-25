@@ -142,6 +142,19 @@ describe SimpleAWS::Response do
       error.code.must_equal 404
       error.message.must_equal " (404): This is a response ok?"
     end
+
+    it "handles errors that have an empty parsed_response" do
+      @http_response.stubs(:code).returns(500)
+      @http_response.stubs(:parsed_response).returns("")
+      @http_response.stubs(:response).returns("Not valid")
+
+      error = lambda {
+        response = SimpleAWS::Response.new @http_response
+      }.must_raise SimpleAWS::UnsuccessfulResponse
+
+      error.code.must_equal 500
+      error.message.must_equal " (500): Not valid"
+    end
   end
 
   describe "successful response parsing and mapping" do
