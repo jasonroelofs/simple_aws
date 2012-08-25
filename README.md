@@ -42,9 +42,9 @@ ec2 = SimpleAWS::EC2.new key, secret
 ec2.DescribeInstances
 ```
 
-### Parameters
+### Parameters and Headers
 
-Adding parameters to your method calls follows similar rules, with some Quality of Life improvements. The following three are equivalent:
+Parameters and Headers to actions are sent as defined in the official AWS documentation. They must be strings that exactly match the parameters and headers as defined for each action. For example, the "InstanceId" parameter of EC2's "DescribeInstances" action must be named "InstanceId", not :instance_id. That said, there are some Quality of Life improvements to parameter handling. The following three are equivalent:
 
 #### Just Call It
 
