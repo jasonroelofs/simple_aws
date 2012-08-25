@@ -15,6 +15,12 @@ describe SimpleAWS::IAM do
     @api.version.must_equal "2010-05-08"
   end
 
+  it "does not support region selection" do
+    lambda {
+      SimpleAWS::IAM.new "key", "secret", "us-east-1"
+    }.must_raise ArgumentError
+  end
+
   describe "API calls" do
 
     it "builds and signs calls with ActionParam rules" do

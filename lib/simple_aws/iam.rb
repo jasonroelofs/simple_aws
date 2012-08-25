@@ -20,6 +20,10 @@ module SimpleAWS
     use_https true
     version "2010-05-08"
 
+    def initialize(key, secret)
+      super(key, secret)
+    end
+
     include CallTypes::ActionParam
     include Signing::Version2
   end
