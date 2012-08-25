@@ -104,4 +104,20 @@ describe SimpleAWS::Request do
       })
     end
   end
+
+  describe "date / time objects" do
+    it "converts date objects to ISO8601 format" do
+      @request.params["Date"] = Date.parse("2012-02-14")
+      @request.params.must_equal({
+        "Date" => "2012-02-14"
+      })
+    end
+
+    it "converts time objects to ISO8601 format" do
+      @request.params["Time"] = Time.utc(2012, 04, 16, 10, 30, 25)
+      @request.params.must_equal({
+        "Time" => "2012-04-16T10:30:25Z"
+      })
+    end
+  end
 end

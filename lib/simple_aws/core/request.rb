@@ -1,3 +1,6 @@
+require 'date'
+require 'time'
+
 module SimpleAWS
 
   ##
@@ -57,6 +60,8 @@ module SimpleAWS
           process_array key, value
         when Hash
           process_hash key, value
+        when Date, Time
+          super(key, value.iso8601)
         else
           super
         end
