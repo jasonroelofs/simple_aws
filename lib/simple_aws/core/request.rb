@@ -60,8 +60,10 @@ module SimpleAWS
           process_array key, value
         when Hash
           process_hash key, value
-        when Date, Time
+        when Time
           super(key, value.iso8601)
+        when Date
+          super(key, value.strftime("%Y-%m-%d"))
         else
           super
         end
