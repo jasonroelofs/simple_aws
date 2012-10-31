@@ -1,5 +1,4 @@
 require 'simple_aws/api'
-require 'simple_aws/signing/version3'
 require 'simple_aws/sts'
 require 'multi_json'
 
