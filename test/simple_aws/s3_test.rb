@@ -141,6 +141,17 @@ describe SimpleAWS::S3 do
       @api.get "/", :body => file
     end
 
+    it "calculates size of body that isn't a File (responds to read)" do
+      raw_body = StringIO.new "raw data"
+
+      SimpleAWS::Connection.any_instance.expects(:call).with do |request|
+        request.headers["Content-Length"].must_equal "8"
+        true
+      end
+
+      @api.get "/", :body => raw_body
+    end
+
     it "uses previously set content type if given" do
       SimpleAWS::Connection.any_instance.expects(:call).with do |request|
         request.headers["Content-Type"].must_equal(
@@ -151,6 +162,15 @@ describe SimpleAWS::S3 do
 
       @api.get "/", :body => File.new("Gemfile"),
         :headers => {"Content-Type" => "application/pdf"}
+    end
+
+    it "sets the default content-type on post / put if none explicitly given" do
+      SimpleAWS::Connection.any_instance.expects(:call).with do |request|
+        request.headers["Content-Type"].must_equal "application/x-www-form-urlencoded"
+        true
+      end
+
+      @api.put "/", :body => "some random body"
     end
 
     it "signs the given request according to Version 3 rules" do

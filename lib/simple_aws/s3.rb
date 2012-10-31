@@ -248,10 +248,15 @@ module SimpleAWS
 
       request.body = options[:body]
 
-      if request.body.respond_to?(:read)
-        request.headers["Content-Type"] ||= "application/octet-stream"
-        request.headers["Content-Length"] = File.size(request.body).to_s
-        request.headers["Expect"] = "100-continue"
+      if request.body
+        request.headers["Content-Length"] = calculate_size_of(request.body).to_s
+
+        if request.body.respond_to?(:read)
+          request.headers["Content-Type"] ||= "application/octet-stream"
+          request.headers["Expect"] = "100-continue"
+        end
+
+        request.headers["Content-Type"] ||= "application/x-www-form-urlencoded"
       end
 
       request
@@ -268,6 +273,10 @@ module SimpleAWS
     end
 
     protected
+
+    def calculate_size_of(body)
+      body.respond_to?(:size) ? body.size : File.size(body)
+    end
 
     ##
     # Build and sign the final request, as per the rules here:
