@@ -129,6 +129,20 @@ module SimpleAWS
     end
 
     ##
+    # Send a request using HTTP POST
+    #
+    # @param path [String] The path of the resource at hand
+    # @param options [Hash] Options as defined above
+    #
+    # @return [SimpleAWS::Response] The results of the request
+    #
+    # @raise [SimpleAWS::UnsuccessfulResponse, SimpleAWS::UnknownErrorResponse] on response errors
+    ##
+    def post(path, options = {})
+      call :post, path, options
+    end
+
+    ##
     # Send a request using HTTP PUT
     #
     # @param path [String] The path of the resource at hand
