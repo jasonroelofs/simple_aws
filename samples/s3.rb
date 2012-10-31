@@ -37,8 +37,16 @@ puts "", "First 10 files in #{bucket_name}:", ""
 
 bad_usage unless bucket_name
 
-s3.get("/", :bucket => bucket_name, :params => {"max-keys" => 10}).contents.each do |entry|
-  puts entry.key
+s3.get("/", :bucket => bucket_name, :params => {"max-keys" => 10}).tap do |response|
+  # Amazon doesn't include Contents if there are no files
+  # Amazon also includes just one entry if there's only one file to be found,
+  # where as if there's > 1 then SimpleAWS will be given a proper array.
+  # Gotta love XML!
+  if response["Contents"]
+    [response.contents].flatten.each do |entry|
+      puts entry.key
+    end
+  end
 end
 
 puts "", "Uploading #{file_name} to #{bucket_name}:", ""
