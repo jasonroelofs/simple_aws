@@ -40,7 +40,7 @@ module SimpleAWS
     def parse
       if supports_format?
         super
-      elsif body =~ %r{<\?xml}
+      elsif body.start_with?("<?xml")
         xml
       else
         body
