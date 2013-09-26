@@ -2,7 +2,8 @@ require 'rubygems'
 gem 'minitest'
 require 'minitest/autorun'
 
-require 'mocha_standalone'
+require 'mocha/api'
+require 'mocha/setup'
 
 class MiniTest::Unit::TestCase
   include Mocha::API
