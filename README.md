@@ -84,6 +84,23 @@ ec2.describe_instances({
 })
 ```
 
+#### Specify Version
+
+Every class has a default version. And any request, even you send a raw XML data, it's gonna be used.
+
+```ruby
+cf = SimpleAWS::CloudFront.new 'key', 'secret'
+cf.version # => "2010-11-01"
+```
+
+You can change the API version as follows.
+
+```ruby
+SimpleAWS::CloudFront.version '2013-08-26'
+cf = SimpleAWS::CloudFront.new 'key', 'secret'
+cf.version # => "2013-08-26"
+```
+
 ### Response Parsing
 
 All requests return an SimpleAWS::Response object which does a few cleanup tasks on the resulting XML to make it easier to query and to hide some of the worst warts an XML body tends to have.
