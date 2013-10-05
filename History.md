@@ -1,6 +1,11 @@
 SimpleAWS Changelog
 ===================
 
+1.2.3
+-----
+
+* Allow manual selection of API versions
+
 1.2.2
 -----
 
