@@ -120,12 +120,6 @@ These are the Amazon APIs that SimpleAWS currently handles:
 * {SimpleAWS::S3 Simple Storage Service (S3)}
 * {SimpleAWS::STS Security Token Service (STS)}
 
-Not currently implemented
--------------------------
-
-* Simple Workflow Service
-
-
 Currently Out-Of-Scope
 ----------------------
 
@@ -143,9 +137,8 @@ Project Info
 SimpleAWS is built to work under all major Ruby versions:
 
 * 1.8.7
-* 1.9.2
 * 1.9.3
-* ree
+* 2.0.0
 * jruby
 * rubinius
 
