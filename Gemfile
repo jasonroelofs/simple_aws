@@ -8,8 +8,6 @@ gemspec
 
 group :development do
   gem "rake"
-  gem "yard",      :platforms => :ruby
-  gem "redcarpet", :platforms => :ruby
 end
 
 group :test do
