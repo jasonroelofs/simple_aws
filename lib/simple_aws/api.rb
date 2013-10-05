@@ -56,7 +56,14 @@ module SimpleAWS
 
     end
 
-    attr_reader :access_key, :secret_key, :region, :version, :debug_to
+    attr_reader :access_key, :secret_key, :region, :debug_to
+
+    ##
+    # Read or change the AWS Version this API is using. If the default version
+    # defined in the code is not the current version, please open an Issue
+    # and set the version manually in the mean time.
+    ##
+    attr_accessor :version
 
     ##
     # Construct a new access object for the API in question.

@@ -72,6 +72,14 @@ describe SimpleAWS::API do
     end
   end
 
+  describe "#version" do
+    it "allows changing the version on an instance" do
+      api = TestAPI.new "access_key", "secret_key"
+      api.version = "2013-02-02"
+      api.version.must_equal "2013-02-02"
+    end
+  end
+
   describe "#uri" do
     before do
       TestAPI.endpoint nil
