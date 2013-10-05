@@ -1,4 +1,4 @@
-SimpleAWS [![Travis CI Build Status](https://secure.travis-ci.org/jasonroelofs/simple_aws.png)](http://travis-ci.org/jasonroelofs/simple_aws)
+SimpleAWS [![Travis CI Build Status](https://secure.travis-ci.org/jasonroelofs/simple_aws.png)](http://travis-ci.org/jasonroelofs/simple_aws) [![Code Climate](https://codeclimate.com/github/jasonroelofs/simple_aws.png)](https://codeclimate.com/github/jasonroelofs/simple_aws)
 =========
 
 A thin, simple, forward compatible Ruby wrapper around the various Amazon Web Service APIs.
