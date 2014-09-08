@@ -10,6 +10,7 @@ Gem::Specification.new do |s|
   s.summary     = "The simplest and easiest to use AWS communication library"
   s.description = "SimpleAWS is a clean, simple, and forward compatible library for talking to the Amazon Web Service APIs."
 
+  s.add_dependency "multi_json"
   s.add_dependency "nokogiri"
   s.add_dependency "httparty"
 
