@@ -18,7 +18,7 @@ module SimpleAWS
   class RDS < API
     endpoint "rds"
     use_https true
-    version "2011-04-01"
+    version "2013-09-09"
 
     include CallTypes::ActionParam
     include Signing::Version2

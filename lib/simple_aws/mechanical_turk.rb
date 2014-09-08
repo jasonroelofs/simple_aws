@@ -21,7 +21,7 @@ module SimpleAWS
   class MechanicalTurk < API
     endpoint "mechanicalturk"
     use_https true
-    version "2011-10-01"
+    version "2014-06-15"
 
     def initialize(key, secret, sandbox = false)
       super(key, secret, sandbox ? "sandbox" : nil)

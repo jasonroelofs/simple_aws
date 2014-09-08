@@ -17,10 +17,6 @@ describe SimpleAWS::ImportExport do
     @api.uri.must_equal "https://importexport.amazonaws.com"
   end
 
-  it "works with the current version" do
-    @api.version.must_equal "2010-06-03"
-  end
-
   describe "API calls" do
 
     it "builds and signs calls with ActionParam rules" do

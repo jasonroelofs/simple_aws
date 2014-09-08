@@ -11,10 +11,6 @@ describe SimpleAWS::ElastiCache do
     @api.uri.must_equal "https://elasticache.us-east-1.amazonaws.com"
   end
 
-  it "works with the current version" do
-    @api.version.must_equal "2011-07-15"
-  end
-
   describe "API calls" do
 
     it "builds and signs calls with ActionParam rules" do

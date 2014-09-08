@@ -11,10 +11,6 @@ describe SimpleAWS::CloudFormation do
     @api.uri.must_equal "https://cloudformation.us-east-1.amazonaws.com"
   end
 
-  it "works with the current version" do
-    @api.version.must_equal "2010-05-15"
-  end
-
   describe "API calls" do
 
     it "builds and signs calls with ActionParam rules" do

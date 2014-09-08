@@ -11,10 +11,6 @@ describe SimpleAWS::MechanicalTurk do
     @api.uri.must_equal "https://mechanicalturk.amazonaws.com"
   end
 
-  it "works with the current version" do
-    @api.version.must_equal "2011-10-01"
-  end
-
   it "can be told to work in sandbox mode" do
     api = SimpleAWS::MechanicalTurk.new "key", "secret", true
     api.uri.must_equal "https://mechanicalturk.sandbox.amazonaws.com"
@@ -30,7 +26,7 @@ describe SimpleAWS::MechanicalTurk do
         params["Operation"].must_equal "SearchHITs"
         params["Service"].must_equal "AWSMechanicalTurkRequester"
         params["AWSAccessKeyId"].must_equal "key"
-        params["Version"].must_equal "2011-10-01"
+        params["Version"].must_equal "2014-06-15"
         params["Signature"].wont_be_nil
 
         true

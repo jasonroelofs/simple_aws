@@ -18,7 +18,7 @@ module SimpleAWS
   class ELB < API
     endpoint "elasticloadbalancing"
     use_https true
-    version "2011-11-15"
+    version "2012-06-01"
 
     include CallTypes::ActionParam
     include Signing::Version2
