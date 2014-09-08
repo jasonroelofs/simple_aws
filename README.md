@@ -136,11 +136,10 @@ Project Info
 
 SimpleAWS is built to work under all major Ruby versions:
 
-* 1.8.7
 * 1.9.3
 * 2.0.0
+* 2.1.2
 * jruby
-* rubinius
 
 ### Misc Info
 
