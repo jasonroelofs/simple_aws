@@ -3,6 +3,16 @@ SimpleAWS [![Travis CI Build Status](https://secure.travis-ci.org/jasonroelofs/s
 
 A thin, simple, forward compatible Ruby wrapper around the various Amazon Web Service APIs.
 
+End of Life
+-----------
+
+Back in 2011 when I started this project, the state of AWS libraries in Ruby was poor. The official SDK from Amazon hadn't been touched for years and Fog wasn't very fast in getting new features and APIs implemented. At the time I was playing with Amazon's VPC and a few other brand new features and it made more sense for me to build as simple an API as possible to reduce the effort of interacting with AWS via Ruby.
+
+Since then I've changed jobs and spend less time with AWS. At the same time, the official SDK [aws-sdk-ruby](https://github.com/aws/aws-sdk-ruby) got a new team and is now comprehensive (including the annoying complicated Version 4 signing rules) and quickly updated, and Fog AWS has caught up with the available features as well. This library has itself now fallen a bit behind (mainly Version 4 signing) and I don't use it enough to warrant spending the time to compete with the official SDK.
+
+While I still don't believe Fog AWS or AWS SDK are as easy to use as they could be, they are the best Ruby solutions available to us and I recommend using them now. This library is now considered End of Life'd and will receive no more work or improvements.
+
+
 Why?
 -----------
 
