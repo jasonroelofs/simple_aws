@@ -296,7 +296,7 @@ module SimpleAWS
         k =~ /^x-amz/i
       }.map {|k, v|
         "#{k.downcase}:#{v}".chomp
-      }
+      }.sort
 
       to_sign = [
         request.method.to_s.upcase,

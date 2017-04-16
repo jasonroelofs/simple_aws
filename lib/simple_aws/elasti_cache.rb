@@ -18,7 +18,7 @@ module SimpleAWS
   class ElastiCache < API
     endpoint "elasticache"
     use_https true
-    version "2011-07-15"
+    version "2014-07-15"
     default_region "us-east-1"
 
     include CallTypes::ActionParam

@@ -16,10 +16,6 @@ describe SimpleAWS::S3 do
     api.uri.must_equal "https://s3-us-west-1.amazonaws.com"
   end
 
-  it "works with the current version" do
-    @api.version.must_equal "2006-03-01"
-  end
-
   describe "url_for" do
 
     it "can build an unsigned, regular URL for the requested path" do

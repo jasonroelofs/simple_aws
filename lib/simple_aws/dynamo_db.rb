@@ -41,7 +41,7 @@ module SimpleAWS
     endpoint "dynamodb"
     default_region "us-east-1"
     use_https true
-    version "2011-12-05"
+    version "2012-08-10"
 
     attr_reader :sts, :session_token
 

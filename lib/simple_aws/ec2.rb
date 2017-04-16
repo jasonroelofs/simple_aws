@@ -18,7 +18,7 @@ module SimpleAWS
   class EC2 < API
     endpoint "ec2"
     use_https true
-    version "2011-11-01"
+    version "2014-06-15"
 
     include CallTypes::ActionParam
     include Signing::Version2

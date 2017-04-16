@@ -30,10 +30,6 @@ describe SimpleAWS::DynamoDB do
     api.uri.must_equal "https://dynamodb.eu-west-1.amazonaws.com"
   end
 
-  it "works with the current version" do
-    @api.version.must_equal "2011-12-05"
-  end
-
   describe "API calls" do
 
     it "requires a security token as the first parameter and add it as a header" do
@@ -48,7 +44,7 @@ describe SimpleAWS::DynamoDB do
     it "adds the requested action as x-amz-target header" do
       SimpleAWS::Connection.any_instance.expects(:call).with do |request|
         header = request.headers["x-amz-target"]
-        header.must_equal "DynamoDB_20111205.CreateTable"
+        header.must_equal "DynamoDB_20120810.CreateTable"
         true
       end
 

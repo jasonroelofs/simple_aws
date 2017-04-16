@@ -17,10 +17,6 @@ describe SimpleAWS::CloudFront do
     }.must_raise ArgumentError
   end
 
-  it "works with the current version" do
-    @api.version.must_equal "2010-11-01"
-  end
-
   describe "API calls" do
 
     [:get, :post, :put, :delete].each do |method|
@@ -36,7 +32,7 @@ describe SimpleAWS::CloudFront do
 
     it "pre-pends the version to the path for every request" do
       SimpleAWS::Connection.any_instance.expects(:call).with do |request|
-        request.path.must_equal "/2010-11-01/"
+        request.path.must_equal "/2014-05-31/"
         true
       end
 

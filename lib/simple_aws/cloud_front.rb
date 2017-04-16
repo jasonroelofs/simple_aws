@@ -57,7 +57,7 @@ module SimpleAWS
   class CloudFront < API
     endpoint "cloudfront"
     use_https true
-    version "2010-11-01"
+    version "2014-05-31"
 
     def initialize(key, secret)
       super(key, secret)

@@ -11,10 +11,6 @@ describe SimpleAWS::IAM do
     @api.uri.must_equal "https://iam.amazonaws.com"
   end
 
-  it "works with the current version" do
-    @api.version.must_equal "2010-05-08"
-  end
-
   it "does not support region selection" do
     lambda {
       SimpleAWS::IAM.new "key", "secret", "us-east-1"

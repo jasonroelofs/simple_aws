@@ -11,10 +11,6 @@ describe SimpleAWS::AutoScaling do
     @api.uri.must_equal "https://autoscaling.amazonaws.com"
   end
 
-  it "works with the current version" do
-    @api.version.must_equal "2011-01-01"
-  end
-
   describe "API calls" do
 
     it "builds and signs calls with ActionParam rules" do

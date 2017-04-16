@@ -26,7 +26,7 @@ module SimpleAWS
   class SQS < API
     endpoint "sqs"
     use_https true
-    version "2011-10-01"
+    version "2012-11-05"
     default_region "us-east-1"
 
     include CallTypes::ActionParam
